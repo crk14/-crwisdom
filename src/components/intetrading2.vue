@@ -30,8 +30,8 @@
 		<div>
 			<span>|</span>配置
 		</div>
-		<div style="font-size: .25rem;font-weight: 550;margin-left: .6rem;margin-top: .05rem;">点卡余额：{{pointnum}}</div>
-		<div style="font-size: .25rem;font-weight: 550;margin-left: .5rem;margin-top: .05rem;">剩余有效天数：{{time}}天</div>
+		<div style="font-size: .25rem;font-weight: 550;margin-left: .6rem;margin-top: .05rem;">交易点卡余额：{{pointnum}}</div>
+		<!-- <div style="font-size: .25rem;font-weight: 550;margin-left: .5rem;margin-top: .05rem;">剩余有效天数：{{time}}天</div> -->
       
     </div>
     <div class="strategy">
@@ -39,7 +39,7 @@
         <span class="dfirst" style="color: #999999;font-size: .24rem;">仓位监测</span>
 		<div style="font-size: .28rem;width: 2.9rem;text-align: center;">{{parseInt(Number(principals)*1000)/1000||0}}{{symbol}}</div>
 		<span  style="color: #999999;font-size: .24rem;">策略类型</span>
-         <span class="dtwos"  style="width: 100px;margin-top: -2px;">
+         <span class="dtwos"  style="width: 1.7rem;margin-top: -2px;">
 		  <!-- <span v-show="isshow2" @click="isshow2=false" style="font-size: 12px;color: rgb(34, 132, 253);padding-left: 36px;">去选择 <span style="margin-left: 3px;">></span></span> -->
 		  <select v-show="!isshow2" v-model="shuju" style="font-size: 12px;margin-left: 20px;" >
 		     <!-- <option  :value="1" selected="selected">智能策略</option> -->
@@ -572,7 +572,7 @@ export default {
 	  checked: true,
 	  time1:'',
 	  index1:'',
-	  time:'',
+	  // time:'',
 	  pointnum:'',
 	  ljsyl:'',
 	  list3:[],
@@ -601,19 +601,19 @@ export default {
 	
 	    let info = res.data.info;
 		this.pointnum = info.point_num
-			  var timestamp = Date.parse(new Date())/1000;
-			  if(info.start_time){
-				  let time = parseInt((timestamp -info.start_time)/60/60/24)
-				    this.time = 150 - time
-				  }else{
-				  console.log(info.start_time,info.point_num)
-				  if(info.point_num>0){
-					  let time = parseInt((timestamp -info.start_time)/60/60/24)
-					  this.time = 150 - time
-				  }else{
-					  this.time = 0
-				  }
-			  }
+			  // var timestamp = Date.parse(new Date())/1000;
+			  // if(info.start_time){
+				 //  let time = parseInt((timestamp -info.start_time)/60/60/24)
+				 //    this.time = 150 - time
+				 //  }else{
+				 //  console.log(info.start_time,info.point_num)
+				 //  if(info.point_num>0){
+					//   let time = parseInt((timestamp -info.start_time)/60/60/24)
+					//   this.time = 150 - time
+				 //  }else{
+					//   this.time = 0
+				 //  }
+			  // }
 			  })
     this.start();
     if (this.bourse == 4) {

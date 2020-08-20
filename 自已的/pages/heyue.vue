@@ -45,7 +45,7 @@
         <span style="color: #999999;font-size: .24rem;">策略类型</span>
         <!-- <span v-show="!isshow" style="color: rgb(34,132,253);font-size: .24rem;margin-left: .9rem;"  @click="isshow = !isshow" >去选择 <van-icon name="arrow" /></span> -->
         <!-- {{index==0?'智能做多交易':'自定做多交易'}} -->
-        <span class="dtwos" style="width: 100px;margin-top: -2px;">
+        <span class="dtwos" style="width: 1.7rem;margin-top: -2px;">
           <select v-show="!isshow2" v-model="shuju" style="font-size: 12px;margin-left: 20px;">
             <option :value="1" selected="selected">多空双开策略</option>
             <!-- <option  :value="2" selected="selected">自定义策略</option> -->

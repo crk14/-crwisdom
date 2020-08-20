@@ -39,7 +39,7 @@
         <span class="dfirst" style="color: #999999;font-size: .24rem;">仓位监测</span>
 		<div style="font-size: .28rem;width: 2.9rem;text-align: center;">{{parseInt(Number(principals)*1000)/1000||0}}{{symbol}}</div>
 		<span  style="color: #999999;font-size: .24rem;">策略类型</span>
-         <span class="dtwos"  style="width: 100px;margin-top: -2px;">
+         <span class="dtwos"  style="width: 1.7rem;margin-top: -2px;">
 		  <!-- <span v-show="isshow2" @click="isshow2=false" style="font-size: 12px;color: rgb(34, 132, 253);padding-left: 36px;">去选择 <span style="margin-left: 3px;">></span></span> -->
 		  <select v-show="!isshow2" v-model="shuju" style="font-size: 12px;margin-left: 20px;" >
 		     <!-- <option  :value="1" selected="selected">智能策略</option> -->

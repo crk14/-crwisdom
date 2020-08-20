@@ -13,8 +13,8 @@
                 <span class="one">{{info.point_num||0}}</span>
                 <!-- $router.push('flash') stayopen-->
               </p>
-			  <p style="font-size: 0.29rem;position: absolute;top:0.5rem;right: 1.2rem;" class="active3">剩余有效期(天)</p>
-			  <span style="font-size: 0.38rem;position: absolute;top:1.3rem;right: 2.4rem;">{{time}}</span>
+			  <!-- <p style="font-size: 0.29rem;position: absolute;top:0.5rem;right: 1.2rem;" class="active3">剩余有效期(天)</p>
+			  <span style="font-size: 0.38rem;position: absolute;top:1.3rem;right: 2.4rem;">{{time}}</span> -->
             </div>
             <!-- <div class="boxr" style="margin-top: 0.35rem;"> -->
              <!-- <div>
@@ -143,7 +143,7 @@
 		  this.allrank = res.data.data.all_rank
 		  this.monthrank = res.data.data.month_rank
 		  this.todayrank = res.data.data.today_rank
-		  console.log( this.allrank)
+		  // console.log( this.allrank)
       });
 
 
@@ -152,19 +152,19 @@
       .then(res => {
         if(res.data.info){
           this.info = res.data.info;
-		  var timestamp = Date.parse(new Date())/1000;
-		  if(this.info.start_time){
-			  let time = parseInt((timestamp -this.info.start_time)/60/60/24)
-			    this.time = 150 - time
-			  }else{
-			  console.log(this.info.start_time,this.info.point_num)
-			  if(this.info.point_num>0){
-				  let time = parseInt((timestamp -this.info.start_time)/60/60/24)
-				  this.time = 150 - time
-			  }else{
-				  this.time = 0
-			  }
-		  }
+		  // var timestamp = Date.parse(new Date())/1000;
+		  // if(this.info.start_time){
+			 //  let time = parseInt((timestamp -this.info.start_time)/60/60/24)
+			 //    this.time = 150 - time
+			 //  }else{
+			 //  console.log(this.info.start_time,this.info.point_num)
+			 //  if(this.info.point_num>0){
+				//   let time = parseInt((timestamp -this.info.start_time)/60/60/24)
+				//   this.time = 150 - time
+			 //  }else{
+				//   this.time = 0
+			 //  }
+		  // }
 		  }
 		 
       });

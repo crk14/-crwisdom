@@ -29,7 +29,7 @@
       <div class="tablecon" style="margin-top: 56px;">
         <!-- <router-link to="/intertranfor"> @click="stayopen"-->
 		<router-link to="/certification">
-		  <div style="padding: 0.02rem .3rem .32rem .3rem;">
+		  <div :style="string">
 		    <p>
 		      <img src="../assets/1201.png" alt style="width: .35rem;top: .02rem;" />
 		      <span>实名认证</span>
@@ -117,7 +117,8 @@ export default {
       infourl: "",
       imgpng: "",
 	  isshow:true,	
-	dayachieve:0
+	dayachieve:0,
+	string:'padding: 0.02rem .3rem .32rem .3rem;'
     };
   },
   created() {
@@ -141,7 +142,11 @@ export default {
       }
 	  }
     });
-    
+    var windowHeight = document.documentElement.clientHeight || document.body.clientHeight;
+	console.log(windowHeight)
+	if(windowHeight && windowHeight<600){
+		this.string= 'padding: 0.32rem 0.3rem;'
+	}
   },
   // mounted() {
 	 //  this.$axios.post("/index/member/spread").then(res => {

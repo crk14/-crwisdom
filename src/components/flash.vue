@@ -30,9 +30,23 @@
             售价
             <span>700</span>点卡值
           </div>
-          <div class="four" @click="confirm(true)">立即购买 》</div>
+          <div class="four" @click="confirm(true)">立即兑换 》</div>
         </div>
       </div>
+	  <p class="hr" style="padding: 0;background-color: rgb(230,231,235)"></p>
+	  <div class="item" v-if="bool1">
+	    <div class="item1">
+	      <div class="one">自定义兑换</div>
+	      <div class="two">点卡: <input placeholder="输入" v-model="newvalue" style="width: 50px;"/> 点</div>
+	    </div>
+	    <div class="item1" style="margin-top: 15px;">
+	      <div class="three" style="display: flex;">
+	        售价
+	        <span style="display: flex;"><span style="display: block;min-width: 30px;margin-top: -1px;margin-left: 4px;">{{newvalue}}</span></span>点卡值
+	      </div>
+	      <div class="four" @click="confirm()">立即兑换 》</div>
+	    </div>
+	  </div>
       <p class="hr" style="padding: 0;background-color: rgb(230,231,235)"></p>
 
       <p class="hr" style="padding: 0;background-color: rgb(230,231,235)"></p>
@@ -55,12 +69,17 @@ export default {
       types: 1,
       num: "",
       anum: 0,
+	  newvalue:'',
+	  bool1:false
     };
   },
   created() {
     this.$axios.post("/index/mywallet/mywalletInfo").then((res) => {
       if (res.data.code == 0) {
         this.info = res.data.info;
+		if(this.info.is_need == 2){
+			this.bool1 = true
+		}
       }
     });
   },
@@ -78,7 +97,14 @@ export default {
         }
         this.num = 700;
         this.types = 1;
-      } 
+      }else{
+		  if (this.newvalue <1) {
+		    this.$toast.fail({ message: "请输入自定义点卡兑换", duration: 1200 });
+		    return;
+		  }
+		  this.num = this.newvalue;
+		  this.types = 1;
+	  } 
       Dialog.confirm({
         title: "购买须知",
         message:
@@ -90,6 +116,7 @@ export default {
             .post("/index/mywallet/transfer", {
               num: this.num,
               types: this.types,
+			  
             })
             .then((res) => {
               if (res.data.code == 0) {

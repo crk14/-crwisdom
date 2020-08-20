@@ -31,10 +31,10 @@
       </div>
       <div
         style="font-size: .25rem;font-weight: 550;margin-left: .6rem;margin-top: .05rem;"
-      >点卡余额：{{pointnum}}</div>
-      <div
+      >交易点卡余额：{{pointnum}}</div>
+      <!-- <div
         style="font-size: .25rem;font-weight: 550;margin-left: .5rem;margin-top: .05rem;"
-      >剩余有效天数：{{time}}天</div>
+      >剩余有效天数：{{time}}天</div> -->
     </div>
     <div class="strategy">
       <div class="onep" style="display: flex;">
@@ -45,7 +45,7 @@
         <span style="color: #999999;font-size: .24rem;">策略类型</span>
         <!-- <span v-show="!isshow" style="color: rgb(34,132,253);font-size: .24rem;margin-left: .9rem;"  @click="isshow = !isshow" >去选择 <van-icon name="arrow" /></span> -->
         <!-- {{index==0?'智能做多交易':'自定做多交易'}} -->
-        <span class="dtwos" style="width: 100px;margin-top: -2px;">
+        <span class="dtwos" style="width: 1.7rem;margin-top: -2px;">
           <select v-show="!isshow2" v-model="shuju" style="font-size: 12px;margin-left: 20px;">
             <option :value="1" selected="selected">多空双开策略</option>
             <!-- <option  :value="2" selected="selected">自定义策略</option> -->
@@ -415,7 +415,7 @@ export default {
       checked: true,
       time1: "",
       index1: "",
-      time: "",
+      // time: "",
       pointnum: "",
       ljsyl: "",
       list3: [],
@@ -447,19 +447,19 @@ export default {
       .then((res) => {
         let info = res.data.info;
         this.pointnum = info.point_num;
-        var timestamp = Date.parse(new Date()) / 1000;
-        if (info.start_time) {
-          let time = parseInt((timestamp - info.start_time) / 60 / 60 / 24);
-          this.time = 150 - time;
-        } else {
-          console.log(info.start_time, info.point_num);
-          if (info.point_num > 0) {
-            let time = parseInt((timestamp - info.start_time) / 60 / 60 / 24);
-            this.time = 150 - time;
-          } else {
-            this.time = 0;
-          }
-        }
+        // var timestamp = Date.parse(new Date()) / 1000;
+        // if (info.start_time) {
+        //   let time = parseInt((timestamp - info.start_time) / 60 / 60 / 24);
+        //   this.time = 150 - time;
+        // } else {
+        //   console.log(info.start_time, info.point_num);
+        //   if (info.point_num > 0) {
+        //     let time = parseInt((timestamp - info.start_time) / 60 / 60 / 24);
+        //     this.time = 150 - time;
+        //   } else {
+        //     this.time = 0;
+        //   }
+        // }
       });
     this.start();
     if (this.bourse == 4) {
