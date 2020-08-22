@@ -56,7 +56,7 @@ axios.interceptors.response.use((res) =>{
 	return res;
 }, (error) =>{
     // Do something with response error
-    Toast.fail({message:'网络请求失败',duration:1200});
+    // Toast.fail({message:'网络请求失败',duration:1200});
 })
 
 
