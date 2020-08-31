@@ -233,23 +233,23 @@
       </div>
 	  <div class="poup-title">
 	  	<div>搜索</div>
-	  	<div class="item" @click="getxingqing()">官方推荐</div>
-	  	<div class="item" @click="getzhuliu()">主流货币对</div>
+	  	<div class="item" @click="getxingqing()" :class="{'xiahuaxian':huobi}">官方推荐</div>
+	  	<div class="item" @click="getzhuliu()" :class="{'xiahuaxian':!huobi}">所有货币对</div>
 		<div class="about"></div>
 	  </div>
 	  <div class="poup-body">
 		  <span>货币对</span>
 		  <!-- <span>行情</span> -->
-		  <span>操作</span>
+		  <span style="margin-left: 20%;">操作</span>
 	  </div>
       <ul>
      
  <li class="li-item"  v-for="(item,i) in list3"
           :key="i">
-	 <div style="padding-left: .4rem;font-size: 14px;width: 86px;">{{item.symbol1.toUpperCase()}}/<span style="color: #CCCCCC;">{{item.symbol.toUpperCase()}}</span> </div>
+	 <div style="padding-left: .7rem;font-size: 14px;width: 86px;">{{item.symbol1.toUpperCase()}}/<span style="color: #CCCCCC;">{{item.symbol.toUpperCase()}}</span> </div>
 	 <!-- <div style="padding-left: 1rem;width: 32px;" class="active" :class="{'active1':item.up_or_down==1}">{{item.close.toFixed(2)}}</div> -->
-	 <div style="padding-left: 1rem;color: #2284fd;" v-show="!item.bool" @click="selecli_symbolcli(item.symbol1.toUpperCase()+ '/' + item.symbol.toUpperCase(),i)">添加</div>
-	 <div style="padding-left: 1.62rem;color: #C0C5CB;" v-show="item.bool">已添加</div>
+	 <div style="padding-left: 1rem;color: #2284fd;text-align: center" v-show="!item.bool" @click="selecli_symbolcli(item.symbol1.toUpperCase()+ '/' + item.symbol.toUpperCase(),i)">添加</div>
+	 <div style="padding-left: 1.62rem;color: #C0C5CB;text-align: center" v-show="item.bool">已添加</div>
  </li>
       
       </ul>
@@ -328,6 +328,11 @@
           <img v-if="check==2" src="../assets/landian.png" alt />
           <img v-else src="../assets/nocomr.png" alt />
         </li>
+		<li @click="firmcolse(3)">
+		  强制暂停
+		  <img v-if="check==3" src="../assets/landian.png" alt />
+		  <img v-else src="../assets/nocomr.png" alt />
+		</li>
       </ul>
       <button class="changebton" @click="close_now()" style="background-color: rgb(34, 132, 253);">确定</button>
     </van-popup>
@@ -586,7 +591,8 @@ export default {
 	   loss_stop_switch:0
 	  },
 	  bool2:false,
-	  bool3:false
+	  bool3:false,
+	   huobi:true
     };
   },
   created() {
@@ -1079,7 +1085,8 @@ export default {
 		this.$set(this.list3,index,obj)
       // this.selsym = [];
      this.selsym.push(this.list3[index].symbol1)
-	console.log(this.selsym,this.list3)
+	 this.selsym = [...new Set(this.selsym)]
+	console.log(this.selsym)
       if (this.selsym.length > 10) {
         return this.$toast.fail({
           message: "最多只能选则10个币对",
@@ -1128,6 +1135,7 @@ export default {
       }
     },
 	getxingqing(){
+		this.huobi= true
 		this.list3 = []
 		// if(this.list3.length>0){
 		// 	console.log(this.list3)
@@ -1163,6 +1171,7 @@ export default {
 			})
 	},
 	getzhuliu(){
+		this.huobi= false
 		this.list3 = []
 		console.log(this.symbol)
 		
@@ -1261,9 +1270,9 @@ export default {
 		        }
 		      });
 		  
-      } else {
-        // var id = s;
-        this.$axios
+      } 
+	  else if (this.check == 2) {
+ this.$axios
           .post("/index/spot/clearance", { id: this.closeid })
           .then(res => {
             if (res.data.code == 0) {
@@ -1275,6 +1284,21 @@ export default {
               this.closedeal = false;
             }
           });
+	  		  
+	  }else {
+        // var id = s;
+       this.$axios
+         .post("/index/spot/pause_forced", { id: this.closeid })
+         .then(res => {
+           if (res.data.code == 0) {
+             this.$toast.success({ message: res.data.msg, duration: 2000 });
+             this.start();
+             this.closedeal = false;
+           } else {
+             this.$toast.fail({ message: res.data.msg, duration: 2000 });
+             this.closedeal = false;
+           }
+         });
       }
     }
   }
@@ -1715,7 +1739,7 @@ export default {
 		margin-left: .4rem;
 	}
 	.item{
-		color: rgb(34, 132, 253);
+		color: #000000;
 		margin-left: .7rem;
 		font-size: 15px;
 	}
@@ -1746,7 +1770,7 @@ export default {
 		div{
 			flex: 1;
 			font-weight: 500;
-			text-align: center;
+			text-align: left;
 		}
 		.active{
 			color: rgb(244,17,10);
@@ -1858,5 +1882,11 @@ export default {
 	}
 	.button3{
 		background:#BD1616
+	}
+	.poup-title{
+		.xiahuaxian{
+			border-bottom: 1px solid #2284fd;
+			color: #2284fd;
+		}
 	}
 </style>

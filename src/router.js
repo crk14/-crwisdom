@@ -50,7 +50,7 @@ export default new Router({
     { path: '/noticedateil', name: '公告详情', component: resolve =>require(['./components/noticedateil.vue'],resolve) },
     { path: '/addmetationadr', name: '添加钱包地址', component: resolve =>require(['./components/Addmetationadr.vue'],resolve) },
     { path: '/metationadr', name: '钱包地址', component: resolve =>require(['./components/Metationadr.vue'],resolve) },
-    { path: '/fund', name: 'CR基金', component: resolve =>require(['./components/fund.vue'],resolve) },
+    // { path: '/fund', name: 'CR基金', component: resolve =>require(['./components/fund.vue'],resolve) },
 	// { path: '/down', name: '下载页面', component: resolve =>require(['./components/subrecored.vue'],resolve) },
 	{ path: '/fuli', name: '福利中心', component: resolve =>require(['./pages/fuli.vue'],resolve) },
 	{ path: '/fenxiang', name: '分享邀请', component: resolve =>require(['./pages/fenxiang.vue'],resolve) },

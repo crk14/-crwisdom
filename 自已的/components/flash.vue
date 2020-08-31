@@ -26,12 +26,12 @@
       <div class="item">
         <div class="item1">
           <div class="one">USDT购买</div>
-          <div class="two">点卡: 1400点</div>
+          <div class="two">点卡: 700点</div>
         </div>
         <div class="item1" style="margin-top: 15px;">
           <div class="three">
             售价
-            <span>200</span>USDT
+            <span>100</span>USDT
           </div>
           <div class="four" @click="confirm(true)">立即购买 》</div>
         </div>
@@ -40,12 +40,12 @@
       <div class="item">
         <div class="item1">
           <div class="one">CRW购买</div>
-          <div class="two">点卡: 1400点</div>
+          <div class="two">点卡: 700点</div>
         </div>
         <div class="item1" style="margin-top: 15px;">
           <div class="three">
             售价
-            <span>1400</span>CRW
+            <span>700</span>CRW
           </div>
           <div class="four" @click="confirm(false)">立即购买 》</div>
         </div>
@@ -105,18 +105,18 @@ export default {
       // }
 
       if (bool) {
-        if (this.info.number < 200) {
+        if (this.info.number < 100) {
           this.$toast.fail({ message: "USDT余额不足", duration: 1200 });
           return;
         }
-        this.num = 200;
+        this.num = 100;
         this.types = 1;
       } else {
-        if (this.info.safe_num < 1400) {
+        if (this.info.safe_num < 700) {
           this.$toast.fail({ message: "CR余额不足", duration: 1200 });
           return;
         }
-        this.num = 1400;
+        this.num = 700;
         this.types = 2;
       }
       Dialog.confirm({

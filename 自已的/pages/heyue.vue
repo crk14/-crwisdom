@@ -156,10 +156,12 @@
               {{item.stop_type== 0?'未开启':item.stop_type== 1?'临时停止':item.stop_type== 2?'止盈停止':'临时停止'}}
             </p>
             <p v-if="item.stop_type==5" class="item1">API KEY 错误</p>
-            <p v-if="item.stop_type==7" class="item1">仓位错误</p>
+            <p v-if="item.stop_type==7" class="item1">可平量大于持仓量</p>
             <p v-if="item.stop_type==8" class="item1">点卡不足</p>
             <p v-if="item.stop_type==9" class="item1">仓位错误</p>
-            <p v-if="item.stop_type==6" class="item1">本金不足</p>
+            <p v-if="item.stop_type==6" class="item1">开仓量大于可开量</p>
+			<p v-if="item.stop_type==4" class="item1">下单数量异常</p>
+			<p v-if="item.stop_type==10" class="item1">风险率过高</p>
           </div>
           <div class="tabul">
             <div>
@@ -254,14 +256,14 @@
       </div>
       <div class="poup-title">
         <div>搜索</div>
-        <div class="item" @click="getxingqing()">官方推荐</div>
-        <div class="item" @click="getzhuliu()">主流货币对</div>
+        <div class="item" @click="getxingqing()" :class="{'xiahuaxian':huobi}">官方推荐</div>
+        <div class="item" @click="getzhuliu()" :class="{'xiahuaxian':!huobi}">所有货币对</div>
         <div class="about"></div>
       </div>
       <div class="poup-body">
         <span>货币对</span>
         <!-- <span>行情</span> -->
-        <span>操作</span>
+        <span style="margin-left: 20%;">操作</span>
       </div>
       <ul>
         <li class="li-item" v-for="(item,i) in list3" :key="i">
@@ -271,11 +273,11 @@
           </div>
           <!-- <div style="padding-left: 1rem;width: 32px;" class="active" :class="{'active1':item.up_or_down==1}">{{item.close.toFixed(2)}}</div> -->
           <div
-            style="padding-left: 1rem;color: #2284fd;"
+            style="padding-left: 1rem;color: #2284fd;text-align: center;"
             v-show="!item.bool"
             @click="selecli_symbolcli(item.symbol_deal+ '/' + item.symbol,i)"
           >添加</div>
-          <div style="padding-left: 1.62rem;color: #C0C5CB;" v-show="item.bool">已添加</div>
+          <div style="padding-left: 1.62rem;color: #C0C5CB;text-align: center;" v-show="item.bool">已添加</div>
         </li>
       </ul>
     </van-popup>
@@ -435,6 +437,7 @@ export default {
       id2: null,
       moeneru: null,
       beishu: null,
+	  huobi:true
     };
   },
   created() {
@@ -661,9 +664,19 @@ export default {
         return;
       }
       if (bool) {
-        this.$router.push(
-          "/chicang?bourse=" + this.bourse + "&symbol=" + this.symbol2
-        );
+       let abc = []
+       this.strategy_list.forEach(item=>{
+       	abc.push(item.symbol_deal)
+       })
+       abc = [...new Set(abc)].join(',')
+         this.$router.push({
+              name:'持仓',
+              params:{
+                bourse:this.bourse,
+       		 symbol:this.symbol2,
+       		 stage:abc
+                }
+               })
       } else {
         this.$router.push(
           "showdetail?bourse=" + this.bourse + "&type=1" + "&heyeu=1"
@@ -775,6 +788,7 @@ export default {
       this.$set(this.list3, index, obj);
       // this.selsym = [];
       this.selsym.push(this.list3[index].symbol_deal);
+	  this.selsym = [...new Set(this.selsym)]
       console.log(this.selsym, this.list3);
       if (this.selsym.length > 10) {
         return this.$toast.fail({
@@ -820,6 +834,7 @@ export default {
       }
     },
     getxingqing() {
+		this.huobi = true
       this.list3 = [];
       // if(this.list3.length>0){
       // 	console.log(this.list3)
@@ -854,6 +869,7 @@ export default {
         });
     },
     getzhuliu() {
+		this.huobi = false
       this.list3 = [];
       console.log(this.symbol);
 
@@ -1415,7 +1431,7 @@ export default {
     margin-left: 0.4rem;
   }
   .item {
-    color: rgb(34, 132, 253);
+    color: #000000;
     margin-left: 0.7rem;
     font-size: 15px;
   }
@@ -1446,7 +1462,7 @@ export default {
   div {
     flex: 1;
     font-weight: 500;
-    text-align: center;
+    text-align: left;
   }
   .active {
     color: rgb(244, 17, 10);
@@ -1549,5 +1565,12 @@ export default {
 .button3 {
   background: #bd1616;
 }
+.poup-title{
+	.xiahuaxian{
+		border-bottom: 1px solid #2284fd;
+		color: #2284fd;
+	}
+}
+
 </style>
  

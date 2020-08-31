@@ -57,12 +57,15 @@ export default {
 		list:[],
 		symbol:'USDT',
 		bourse:'4',
-		time:null
+		time:null,
+		stage:'',
     };
   },
   created() {
-	  this.bourse = this.$route.query.bourse
-	  this.symbol = this.$route.query.symbol
+	  this.bourse = this.$route.params.bourse
+	  this.symbol = this.$route.params.symbol
+	  this.stage = this.$route.params.stage
+	  console.log(this.stage)
     this.fn()
 	
   },
@@ -76,7 +79,7 @@ export default {
 		     .post("/index/swapstrategy/get_position", {
 		      symbol: this.symbol,
 		      bourse: this.bourse,
-		      symbol_deal:'BTC,ETH'
+		      symbol_deal:this.stage
 		     })
 		     .then(res => {
 		   	  this.list = res.data.data
@@ -89,7 +92,7 @@ export default {
 		   		    .post("/index/swapstrategy/get_position", {
 		   		     symbol: this.symbol,
 		   		     bourse: this.bourse,
-		   		     symbol_deal:'BTC,ETH'
+		   		     symbol_deal:this.stage
 		   		    })
 		   		    .then(res => {
 		   		  	  this.list = res.data.data
