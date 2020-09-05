@@ -64,8 +64,8 @@ export default {
   created() {
 	  this.bourse = this.$route.params.bourse
 	  this.symbol = this.$route.params.symbol
-	  this.stage = this.$route.params.stage
-	  console.log(this.stage)
+	   this.stage = this.$route.params.stage
+	   console.log(this.stage)
     this.fn()
 	
   },

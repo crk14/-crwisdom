@@ -73,7 +73,7 @@
           <div class="botdiv">
             <p>{{item.create_time}}</p>
             <p>
-              <span>{{item.money_types==1?'点卡值':'CRW'}}</span>
+              <span>{{item.money_types==1?'USDT':'CRW'}}</span>
             </p>
           </div>
         </li>

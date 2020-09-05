@@ -8,13 +8,13 @@
         <div class="boxall">
           <div class="box">
             <div class="boxl">
-              <p class="active3">{{'交易点卡余额'}}</p>
+              <p class="active3">{{'点卡余额'}}</p>
               <p>
                 <span class="one">{{info.point_num||0}}</span>
                 <!-- $router.push('flash') stayopen-->
               </p>
-			  <!-- <p style="font-size: 0.29rem;position: absolute;top:0.5rem;right: 1.2rem;" class="active3">剩余有效期(天)</p>
-			  <span style="font-size: 0.38rem;position: absolute;top:1.3rem;right: 2.4rem;">{{time}}</span> -->
+			  <p style="font-size: 0.29rem;position: absolute;top:0.5rem;right: 1.2rem;" class="active3">剩余有效期(天)</p>
+			  <span style="font-size: 0.38rem;position: absolute;top:1.3rem;right: 2.4rem;">{{time}}</span>
             </div>
             <!-- <div class="boxr" style="margin-top: 0.35rem;"> -->
              <!-- <div>
@@ -26,7 +26,7 @@
                 <p style="padding-left: 0rem;">{{info.safe_num||0}}</p>
               </div> -->
 			<span class="two active3" @click="$router.push('flash')" style="position: absolute;top: 105px;margin-right: 25px;right: 0;font-size: .33rem;">
-			  兑换点卡
+			  购买点卡
 			  <van-icon name="arrow" />
 			</span>
             <!-- </div> -->
@@ -52,12 +52,12 @@
         <p>合约量化</p>
       </li>
 	  </router-link>
-	  <!-- <router-link to="/gensui"> -->
+	  <router-link to="/gensui">
       <li>
         <img src="../assets/组17@2x.png" alt />
         <p>跟随交易</p>
       </li>
-	  <!-- </router-link> -->
+	  </router-link>
     </ul>
 <p style="width: 100%;height: 6px;background-color: rgb(227,227,227);"></p>
     <van-swipe :show-indicators="true" class="lotswipe" :autoplay="3000" indicator-color="#fff">
@@ -81,7 +81,7 @@
 			<img v-if="index == 2" src="../assets/1413.png" style="left: 13px;width: 21px;height: 23px;border-radius: 0;top: 12px;"/>
 			<span v-if="index > 2" style="position: absolute;left: 12px;top: 0px;width: 20px;text-align: center;">{{index + 1}}</span>
 			<img :src="item.avatar"/>
-			<span>{{item.nick_name}}</span>
+			<span style="overflow: hidden;flex: 1;text-overflow: ellipsis;white-space: nowrap">{{item.nick_name}}</span>
 			<span>今日收益: <span style="color: rgb(221,113,110);"> {{item.profit.toFixed(2)}} </span> <span style="color: rgb(172,170,171);">USDT</span> </span>
 		</div>
 		<div v-show="active == 'b'" v-for="(item,index) in monthrank"  style="font-size: 13px;" :key="item.profit">
@@ -90,7 +90,7 @@
 			<img v-if="index == 2" src="../assets/1413.png" style="left: 13px;width: 21px;height: 23px;border-radius: 0;top: 12px;"/>
 			<span v-if="index > 2" style="position: absolute;left: 12px;top: 0px;width: 20px;text-align: center;">{{index + 1}}</span>
 			<img :src="item.avatar"/>
-			<span>{{item.nick_name}}</span>
+			<span style="overflow: hidden;flex: 1;text-overflow: ellipsis;white-space: nowrap">{{item.nick_name}}</span>
 			<span>本月收益: <span style="color: rgb(221,113,110);"> {{item.profit.toFixed(2)}} </span> <span style="color: rgb(172,170,171);">USDT</span> </span>
 		</div>
 		<div v-show="active == 'c'" v-for="(item,index) in allrank" style="font-size: 13px;" :key="item.profit">
@@ -99,7 +99,7 @@
 			<img v-if="index == 2" src="../assets/1413.png" style="left: 13px;width: 21px;height: 23px;border-radius: 0;top: 12px;"/>
 			<span v-if="index > 2" style="position: absolute;left: 12px;top: 0px;width: 20px;text-align: center;">{{index + 1}}</span>
 			<img :src="item.avatar"/>
-			<span>{{item.nick_name}}</span>
+			<span style="overflow: hidden;flex: 1;text-overflow: ellipsis;white-space: nowrap">{{item.nick_name}}</span>
 			<span>所有收益: <span style="color: rgb(221,113,110);"> {{item.profit.toFixed(2)}} </span> <span style="color: rgb(172,170,171);">USDT</span> </span>
 		</div>
 		
@@ -143,7 +143,7 @@
 		  this.allrank = res.data.data.all_rank
 		  this.monthrank = res.data.data.month_rank
 		  this.todayrank = res.data.data.today_rank
-		  // console.log( this.allrank)
+		  console.log( this.allrank)
       });
 
 
@@ -152,29 +152,29 @@
       .then(res => {
         if(res.data.info){
           this.info = res.data.info;
-		  // var timestamp = Date.parse(new Date())/1000;
-		  // if(this.info.start_time){
-			 //  let time = parseInt((timestamp -this.info.start_time)/60/60/24)
-			 //    this.time = 150 - time
-			 //  }else{
-			 //  console.log(this.info.start_time,this.info.point_num)
-			 //  if(this.info.point_num>0){
-				//   let time = parseInt((timestamp -this.info.start_time)/60/60/24)
-				//   this.time = 150 - time
-			 //  }else{
-				//   this.time = 0
-			 //  }
-		  // }
+		  var timestamp = Date.parse(new Date())/1000;
+		  if(this.info.start_time){
+			  let time = parseInt((timestamp -this.info.start_time)/60/60/24)
+			    this.time = 150 - time
+			  }else{
+			  console.log(this.info.start_time,this.info.point_num)
+			  if(this.info.point_num>0){
+				  let time = parseInt((timestamp -this.info.start_time)/60/60/24)
+				  this.time = 150 - time
+			  }else{
+				  this.time = 0
+			  }
+		  }
 		  }
 		 
       });
-	  // this.$axios
-	  // .get("/index/spotstrategy/decide")
-	  // .then(res => {
-	  // 		 if(res.data.code == 0){
-			// 	 this.isshow = true
-			//  }
-	  // });
+	  this.$axios
+	  .get("/index/spotstrategy/decide")
+	  .then(res => {
+	  		 if(res.data.code == 0){
+				 this.isshow = true
+			 }
+	  });
   },
 
   methods: {
@@ -182,19 +182,19 @@
       this.$toast.fail({ message: "等待开放", duration: 1200 });
     },
 	tointetrad(){
-		// if(this.isshow){
-		// 	this.$router.push('/intetrading2')
-		// }else{
-		// 	Dialog.confirm({
-		// 	  	  title: '提醒',
-		// 	  	  message: '是否进入新系统<p>(点击取消进入原系统,点击确认进入新系统)</p>',
-		// 	  	}) .then(() => {
+		if(this.isshow){
+			this.$router.push('/intetrading2')
+		}else{
+			Dialog.confirm({
+			  	  title: '提醒',
+			  	  message: '是否进入新系统<p>(点击取消进入原系统,点击确认进入新系统)</p>',
+			  	}) .then(() => {
 					this.$router.push('/intetrading2')
-				// })
-				// .catch(() => {
-				// 	this.$router.push('/intetrading')
-				// });
-		// }
+				})
+				.catch(() => {
+					this.$router.push('/intetrading')
+				});
+		}
 		
 			}
   }

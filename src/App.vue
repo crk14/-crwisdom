@@ -50,23 +50,19 @@ export default {
       fiedx: true,
       isLoading: false,
       isRouterAlive: true,
-      alink:''
     };
   },
   created(){
     this.start();
-    this.$axios.post("/index/article/findUrl")
-    .then(res => {
-      this.alink=res.data.info;
-    })
+   
   },
   methods: {
     clis(s) {
       this.iscli = s;
+	  this.start()
     },
     onkaif() {
       // this.$toast.fail({ message: "等待开发", duration: 1200 });
-      location.href=this.alink;
     },
     reload() {
       this.isRouterAlive = false;

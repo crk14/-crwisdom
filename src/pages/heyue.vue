@@ -31,10 +31,10 @@
       </div>
       <div
         style="font-size: .25rem;font-weight: 550;margin-left: .6rem;margin-top: .05rem;"
-      >交易点卡余额：{{pointnum}}</div>
-      <!-- <div
+      >点卡余额：{{pointnum}}</div>
+      <div
         style="font-size: .25rem;font-weight: 550;margin-left: .5rem;margin-top: .05rem;"
-      >剩余有效天数：{{time}}天</div> -->
+      >剩余有效天数：{{time}}天</div>
     </div>
     <div class="strategy">
       <div class="onep" style="display: flex;">
@@ -160,8 +160,8 @@
             <p v-if="item.stop_type==8" class="item1">点卡不足</p>
             <p v-if="item.stop_type==9" class="item1">仓位错误</p>
             <p v-if="item.stop_type==6" class="item1">开仓量大于可开量</p>
-            <p v-if="item.stop_type==4" class="item1">下单数量异常</p>
-            <p v-if="item.stop_type==10" class="item1">风险率过高</p>
+			<p v-if="item.stop_type==4" class="item1">下单数量异常</p>
+			<p v-if="item.stop_type==10" class="item1">风险率过高</p>
           </div>
           <div class="tabul">
             <div>
@@ -273,11 +273,11 @@
           </div>
           <!-- <div style="padding-left: 1rem;width: 32px;" class="active" :class="{'active1':item.up_or_down==1}">{{item.close.toFixed(2)}}</div> -->
           <div
-            style="padding-left: 1rem;color: #2284fd;text-align: center"
-            v-show="!item.bool"
+            style="padding-left: 1rem;color: #2284fd;text-align: center;"
+			v-show="!item.bool"
             @click="selecli_symbolcli(item.symbol_deal+ '/' + item.symbol,i)"
           >添加</div>
-          <div style="padding-left: 1.62rem;color: #C0C5CB;text-align: center" v-show="item.bool">已添加</div>
+          <div style="padding-left: 1.62rem;color: #C0C5CB;text-align: center;" v-show="item.bool">已添加</div>
         </li>
       </ul>
     </van-popup>
@@ -344,9 +344,13 @@
     </div>
     <van-dialog v-model="show2" title="预算设置" show-cancel-button :before-close="beforeClose">
       <p style="height: 15px;"></p>
+	  <div style="display: flex;">
+	  		  <van-checkbox v-model="checked2">开多</van-checkbox>
+	  		  <van-checkbox v-model="checked3">开空</van-checkbox>
+	  </div>
       <!-- <van-field v-model="number" type="number" label="价格(USD):" /> -->
-      <van-field v-model="number2" type="number2" label="开多数量(张):" />
-      <van-field v-model="number3" type="number3" label="开空数量(张):" />
+      <van-field v-show="checked2" v-model="number2" type="number2" label="开多数量(张):" />
+      <van-field v-show="checked3" v-model="number3" type="number3" label="开空数量(张):" />
       <van-field v-model="number4" type="number4" label="杠杆倍数:" />
       <p style="height: 15px;"></p>
     </van-dialog>
@@ -363,14 +367,17 @@
  
  <script>
 import Vue from "vue";
-import { Dialog, Field, Popup } from "vant";
+import { Dialog, Field, Popup,Checkbox } from "vant";
 Vue.use(Field);
 Vue.use(Dialog);
 Vue.use(Popup);
+Vue.use(Checkbox);
 export default {
-  components: { Dialog, Field, Popup },
+  components: { Dialog, Field, Popup,Checkbox },
   data() {
     return {
+		checked2:true,
+		checked3:true,
       value: "",
       number: "",
       number2: "",
@@ -417,7 +424,7 @@ export default {
       checked: true,
       time1: "",
       index1: "",
-      // time: "",
+      time: "",
       pointnum: "",
       ljsyl: "",
       list3: [],
@@ -450,19 +457,19 @@ export default {
       .then((res) => {
         let info = res.data.info;
         this.pointnum = info.point_num;
-        // var timestamp = Date.parse(new Date()) / 1000;
-        // if (info.start_time) {
-        //   let time = parseInt((timestamp - info.start_time) / 60 / 60 / 24);
-        //   this.time = 150 - time;
-        // } else {
-        //   console.log(info.start_time, info.point_num);
-        //   if (info.point_num > 0) {
-        //     let time = parseInt((timestamp - info.start_time) / 60 / 60 / 24);
-        //     this.time = 150 - time;
-        //   } else {
-        //     this.time = 0;
-        //   }
-        // }
+        var timestamp = Date.parse(new Date()) / 1000;
+        if (info.start_time) {
+          let time = parseInt((timestamp - info.start_time) / 60 / 60 / 24);
+          this.time = 150 - time;
+        } else {
+          console.log(info.start_time, info.point_num);
+          if (info.point_num > 0) {
+            let time = parseInt((timestamp - info.start_time) / 60 / 60 / 24);
+            this.time = 150 - time;
+          } else {
+            this.time = 0;
+          }
+        }
       });
     this.start();
     if (this.bourse == 4) {
@@ -594,11 +601,19 @@ export default {
             }
           }
         } else {
-          if (!this.number2 || !this.number3 || !this.number4) {
-            this.$toast.fail({ message: "请填写完整", duration: 2000 });
-            done();
-            return;
-          }
+			if(this.checked3){
+				if (!this.number3 || !this.number4) {
+				  this.$toast.fail({ message: "请填写完整", duration: 2000 });
+				  done();
+				  return;
+				}
+			}else{
+				if (!this.number2 || !this.number4) {
+				  this.$toast.fail({ message: "请填写完整", duration: 2000 });
+				  done();
+				  return;
+				}
+			}
           obj.down_buy_num = this.number3;
           obj.up_buy_num = this.number2;
           obj.type = this.types;
@@ -606,7 +621,15 @@ export default {
           obj.symbol = this.symbol2;
           obj.symbol_deal = this.selsym.join(",");
           let arr = [1, 0];
-          obj.up_down = arr.join(",");
+          if(this.checked2){
+          			  obj.up_down='1'
+          }
+          if(this.checked3){
+          	obj.up_down='0'
+          }
+          if(this.checked3 && this.checked2){
+          			  obj.up_down = arr.join(",");
+          }
           str = "set_strategy_all";
           this.jysymbol = 0;
         }
@@ -630,7 +653,15 @@ export default {
               this.start();
             }, 10000);
           } else {
-            this.$toast.fail({ message: res.data.msg, duration: 2000 });
+			  this.$toast.fail({ message: res.data.msg, duration: 2000 });
+            // if (res.data.err_code) {
+            //   setTimeout(() => {
+            //     this.istxt = res.data.err_code;
+            //   }, 1000);
+            //   setTimeout(() => {
+            //     this.istxt = -1;
+            //   }, 10000);
+            // }
           }
         });
         done(); // 关闭提示框
@@ -656,22 +687,19 @@ export default {
         return;
       }
       if (bool) {
-        // this.$router.push(
-        //   "/chicang?bourse=" + this.bourse + "&symbol=" + this.symbol2
-        // );
-		let abc = []
-		this.strategy_list.forEach(item=>{
-			abc.push(item.symbol_deal)
-		})
-		abc = [...new Set(abc)].join(',')
-		  this.$router.push({
-		       name:'持仓',
-		       params:{
-		         bourse:this.bourse,
-				 symbol:this.symbol2,
-				 stage:abc
-		         }
-		        })
+       let abc = []
+       this.strategy_list.forEach(item=>{
+       	abc.push(item.symbol_deal)
+       })
+       abc = [...new Set(abc)].join(',')
+         this.$router.push({
+              name:'持仓',
+              params:{
+                bourse:this.bourse,
+       		 symbol:this.symbol2,
+       		 stage:abc
+                }
+               })
       } else {
         this.$router.push(
           "showdetail?bourse=" + this.bourse + "&type=1" + "&heyeu=1"
@@ -780,7 +808,8 @@ export default {
       } else {
         obj.bool = true;
       }
-      this.$set(this.list3, index, obj);
+	  this.$set(this.list3, index, obj);
+	  // this.bidui = false;
       // this.selsym = [];
       this.selsym.push(this.list3[index].symbol_deal);
 	  this.selsym = [...new Set(this.selsym)]
@@ -845,13 +874,16 @@ export default {
           console.log(this.strategy_list);
           if (this.strategy_list) {
             let arr = [];
+			let num = 0
             this.strategy_list.forEach((item) => {
               res.data.sug_list.forEach((item1) => {
                 let str = item1.symbol_deal + "/" + item1.symbol;
-                // console.log(str,item.bidui)
                 if (item.bidui == str) {
-                  console.log(str);
-                  item1.bool = true;
+				  num++
+				  if(num == 2){
+					  item1.bool = true;
+					  num = 0
+				  }
                 }
                 arr.push(item1);
               });
@@ -860,7 +892,7 @@ export default {
           } else {
             this.list3 = res.data.sug_list;
           }
-          console.log(this.list3);
+          // console.log(this.list3);
         });
     },
     getzhuliu() {
@@ -874,27 +906,24 @@ export default {
           bourse: this.bourse,
         })
         .then((res) => {
-          console.log(this.strategy_list);
-          if (this.strategy_list) {
-            let arr = [];
-            this.strategy_list.forEach((item) => {
-              res.data.symbol.forEach((item1) => {
-                let str =
-                  item1.symbol_deal.toUpperCase() +
-                  "/" +
-                  item1.symbol.toUpperCase();
-                // console.log(str,item.bidui)
-                if (item.bidui == str) {
-                  console.log(str);
-                  item1.bool = true;
-                }
-                arr.push(item1);
-              });
-            });
-            this.list3 = res.data.symbol;
-          } else {
-            this.list3 = res.data.symbol;
-          }
+         this.list3 = res.data.sug_list;
+         //       if (this.strategy_list) {
+         //         let arr = [];
+         //         this.strategy_list.forEach((item) => {
+         //           res.data.sug_list.forEach((item1) => {
+         //             let str = item1.symbol_deal + "/" + item1.symbol;
+         //             // console.log(str,item.bidui)
+         //             if (item.bidui == str) {
+         //               console.log(str);
+         //               item1.bool = true;
+         //             }
+         //             arr.push(item1);
+         //           });
+         //         });
+         //         this.list3 = res.data.sug_list;
+         //       } else {
+         //         this.list3 = res.data.sug_list;
+         //       }
         });
     },
     firmcolse(s) {
@@ -1565,6 +1594,10 @@ export default {
 		border-bottom: 1px solid #2284fd;
 		color: #2284fd;
 	}
+}
+.van-checkbox{
+	margin-left: 17px;
+	flex: 1;
 }
 </style>
  

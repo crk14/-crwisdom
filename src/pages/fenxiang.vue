@@ -33,23 +33,26 @@
 			</div>
 			</div>
 			
-		<div class="page-fuli">
-						  <div class="title1">
-							  <span>我的邀请 : {{invite.invite_num}}</span>
-							  <span>社区用户 : {{invite.team_num}}</span>
-						  </div>
-						  <div class="item" v-for="(item,index) in huiyuanlish" :key="index" style="justify-content: space-around;">
-							  <div class="two" style="margin-left:2px;flex: inherit;width: 56%;padding: 0;height: 0;margin-top: 0">{{item.nick_name}}-{{item.mobile}}
-							  <p style="margin-top: .1rem;">注册时间：{{item.register_time}}</p>
-							  </div>
-							  <div class="three" >
-								  <img v-if="item.is_need ==2" src="../assets/111.png"/>
-								  <img v-if="item.is_need ==1" src="../assets/301.png"/>
-								  <span style="margin-left: 22px;">{{item.is_need == 1?'注册会员':'普通会员'}}</span>
-							  <p style="font-size: 13px;">业绩: {{item.achieve}}点</p>
-							  </div>
-						  </div>
-		</div>
+			<div class="two">
+				<p>分享好友奖</p>
+				<div>
+					<span>分享好友: {{number}}</span>
+					<span>邀请奖励: {{memberaccount>0?memberaccount.toFixed(2):0}} CRW</span>
+				</div>
+			</div>
+			<div class="two" style="min-height: 8rem;">
+				<p>排行榜</p>
+				<div v-for="(item,index) in list" :key="index">
+					<img v-if="index == 0" src="../assets/1301.png"/>
+					<img  v-if="index == 1" src="../assets/1302.png"/>
+					<img v-if="index == 2" src="../assets/1303.png"/>
+					<span style="position: absolute;width: 20px;text-align: center;padding: 0;left: 12px;">{{index>2?index+1:''}}</span> 
+					<span class="left">
+						{{item.mobile}}</span>
+					<span>{{(item.profit*2).toFixed(2)}} <span>CRW</span> </span>
+				</div>
+				
+			</div>
 		</div>
 		 <textarea cols="20" rows="10" id="biao1" style="opacity: 0;height: 1px;">{{info}}</textarea>
 		 <textarea cols="20" rows="10" id="biao2" style="opacity: 0;height: 1px;">{{infourl}}</textarea>
@@ -68,9 +71,7 @@ export default {
 	number:0,
 	memberaccount:0,
 	list:[],
-	ishow:false,
-	huiyuanlish:[],
-	invite:{},
+	ishow:false
     };
   },
   created() {
@@ -98,17 +99,6 @@ export default {
 	  if (res.data.code == 0) {
 		  this.list = res.data.data
 		  // this.memberaccount = res.data.member_account
-	  }
-	});
-	this.$axios.get("/index/welfarecenter/member").then(res => {
-	  if (res.data.code == 0) {
-		  this.huiyuanlish = res.data.info
-	  }
-	});
-	this.$axios.get("/index/welfarecenter/invite_team").then(res => {
-	  if (res.data.code == 0) {
-		  this.invite = res.data
-		  // this.daililist = res.data.info
 	  }
 	});
   },
@@ -327,49 +317,5 @@ export default {
 		position: fixed;
 		top: 0px;
 		left:0px
-	}
-	.page-fuli{
-		background-color: #e8ecef;
-		width: 92%;
-		min-height: 10rem;
-		.title1{
-			display: flex;
-			justify-content: space-between;
-			margin-bottom: .2rem;
-		}
-		.item{
-			padding: 0.2rem .17rem 0.2rem;
-			display: flex;
-			background-color: #FFFFFF;
-			border-bottom: 8px solid #e8ecef;
-			.two{
-				margin-left: .2rem;
-				color:rgb(40,60,103) ;
-				font-size: 15px;
-				flex: 1;
-				p{
-					margin-top: .14rem;
-					color: rgb(143,145,148);
-					font-size: 12px;
-				}
-			}
-			.three{
-				position: relative;
-				font-size: 15px;
-				color: rgb(83,93,95);
-				p{
-					margin-top: .1rem;
-					color: rgb(40,60,103);
-					font-size: 14px;
-				}
-				img{
-					position: absolute;
-					left:0px;
-					top: 0px;
-					height: 24px;
-					width: 20px;
-				}
-			}
-		}
 	}
 </style>

@@ -2,7 +2,7 @@
   <div style="position: relative;width: 100%;height: 100%;overflow:initial;">
     <!-- <p class="nobank" @click="$router.push('sign')">注册</p> -->
 	<!-- <img class="login-img" src="../assets/login2.png"/> -->
-	<img src="../assets/13134.png" style="width: 100%;height: 4rem;" />
+	<img src="../assets/1311.png" style="width: 100%;height: 4rem;" />
 	<img src="../assets/1313.png" style="position: absolute;left: 10px;top: 7px;width: 30px;height: 30px;"/>
 	<!-- <img src="../assets/911.png" style="width: 100%;height: 6rem;"/> -->
 	<!-- <div class="login-img"> -->
@@ -62,7 +62,7 @@
 			</div>
 		    <button type="button" class="changebton" @click="login" style="margin: 1.45rem auto .35rem;background: rgb(48,108,232);border-radius: 25px;width: 100%;">登录</button>
 			<!-- <button type="button" class="changebton"  @click="$router.push('sign')" style="margin: .35rem auto .65rem;border: 1px solid #009afd;background: #FFFFFF;color:rgb(13,125,254) ;border-radius: 2px;width: 100%;">注册</button> -->
-		    <a class="linka" href="https://app.dierna.com/vqAv" style="padding-top: .36rem;"><div></div><p style="color: rgb(48,108,232);font-size: .3rem;">APP下载</p><div></div></a>
+		    <a class="linka" href="https://app.dierna.com/EVfu" style="padding-top: .36rem;"><div></div><p style="color: rgb(48,108,232);font-size: .3rem;">APP下载</p><div></div></a>
 		  </div>
 		</div>
 	</div>

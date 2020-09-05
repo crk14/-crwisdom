@@ -5,27 +5,27 @@
 		<img  src="../assets/911.png" style="width: 100%;height: 3.4rem;"/>
 		<img   @click="$router.push('personmsg')" v-if="infouser.avatar"  :src="infouser.avatar" alt style="width: 59px;height: 59px;border-radius: 50%;
 		position: absolute;left: 16px;top: 58px;border: 4px solid #FFFFFF;"/>
-		<div style="position: absolute;left: 100px;top: 75px;color: #FFFFFF;font-size: 20px;">{{infouser.nick_name}}</div>
-		<div style="position: absolute;left: 100px;top: 105px;color: #FFFFFF;font-size: 16px;">UID:{{infouser.id}}</div>
-	<div style="position: absolute;right: 30px;top: 91px;color: #FFFFFF;font-size: 16px;">{{infouser.is_need == 2?infouser.level_name:'注册会员'}}</div>
+		<div style="position: absolute;left: 100px;top: 65px;color: #FFFFFF;font-size: 20px;">{{infouser.nick_name}}</div>
+		<div style="position: absolute;left: 100px;top: 95px;color: #FFFFFF;font-size: 16px;">UID:{{infouser.id}}</div>
+	<div style="position: absolute;right: 30px;top: 81px;color: #FFFFFF;font-size: 16px;">{{infouser.is_need == 2?infouser.level_name:'注册会员'}}</div>
 	</div>
-	<!-- <div class="my-monery"> -->
-	<!-- 	<div>
+	<div class="my-monery">
+		<div>
 			资产 <img v-show="isshow" @click="isshow=false" src="../assets/kaiyan.png" style="width: 19px;height: 19px;position: absolute;top: 22px;left: 51px;"/> 
 			 <img v-show="!isshow" @click="isshow=true" src="../assets/biyan.png" style="width: 19px;height: 19px;position: absolute;top: 22px;left: 51px;"/>
-			<span style="margin-left: 20px;"></span>(点卡值)
-			<p>{{isshow?infoamout.number:'****'}}</p>
-		</div> -->
-		<!-- <div >
+			<span style="margin-left: 20px;"></span>(CRW)
+			<p>{{isshow?infoamout.safe_num:'****'}}</p>
+		</div>
+		<div>
 			昨日收益
 			<p style="position: relative;padding-left: 13px;">{{isshow?parseInt(Number(dayachieve)*100)/100:'****'}}
 			<span v-show="isshow" style="position: absolute;left: 0;top: -1;">+</span></p>
-		</div> -->
-		<!-- <div @click="$router.push('carrymoney')" style="font-size: 19px;margin-top: 10px;margin-right: 20px;">提现<img src="../assets/youyou.png" style="width: 17px;height: 19px;position: absolute;top: 35px;right: 20px;"/>
-		</div> -->
-	<!-- </div> -->
-	<img src="../assets/fuxingpng.png" style="position: absolute;top: 161px;width: 100.2%;"/>
-    <div class="labwarp" style="margin-top: -88px;background-color: #fff;position: relative;">
+		</div>
+		<div @click="$router.push('carrymoney')" style="font-size: 19px;margin-top: 10px;margin-right: 20px;">提现<img src="../assets/youyou.png" style="width: 17px;height: 19px;position: absolute;top: 35px;right: 20px;"/>
+		</div>
+	</div>
+	<img src="../assets/fuxingpng.png" style="position: absolute;top: 243px;width: 100.2%;"/>
+    <div class="labwarp" style="margin-top: 50px;background-color: #fff;">
       <div class="tablecon" style="margin-top: 56px;">
         <!-- <router-link to="/intertranfor"> @click="stayopen"-->
 		<router-link to="/certification">
@@ -37,7 +37,7 @@
 		    <van-icon name="arrow" class="jtou" />
 		  </div>
 		</router-link>
-        <router-link to="/intertranfor">
+         <router-link to="/intertranfor">
         <div >
           <p>
             <img src="../assets/1202.png" alt style="top:0.05rem;" />
@@ -68,7 +68,7 @@
         </router-link> -->
         <!-- </router-link> -->
         <!-- <router-link to="/subrecored"> @click="stayopen"-->
-       <!-- <router-link to="/metationadr">
+        <router-link to="/metationadr">
         <div >
           <p>
             <img src="../assets/1203.png" alt style="top:.058rem" />
@@ -76,7 +76,7 @@
           </p>
           <van-icon name="arrow" class="jtou" />
         </div>
-        </router-link> -->
+        </router-link>
         <router-link to="/chagepass">
           <div>
             <p>
@@ -99,7 +99,7 @@
 		
         <!-- </router-link> -->
       </div>
-	  <button type="button" class="changebton"  style="background: #EBEDF0;" @click="send">退出登录</button>
+	  <!-- <button type="button" class="changebton"  style="background: #EBEDF0;" @click="send">退出登录</button> -->
     </div>
   </div>
 </template>
@@ -135,18 +135,18 @@ export default {
         this.infoamout = res.data.info;
       }
     });
-    this.$axios.post("/index/member/getInviteImg").then(res => {
-	  if(res){
-      if (res.data.code == 0) {
-        this.imgpng = location.origin+res.data.info;
-      }
-	  }
-    });
+   //  this.$axios.post("/index/member/getInviteImg").then(res => {
+	  // if(res){
+   //    if (res.data.code == 0) {
+   //      this.imgpng = location.origin+res.data.info;
+   //    }
+	  // }
+   //  });
     var windowHeight = document.documentElement.clientHeight || document.body.clientHeight;
-    console.log(windowHeight)
-    if(windowHeight && windowHeight<600){
-    	this.string= 'padding: 0.32rem 0.3rem;'
-    }
+	console.log(windowHeight)
+	if(windowHeight && windowHeight<600){
+		this.string= 'padding: 0.32rem 0.3rem;'
+	}
   },
   // mounted() {
 	 //  this.$axios.post("/index/member/spread").then(res => {

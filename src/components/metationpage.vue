@@ -68,6 +68,12 @@ export default {
     }
 
     this.$axios.post("/index/mywallet/mywalletInfo").then(res => {
+      if (res.data.real==-1&&res.data.code==0) {
+        layer.open({content: res.data.msg,skin: 'msg',time: 2});
+         setTimeout(()=>{
+            this.$router.push("certification")
+          },1200)
+      }else{
         this.start1();
         this.$axios.get("/index/mywallet/recharge").then(res => {
         if (res.data.code == 0) {
@@ -87,7 +93,7 @@ export default {
           }
         }
       });
-      
+      }
     });
 
 

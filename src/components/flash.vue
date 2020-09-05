@@ -11,48 +11,49 @@
       />
     </div>
     <div class="imgage">
-      <div style="width: 100%;">
-        <p>点卡值余额</p>
+      <div>
+        <p>USDT余额</p>
         <p>{{info.number||0}}</p>
       </div>
-     
+      <div>
+        <p>CRW余额</p>
+        <p style="padding-top:.1rem;">{{info.safe_num||0}}</p>
+      </div>
     </div>
     <div class="page-body">
       <p>购买通道</p>
       <p class="hr" style="padding: 0;background-color: rgb(230,231,235);"></p>
       <div class="item">
         <div class="item1">
-          <div class="one">点卡值兑换</div>
-          <div class="two">点卡: 700点</div>
+          <div class="one">USDT购买</div>
+          <div class="two">点卡: 1400点</div>
         </div>
         <div class="item1" style="margin-top: 15px;">
           <div class="three">
             售价
-            <span>700</span>点卡值
+            <span>200</span>USDT
           </div>
-          <div class="four" @click="confirm(true)">立即兑换 》</div>
+          <div class="four" @click="confirm(true)">立即购买 》</div>
         </div>
       </div>
-	  <p class="hr" style="padding: 0;background-color: rgb(230,231,235)"></p>
-	  <div class="item" v-if="bool1">
-	    <div class="item1">
-	      <div class="one">自定义兑换</div>
-	      <div class="two">点卡: <input placeholder="输入" v-model="newvalue" style="width: 50px;"/> 点</div>
-	    </div>
-	    <div class="item1" style="margin-top: 15px;">
-	      <div class="three" style="display: flex;">
-	        售价
-	        <span style="display: flex;"><span style="display: block;min-width: 30px;margin-top: -1px;margin-left: 4px;">{{newvalue}}</span></span>点卡值
-	      </div>
-	      <div class="four" @click="confirm()">立即兑换 》</div>
-	    </div>
-	  </div>
       <p class="hr" style="padding: 0;background-color: rgb(230,231,235)"></p>
-
+      <div class="item">
+        <div class="item1">
+          <div class="one">CRW购买</div>
+          <div class="two">点卡: 1400点</div>
+        </div>
+        <div class="item1" style="margin-top: 15px;">
+          <div class="three">
+            售价
+            <span>1400</span>CRW
+          </div>
+          <div class="four" @click="confirm(false)">立即购买 》</div>
+        </div>
+      </div>
       <p class="hr" style="padding: 0;background-color: rgb(230,231,235)"></p>
       <p
         style="color: #2167ff;font-size: 0.31rem;padding: 0.4rem 0.42rem;font-weight: 540;"
-      >点卡是CR Wisdom推出的交易服务手续费,购买点卡数量比例: 1点卡值 = 1点交易点卡 </p>
+      >点卡是CR Wisdom推出的交易服务手续费,购买点卡数量比例: 1USDT = 7点 1CRW=1点</p>
     </div>
   </div>
 </template>
@@ -69,19 +70,23 @@ export default {
       types: 1,
       num: "",
       anum: 0,
-	  newvalue:'',
-	  bool1:false
     };
   },
   created() {
+    // if (this.$route.query.index == 1) {
+    //   this.types = 2;
+    // }
     this.$axios.post("/index/mywallet/mywalletInfo").then((res) => {
       if (res.data.code == 0) {
         this.info = res.data.info;
-		if(this.info.is_need == 2){
-			this.bool1 = true
-		}
       }
     });
+
+    // this.$axios.post("/index/index/getNowHashRatio").then(res => {
+    //   if (res.data.code == 0) {
+    //     this.anum = res.data.info.ratio;
+    //   }
+    // });
   },
   methods: {
     all() {
@@ -90,25 +95,34 @@ export default {
         : (this.num = this.info.safe_num);
     },
     confirm(bool) {
+      //      if (!this.num) return this.$toast.fail({ message: "请输入数量", duration: 1200 });
+      //      if(this.types==1&&Number(this.num)<100) return this.$toast.fail({ message: "数量不能少于100", duration: 1200 });
+      //      if(this.types==2&&Number(this.num)<700) return this.$toast.fail({ message: "数量不能少于700", duration: 1200 });
+
+      // if(!this.info.safe_num || !this.info.number ){
+      // 	this.$toast.fail({ message: "余额不足", duration: 1200 })
+      // 	return
+      // }
+
       if (bool) {
-        if (this.info.number < 700) {
-          this.$toast.fail({ message: "点卡值余额不足", duration: 1200 });
+        if (this.info.number < 200) {
+          this.$toast.fail({ message: "USDT余额不足", duration: 1200 });
           return;
         }
-        this.num = 700;
+        this.num = 200;
         this.types = 1;
-      }else{
-		  if (this.newvalue <1) {
-		    this.$toast.fail({ message: "请输入自定义点卡兑换", duration: 1200 });
-		    return;
-		  }
-		  this.num = this.newvalue;
-		  this.types = 1;
-	  } 
+      } else {
+        if (this.info.safe_num < 1400) {
+          this.$toast.fail({ message: "CR余额不足", duration: 1200 });
+          return;
+        }
+        this.num = 1400;
+        this.types = 2;
+      }
       Dialog.confirm({
         title: "购买须知",
         message:
-          "交易点卡为本平台量化交易系统使用服务费,根据量化交易服务产生的利润30%扣除交易点卡。用户一经购买概不支持任何退换",
+          "点卡为本平台量化交易系统使用服务费,根据量化交易服务产生的利润30%扣除点卡。用户一经购买概不支持任何退换",
       })
         .then(() => {
           // on confirm
@@ -116,7 +130,6 @@ export default {
             .post("/index/mywallet/transfer", {
               num: this.num,
               types: this.types,
-			  
             })
             .then((res) => {
               if (res.data.code == 0) {
@@ -235,6 +248,8 @@ export default {
   margin: 0.4rem 0.3rem 0.2rem;
   border-bottom: 1px solid #eeeeee;
   padding-bottom: 0.1rem;
+  //   display: flex;
+  //   justify-content: space-between;
   p {
     font-size: 0.28rem;
   }
@@ -244,13 +259,16 @@ export default {
     width: 87%;
   }
   button {
+    // padding: 0 0.15rem;
     height: 0.46rem;
+    // border: 1px solid rgba(60, 140, 255, 1);
     color: #3e9ef6;
     font-size: 0.24rem;
     border-radius: 23px;
     text-align: center;
     background: none;
     margin-top: 0.1rem;
+    // min-width: 1.36rem;
   }
 }
 .changebton {
@@ -293,6 +311,7 @@ export default {
     }
     .three {
       width: 100%;
+      // text-align: right;
       font-size: 0.31rem;
       color: #666666;
       span {

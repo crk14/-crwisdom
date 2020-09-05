@@ -51,7 +51,7 @@ export default new Router({
     { path: '/addmetationadr', name: '添加钱包地址', component: resolve =>require(['./components/Addmetationadr.vue'],resolve) },
     { path: '/metationadr', name: '钱包地址', component: resolve =>require(['./components/Metationadr.vue'],resolve) },
     // { path: '/fund', name: 'CR基金', component: resolve =>require(['./components/fund.vue'],resolve) },
-	// { path: '/down', name: '下载页面', component: resolve =>require(['./components/subrecored.vue'],resolve) },
+	// { path: '/down', name: '下载页面', component: resolve =>require(['./pages/down.vue'],resolve) },
 	{ path: '/fuli', name: '福利中心', component: resolve =>require(['./pages/fuli.vue'],resolve) },
 	{ path: '/fenxiang', name: '分享邀请', component: resolve =>require(['./pages/fenxiang.vue'],resolve) },
 	{ path: '/heyue', name: '合约量化交易', component: resolve =>require(['./pages/heyue.vue'],resolve) },
@@ -61,6 +61,7 @@ export default new Router({
 	{ path: '/wdgd', name: '我的跟单详情', component: resolve =>require(['./pages/wdgd.vue'],resolve), },
 	{ path: '/jyxq', name: '跟单详情', component: resolve =>require(['./pages/jyxq.vue'],resolve), },
 	{ path: '/gdset', name: '跟单设置', component: resolve =>require(['./pages/gdset.vue'],resolve), },
+	{ path: '/refund', name: '返佣记录', component: resolve =>require(['./pages/refund.vue'],resolve), },
 	// { path: '/find', name: '发现', component: resolve =>require(['./components/subrecored.vue'],resolve),meta: { index: 2, footShow: true } },
   ]
 })

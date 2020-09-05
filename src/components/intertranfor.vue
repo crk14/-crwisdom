@@ -11,11 +11,11 @@
         <p>互转类型</p>
         <!-- <input type="password" v-model="oldpass" placeholder="请输入旧的交易密码" /> -->
         <select v-model="valss">
-          <option v-for="(item,i) in optionval" :value="item.a" :key="i" selected>{{item.a}}</option>
+          <option v-for="(item,i) in optionval" :value="item.a" :key="i">{{item.a}}</option>
         </select>
         <p class="hr"></p>
       </li>
-     <li>
+      <li>
         <p>收款账户</p>
         <input type="text" v-model="accout" placeholder="请输入收款人的账户" />
         <p class="hr"></p>
@@ -28,9 +28,9 @@
       <li>
         <p>转出数量</p>
         <input type="number" v-model="num" placeholder="请输入您想要转出的数量" />
-        <span class="all" @click="valss=='点卡值'?num=info.number:num=info.safe_num">全部</span>
+        <span class="all" @click="num=valss2">全部</span>
         <p class="hr"></p>
-        <div>{{valss}}余额：{{valss=='点卡值'?info.number:info.safe_num}}</div>
+        <div>{{valss}}余额：{{valss2}}</div>
       </li>
       <li>
         <p>交易密码</p>
@@ -59,18 +59,28 @@ export default {
       num: "",
       trad_password: "",
       code: "",
-      optionval: [{ a: "点卡值" },],
+      optionval: [{ a: "USDT" }, { a: "CRW" }],
       accout:'',
       info:{},
-      valss:'点卡值'
+      valss:'USDT',
+	  valss2:''
     };
   },
   created(){
+	  this.$axios.post("/index/member/getUserInfo").then(res => {
+	    if (res.data.code == 0) {
+			if(res.data.info.level>0){
+				this.level = true
+				this.optionval = [{ a: "USDT" }, { a: "CRW" },{a:'点卡'}]
+			}
+	    }
+	  });
     this.$axios
       .get("/index/mywallet/mywalletInfo", { page: 1, limit: 1 })
       .then(res => {
         if(res.data.info){
           this.info = res.data.info;
+		  this.valss2 = this.info.number
         }
          if (res.data.real==-1&&res.data.code==0) {
           layer.open({content: res.data.msg,skin: 'msg',time: 2});
@@ -79,6 +89,22 @@ export default {
             },1200)
         }
       });
+  },
+
+  watch:{
+  	  valss(oldvalue,newvalue){
+		  console.log(newvalue,oldvalue)
+		  this.num = ''
+  		  let that = this
+			  if(oldvalue=='USDT'){
+							that.valss2 = that.info.number
+						}
+						else if(oldvalue=='CRW'){
+							that.valss2 = that.info.safe_num
+						}else{
+							that.valss2 = that.info.point_num
+					}
+  	  }
   },
   methods: {
     // 获取验证码
@@ -108,19 +134,27 @@ export default {
       }
     },
     send() {
-		console.log(this.id,this.num,this.trad_password,this.code)
-      if (!this.id || !this.num || !this.trad_password||!this.code) {
+      if (!this.id || !this.num || !this.code || !this.trad_password||!this.accout) {
         this.$toast.fail({ message: "请填写完整", duration: 1200 });
         return;
       }
-
+		let str;
+		if(this.valss=='USDT'){
+			str = 1
+		}
+		else if(this.valss=='CRW'){
+			str = 2
+		}else{
+			str = 3
+		}
+		
       this.$axios.post("/index/member/userToUser", {
           id: this.id,
           num: this.num,
           trad_password: this.trad_password,
           code: this.code,
           mobile:this.accout,
-          types: 1
+          types:str
         }).then(res => {
           if (res.data.code == 0) {
             this.$toast.success({ message: res.data.msg, duration: 1200 });

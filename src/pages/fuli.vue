@@ -8,19 +8,19 @@
 		<div class="fuli-body">
 			<img v-show="activeName=='a'" src="../assets/1102.png" class="body-img"/>
 			<img v-show="activeName=='b'" src="../assets/1103.png" class="body-img"/>
-			<img v-show="activeName=='c'" src="../assets/1101.png" class="body-img"/>
+			<!-- <img v-show="activeName=='c'" src="../assets/1101.png" class="body-img"/> -->
 			<div class="title" style="left: .6rem;top: 1.4rem;">{{activeName == 'a'?'会员账户':activeName == 'b'?'代理账户':'分红账户'}} ({{activeName == 'c'?'权益':'累计总额'}})</div>
 			<div v-show="activeName!='c'" class="title" style="left: .6rem;top: 2.16rem;font-size: .52rem;"><span style="font-size: .57rem;" >{{activeName == 'a'?memberaccount.toFixed(2) + ' CRW':agentcount.toFixed(2) + ' CRW'}} </span></div>
 			<div v-show="activeName =='c'" class="title" style="left: .6rem;top: 1.9rem;font-size: .42rem;"><span style="font-size: .57rem;">0 </span></div>
-			<div v-show="activeName!='c'" class="title" style="left: 5.3rem;top: 3.1rem;color: #000000;width: 81px;text-align: center;">{{activeName == 'a'?'普通会员':infouser.is_need == 2?infouser.level_name:''}}</div>
-		<div v-show="activeName=='c'" class="title" style="left: 5.2rem;top: 3.1rem;color: #000000;width: 81px;text-align: center;">{{infouser.is_need == 2?infouser.level_name:''}}</div>
+			<div v-show="activeName!='c'" class="title" style="left: 5.3rem;top: 2.86rem;color: #000000;width: 81px;text-align: center;">{{activeName == 'a'?'普通会员':infouser.is_need == 2?infouser.level_name:''}}</div>
+		<!-- <div v-show="activeName=='c'" class="title" style="left: 5.2rem;top: 3.1rem;color: #000000;width: 81px;text-align: center;">{{infouser.is_need == 2?infouser.level_name:''}}</div>
 			<div v-show="activeName=='c'">
 				<div class="title" style="left: .6rem;top: 2.7rem;font-size: 15px;">累计分红福利</div>
 				<div class="title" style="left: .6rem;top: 3.2rem;font-size: 15px;">0CRW</div>
 				<div class="title" style="left: 3.1rem;top: 2.7rem;font-size: 15px;">分红余额</div>
 				<div class="title" style="left: 3.1rem;top: 3.2rem;font-size: 15px;">0CRW</div>
 				<div class="title" style="left: 4.7rem;top: 2.7rem;display: flex;font-size: 15px;">划转 <img src="../assets/208.png" style="width: 13px;height: 13px;margin-top: 4px;margin-left: 2px;"/></div>
-			</div>
+			</div> -->
 		</div>
 		
 		
@@ -28,9 +28,10 @@
 		  <van-tab title="会员福利" name="a">
 			  <div class="page-fuli">
 				  <div class="title1">
-					  <span>我的邀请 : {{invite.invite_num}}</span>
-					  <span>社区用户 : {{invite.team_num}}</span>
-					  <span>返佣记录</span>
+					  <span>我的邀请: {{invite.invite_num}}</span>
+					  <span>正式用户: {{invite.team_num}}</span>
+					  <span @click="$router.push('/refund')">返佣记录</span>
+					  <!-- <span >返佣记录</span> -->
 				  </div>
 				  <div class="item" v-for="(item,index) in huiyuanlish" :key="index">
 						  <img class="img" :src="item.avatar" />
@@ -40,7 +41,7 @@
 					  <div class="three" >
 						  <img v-if="item.is_need ==2" src="../assets/111.png"/>
 						  <img v-if="item.is_need ==1" src="../assets/301.png"/>
-						  <span style="margin-left: 22px;">{{item.is_need == 1?'注册会员':'普通会员'}}</span>
+						  <span style="margin-left: 22px;">{{item.is_need == 2?item.level_name:'注册会员'}}</span>
 					  <p style="font-size: 13px;">业绩: {{item.achieve}}点</p>
 					  </div>
 				  </div>
@@ -49,8 +50,9 @@
 		  <van-tab title="代理福利" name="b">
 			  <div class="page-fuli">
 			  				  <div class="title1" >
-			  					  <span>我的邀请 : {{invite.invite_num}}</span>
-			  					  <span>社区用户 : {{invite.team_num}}</span>
+			  					  <span>我的邀请: {{invite.invite_num}}</span>
+								  <span>注册用户: {{invite.register_num}}</span>
+			  					  <span>正式用户: {{invite.team_num}}</span>
 			  				  </div>
 			  				  <div class="item" v-for="(item,index) in daililist" :key="index">
 			  						  <img class="img" :src="item.avatar" />
@@ -64,12 +66,12 @@
 			  				  </div>
 			  </div>
 		  </van-tab>
-		  <van-tab title="分红福利" name="c">
+		 <!-- <van-tab title="分红福利" name="c">
 			  <div class="page-fuli">
 			  				  <div class="title1" >
 			  					  <span style="flex: 1;text-align: center;color: rgb(0,75,255);">分红账单</span>
 			  					  <span style="flex: 1;text-align: center;">划转记录</span>
-			  				  </div>
+			  				  </div> -->
 			  				 <!-- <div class="item">
 			  						  <img class="img" src="../assets/204.png" style="width: 38px;height: 40px;border-radius: 0;"/>
 			  					  <div class="two">当次分红值：100
@@ -80,8 +82,8 @@
 			  					  <p>200CRW</p>
 			  					  </div>
 			  				  </div> -->
-			  </div>
-		  </van-tab>
+			  <!-- </div>
+		  </van-tab> -->
 		</van-tabs>
 	</div>
 </template>
@@ -191,7 +193,7 @@
 	}
 	.body-img{
 		width: 100%;
-		height: 2.78rem;
+		height: 2.4rem;
 		// margin-top: -25px;
 		// margin-bottom: -33px
 	}

@@ -1,14 +1,14 @@
 <template>
   <div class="index">
 	  <div style="display: flex;justify-content: space-between;">
-		  <div class="tophader">
+		  <div class="tophader" onclick="window.history.go(-1)">
 		    <p style="margin-left: .2rem;">
 		      <img src="../assets/title2.png" alt />
 		    </p>
 		  </div>
-		  <div class="index-img" style="margin-top: 11px;">
-			  <img style="width: .6rem;height: .6rem;margin: 0;" src="../assets/logo5.png"/>
-			  <img @click="$router.push('callcenter')" src="../assets/kefu.png" style="margin:0 9px 6px 12px"/> </div>
+		  <div class="index-img">
+			  <!-- <img style="width: .7rem;height: .7rem;" src="../assets/yuyan.png"/> -->
+			  <img @click="$router.push('callcenter')" src="../assets/kefu.png" style="margin-bottom: 4px;margin-left: 6px;"/> </div>
 	  </div>
     
     <van-swipe :show-indicators="false" :autoplay="4000" indicator-color="white">
@@ -58,19 +58,19 @@
 	
 	<div class="index-body">
 		<div class="item">
-			<div>点卡值</div>
+			<div>USDT账户</div>
 			<p v-show="movielist.number">{{Number(movielist.number).toFixed(2)}}</p>
 			<!-- <p class="one">≈65088.58 CNY</p> -->
 			<!-- <p><span>余额</span></p> -->
 		</div>
-		<!-- <div class="item">
+		<div class="item">
 			<div>CRW账户</div>
-			<p v-show="movielist.safe_num">{{Number(movielist.safe_num).toFixed(2) }}</p> -->
+			<p v-show="movielist.safe_num">{{Number(movielist.safe_num).toFixed(2) }}</p>
 			<!-- <p class="one">=227.96 CNY</p> -->
 			<!-- <p><span>余额</span></p> -->
-		<!-- </div> -->
+		</div>
 		<div class="item" :class="{'active':isshow}">
-			<div>交易点卡</div>
+			<div>点卡账户</div>
 			<p v-show="movielist.point_num">{{Number(movielist.point_num).toFixed(2)}} </p>
 			<!-- <p class="one">=16.28 CNY</p> -->
 			<!-- <p><span>即将不足</span></p> -->
@@ -82,7 +82,7 @@
 		<div style="width: 40%;height: 2.5rem;border-left: 6px solid #f6f7f9;">
 			<div style="width: 100%;text-align: center;height: 57px;position: relative;"><img @click="$router.push('fenxiang')" :src="url + img.cr_share" style="width: 100%;height:100%;"/></div>
 			<p class="hr" style="height: 6px;"></p>
-			<div style="width: 100%;text-align: center;height: 57px;position: relative;"><a href="http://crg.crwcrg.com/"><img  :src="url + img.cr_welfare" style="width: 100%;height:100%;"/></a></div>
+			<div style="width: 100%;text-align: center;height: 57px;position: relative;"><img @click="$router.push('fuli')" :src="url + img.cr_welfare" style="width: 100%;height:100%;"/></div>
 		</div>
 	</div>
 	<p class="hr" style="height: 6px;"></p>
@@ -90,10 +90,10 @@
 		<div  @click="$router.push({path:'more',query:{type:1}})"><img src="../assets/title7.png" style=" margin-bottom: 3px;"/>
 		<p style="margin-top: -1px;">新手指南</p>
 		</div>
-		<div  @click="fn3()"><img src="../assets/title6.png" style=" margin-bottom: 3px;"/>		<p style="margin-top: -1px;">福利抽奖</p></div>
+		<div  @click="fn3()"><img src="../assets/title6.png" style=" margin-bottom: 3px;"/>		<p style="margin-top: -1px;">快速充值</p></div>
 		<div @click="fn3(true)"><img src="../assets/title5.png"/>		<p>CR直播</p></div>
 		<div @click="fn3(true)"><img src="../assets/title4.png"/>		<p>自营商场</p></div>
-		<!-- <div><a href="http://crg.crwcrg.com/"><img src="../assets/title3.png"/>		<p>游戏社区</p></a></div> -->
+		<div><a href=""><img src="../assets/title3.png"/>		<p>游戏社区</p></a></div>
 	</div>
     <p class="hr"></p>
 	<div class="bootom">
@@ -219,10 +219,11 @@ export default {
 	  this.$axios
 	  .get("/index/rank/get_market")
 	  .then(res => {
-	  		if(res){
+		  if(res){
 			  this.list4 = res.data.data
 			  this.fn1()
-	  		}
+		  }
+	  		
 	  });
 	
 	
@@ -245,11 +246,11 @@ export default {
 		  },10000)
 	  },
 	  fn3(bool){
-		  if(bool){
-			  this.$toast.fail({ message: '该功能呢暂未开放,敬请期待', duration: 1200 });
-		  }else{
-			  this.$toast.fail({ message: '该功能呢暂未开放,敬请期待', duration: 1200 });
-		  }
+	  		  if(bool){
+	  			  this.$toast.fail({ message: '该功能呢暂未开放,敬请期待', duration: 1200 });
+	  		  }else{
+	  			  this.$toast.fail({ message: '钱包维护中,请联系客服', duration: 1200 });
+	  		  }
 	  },
 	  tobidui(){
 		  this.bidui = true
@@ -569,13 +570,10 @@ export default {
 		flex: 1;
 		text-align: center;
 		div{
-			display: inline-block;
 			font-size: 0.28rem;
 			color: #16181A;
-			margin-right: 10px;
 		}
 		p{
-			display: inline-block;
 			color: #25a67e;
 			font-size: .35rem;
 			span{
