@@ -122,7 +122,7 @@
       info:{},
       arr:[],
 	  time:'',
-	  active:'c',
+	  active:'b',
 	  allrank:[],
 	  monthrank:[],
 	  todayrank:[],
@@ -143,7 +143,6 @@
 		  this.allrank = res.data.data.all_rank
 		  this.monthrank = res.data.data.month_rank
 		  this.todayrank = res.data.data.today_rank
-		  console.log( this.allrank)
       });
 
 
@@ -168,13 +167,13 @@
 		  }
 		 
       });
-	  this.$axios
-	  .get("/index/spotstrategy/decide")
-	  .then(res => {
-	  		 if(res.data.code == 0){
-				 this.isshow = true
-			 }
-	  });
+	  // this.$axios
+	  // .get("/index/spotstrategy/decide")
+	  // .then(res => {
+	  // 		 if(res.data.code == 0){
+			// 	 this.isshow = true
+			//  }
+	  // });
   },
 
   methods: {
@@ -182,19 +181,20 @@
       this.$toast.fail({ message: "等待开放", duration: 1200 });
     },
 	tointetrad(){
-		if(this.isshow){
-			this.$router.push('/intetrading2')
-		}else{
-			Dialog.confirm({
-			  	  title: '提醒',
-			  	  message: '是否进入新系统<p>(点击取消进入原系统,点击确认进入新系统)</p>',
-			  	}) .then(() => {
-					this.$router.push('/intetrading2')
-				})
-				.catch(() => {
-					this.$router.push('/intetrading')
-				});
-		}
+		this.$router.push('/intetrading2')
+		// if(this.isshow){
+		// 	this.$router.push('/intetrading2')
+		// }else{
+		// 	Dialog.confirm({
+		// 	  	  title: '提醒',
+		// 	  	  message: '是否进入新系统<p>(点击取消进入原系统,点击确认进入新系统)</p>',
+		// 	  	}) .then(() => {
+		// 			this.$router.push('/intetrading2')
+		// 		})
+		// 		.catch(() => {
+		// 			this.$router.push('/intetrading')
+		// 		});
+		// }
 		
 			}
   }

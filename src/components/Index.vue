@@ -93,7 +93,7 @@
 		<div  @click="fn3()"><img src="../assets/title6.png" style=" margin-bottom: 3px;"/>		<p style="margin-top: -1px;">快速充值</p></div>
 		<div @click="fn3(true)"><img src="../assets/title5.png"/>		<p>CR直播</p></div>
 		<div @click="fn3(true)"><img src="../assets/title4.png"/>		<p>自营商场</p></div>
-		<div><a href=""><img src="../assets/title3.png"/>		<p>游戏社区</p></a></div>
+		<div @click="fn3(true)"><img src="../assets/title3.png"/>		<p>游戏社区</p></div>
 	</div>
     <p class="hr"></p>
 	<div class="bootom">

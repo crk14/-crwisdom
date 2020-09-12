@@ -653,12 +653,12 @@
 			},
 		},
 		beforeDestroy() {
-			console.log(this.time1, 99999999999)
+			// console.log(this.time1, 99999999999)
 			clearInterval(this.time1)
 			this.time1 = null;
 		},
 		destroyed() {
-			console.log(9999999999999)
+			// console.log(9999999999999)
 		},
 		methods: {
 			fn2() {

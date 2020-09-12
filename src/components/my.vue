@@ -143,7 +143,7 @@ export default {
 	  // }
    //  });
     var windowHeight = document.documentElement.clientHeight || document.body.clientHeight;
-	console.log(windowHeight)
+	// console.log(windowHeight)
 	if(windowHeight && windowHeight<600){
 		this.string= 'padding: 0.32rem 0.3rem;'
 	}
