@@ -116,7 +116,7 @@ export default {
           this.$toast.clear();
           this.$toast.success({ message: res.data.msg, duration: 1200 });
           setTimeout(() => {
-            localStorage.clear();
+            // localStorage.clear();
             this.$router.push("login");
           }, 1200);
         })
@@ -127,7 +127,7 @@ export default {
             loadingType: "spinner "
           });
           setTimeout(() => {
-            localStorage.clear();
+            // localStorage.clear();
             this.$router.push("login");
           }, 1000);
         });

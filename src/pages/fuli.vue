@@ -121,7 +121,7 @@
               <p>{{item.create_time}}</p>
             </div>
             <div class="three" style="color: rgb(40,60,103);font-size: 14px;width: auto;">
-              消费点卡：{{parseInt(item.trans_num)}}点
+              消费点卡：{{parseInt(item.trans_num)}}{{item.remark=="推荐级别奖"?'USDT':'点'}}
               <p>{{item.remark|remark2}}：{{parseInt(item.num)}} CRW</p>
             </div>
           </div>
@@ -278,8 +278,11 @@ export default {
   },
   filters:{
 	  remark2(val){
-		  
-		 return val.substr(0, val.length - 1) 
+		  if(val=='推荐级别奖'){
+			  return '级别奖励'
+		  }else{
+			  return val.substr(0, val.length - 1)
+		  }
 	  }
   },
   methods: {

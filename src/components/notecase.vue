@@ -46,7 +46,7 @@
         <img src="../assets/路径@2x.png" alt />
         <p>现货量化</p>
       </li>
-	  <router-link to="/heyue">
+	  <router-link to="/heyue2">
       <li>
         <img src="../assets/src_assets_image_exchange_trading_btn_zdjy@2x.png" alt />
         <p>合约量化</p>

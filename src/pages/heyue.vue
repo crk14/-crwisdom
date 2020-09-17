@@ -352,9 +352,6 @@
       <van-field v-show="checked2" v-model="number2" type="number2" label="开多数量(张):" />
       <van-field v-show="checked3" v-model="number3" type="number3" label="开空数量(张):" />
       <van-field v-model="number4" type="number4" label="杠杆倍数:" />
-	  <van-field v-model="makelist" type="makelist" label="做单数量:" />
-	  <van-field v-model="interval" type="interval" label="做单间隔:" />
-	  <van-field v-model="profitratio" type="profitratio" label="止盈比例:" />
       <p style="height: 15px;"></p>
     </van-dialog>
     <van-dialog v-model="show3" title="设置预算" show-cancel-button :before-close="beforeClose">
@@ -363,9 +360,6 @@
       <van-field v-show="bool4 == 1" v-model="number2" type="number2" label="开多数量(张):" />
       <van-field v-show="bool4 == 0" v-model="number3" type="number3" label="开空数量(张):" />
       <van-field v-model="number4" type="number4" label="杠杆倍数:" />
-	  <van-field v-model="makelist" type="makelist" label="做单数量:" />
-	  <van-field v-model="interval" type="interval" label="做单间隔:" />
-	  <van-field v-model="profitratio" type="profitratio" label="止盈比例:" />
       <p style="height: 15px;"></p>
     </van-dialog>
   </div>
@@ -389,9 +383,6 @@ export default {
       number2: "",
       number3: "",
       number4: "",
-	  makelist:'',
-	  interval:'',
-	  profitratio:'',
       show2: false,
       isshow: false,
       isshow2: false,
@@ -582,11 +573,6 @@ export default {
       this.bool4 = item.up_down;
       this.id2 = item.id;
       this.show3 = true;
-	  if(item.order_num){
-		  this.makelist = item.order_num
-		  this.profitratio = item.profit
-		  this.interval = item.interval
-	  }
 	   
     },
     beforeClose: function (action, done) {
@@ -594,16 +580,7 @@ export default {
         let obj = {};
 
         obj.leverage = this.number4;
-		
         let str = "";
-		if (!this.makelist || !this.interval || !this.profitratio) {
-		  this.$toast.fail({ message: "请填写完整", duration: 2000 });
-		  done();
-		  return;
-		}
-		obj.order_num = this.makelist
-		obj.profit = this.profitratio
-		obj.interval = this.interval
         if (this.bool4 == 0 || this.bool4 == 1) {
 			console.log(obj)
           obj.id = this.id2;
@@ -679,6 +656,7 @@ export default {
             }, 10000);
           } else {
 			  this.$toast.fail({ message: res.data.msg, duration: 2000 });
+			  this.selsym = []
             // if (res.data.err_code) {
             //   setTimeout(() => {
             //     this.istxt = res.data.err_code;
@@ -771,19 +749,19 @@ export default {
           }
         });
       if (this.bourse) {
-        // this.$axios
-        //   .post("/index/swapstrategy/get_balance", {
-        //     symbol: this.symbol2,
-        //     bourse: this.bourse,
-        //   })
-        //   .then((res) => {
-        //     if (res.data.code == 0 && res.data.principal) {
-        //       this.principal = res.data.principal;
-        //       this.principals = res.data.principal;
-        //     } else {
-        //       // layer.open({ content: res.data.msg, skin: "msg", time: 2 });
-        //     }
-        //   });
+        this.$axios
+          .post("/index/swapstrategy/get_balance", {
+            symbol: this.symbol2,
+            bourse: this.bourse,
+          })
+          .then((res) => {
+            if (res.data.code == 0 && res.data.principal) {
+              this.principal = res.data.principal;
+              this.principals = res.data.principal;
+            } else {
+              // layer.open({ content: res.data.msg, skin: "msg", time: 2 });
+            }
+          });
       }
     },
     start(bool) {
