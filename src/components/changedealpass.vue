@@ -28,7 +28,8 @@
         <p class="hr"></p>
       </li>
     </ul>
-    <button type="button" class="changebton" @click="send">确定修改</button>
+	<div class="resgg" @click="$router.push('respass')">忘记密码</div>
+    <button type="button" class="changebton" @click="send" style="margin: .5rem auto;">确定修改</button>
   </div>
 </template>
 
@@ -40,7 +41,7 @@ export default {
       oldpass: "",
       newpass: "",
       re_newpass: "",
-      code: ""
+      code: "",
     };
   },
   methods: {
@@ -152,5 +153,12 @@ ul {
 .changebton {
   width: 92%;
 
+}
+.resgg{
+	color: rgb(138, 138, 138);
+	font-size: 0.27rem;
+	width: 94%;
+	text-align: right;
+	margin-right: 20px;
 }
 </style>

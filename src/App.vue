@@ -26,7 +26,7 @@
 		  <router-link to="/find" :class="iscli==2?'curry':''">
           <img v-if="iscli==2" src="./assets/tongji2.png" alt />
           <img v-else src="./assets/tongji.png" alt />
-          <p>发现</p>
+          <p>排行</p>
 		  </router-link>
       </li>
       <li @click="clis(3)">

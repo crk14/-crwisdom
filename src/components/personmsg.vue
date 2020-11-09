@@ -39,7 +39,7 @@
 
     <div class="divli" onclick>
       <p>
-        <span class="onespan">绑定手机号</span>
+        <span class="onespan">绑定手机号或邮箱</span>
       </p>
       <p class="right">
         <span>{{mobile}}</span>
@@ -75,7 +75,11 @@ export default {
         if (res.data.code == 0) {
           this.info = res.data.info;
           this.path = this.info.avatar;
-          this.mobile=res.data.info.mobile.substring(0,7)+'****'
+		  if(res.data.info.mobile){
+			  this.mobile=res.data.info.mobile.substring(0,7)+'****'
+		  }else{
+			  this.mobile=res.data.info.email
+		  }
         }
       });
     },

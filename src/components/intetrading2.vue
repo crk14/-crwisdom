@@ -28,7 +28,7 @@
 				<span>|</span>配置
 			</div>
 			<div style="font-size: .25rem;font-weight: 550;margin-left: .6rem;margin-top: .05rem;">点卡余额：{{pointnum}}</div>
-			<div style="font-size: .25rem;font-weight: 550;margin-left: .5rem;margin-top: .05rem;">剩余有效天数：{{time}}天</div>
+			<!-- <div style="font-size: .25rem;font-weight: 550;margin-left: .5rem;margin-top: .05rem;">剩余有效天数：{{time}}天</div> -->
 
 		</div>
 		<div class="strategy">
@@ -203,7 +203,7 @@
 			<div class="tophader">
 				<van-icon name="arrow-left" @click="changright" />
 				<p>添加货币</p>
-
+				<span @click="changright" style="position: fixed;right: 18px;top: 0px;color: rgb(34, 132, 253);font-size: 17px;">完成</span>
 			</div>
 			<div class="poup-title">
 				<div>搜索</div>
@@ -1593,6 +1593,7 @@
 				margin-top: 1px;
 				color: #2185ff;
 				margin-right: 0.1rem;
+				// line-height: 19px;
 				// margin-top: -0.2rem;
 			}
 		}

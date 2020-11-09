@@ -21,7 +21,7 @@
           placeholder="请输入您的钱包地址"
         />
         <p class="hr"></p>
-        <p>可用CRW余额：{{info.safe_num}}</p>
+        <p>可用JUW余额：{{info.safe_num}}</p>
       </li>
       <li>
         <p>提币数量</p>
@@ -31,7 +31,7 @@
             autocomplete="off"
             name="userName"
             v-model="num"
-            :placeholder="'提币数为'+info.reg_limit+'CRW的整数倍'"
+            :placeholder="'提币数为'+info.reg_limit+'JUW的整数倍'"
           />
         </div>
         <p class="hr"></p>

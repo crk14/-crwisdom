@@ -12,18 +12,18 @@
     <div class="loginul">
       <div>
         <!-- <p>手机号码</p> -->
-        <input type="text" v-model="mobile" placeholder="请输入您的手机号" />
+        <input type="text" v-model="mobile" placeholder="请输入您的手机号或邮箱" />
         <!-- <button class="sendcode" @click="setcode">获取</button> -->
         <p class="hr"></p>
       </div>
       <div>
         <!-- <p>新密码</p> -->
-        <input type="password" v-model="password" placeholder="请输入您的登录密码" />
+        <input type="password" v-model="password" placeholder="请输入新的登录密码" />
         <p class="hr"></p>
       </div>
       <div>
         <!-- <p>重复密码</p> -->
-        <input type="password" v-model="re_password" placeholder="请再次输入您的登录密码" />
+        <input type="password" v-model="re_password" placeholder="请再次输入新的登录密码" />
         <p class="hr"></p>
       </div>
       <!-- <div>
@@ -52,7 +52,8 @@ export default {
       password: "",
       re_password: "",
       mobile: "",
-      code: ""
+      code: "",
+	  type:''
     };
   },
   methods: {
@@ -68,17 +69,26 @@ export default {
     // 获取验证码
     setcode(e) {
       var ts = this;
-      if (!this.ismobile(this.mobile))
-        return this.$toast.fail({
-          message: "手机号码格式不正确",
-          duration: 1200
-        });
+      // if (!this.ismobile(this.mobile))
+      //   return this.$toast.fail({
+      //     message: "手机号码格式不正确",
+      //     duration: 1200
+      //   });
+		let email = this.mobile;
+				let reg = /^([a-zA-Z]|[0-9])(\w|\-)+@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$/;
+				if(reg.test(email)){
+					// alert("邮箱格式正确");
+					ts.type = 2
+				}else{
+					ts.type = 1
+				}
       if (ts.isclick) {
         ts.isclick = false;
 
         this.$axios
           .post("/index/Publics/send", {
-            mobile: this.mobile
+            mobile: this.mobile,
+			type:ts.type,
           })
           .then(res => {
             if (res.data.code == 0) {
@@ -104,11 +114,11 @@ export default {
     send() {
       if (!this.password || !this.re_password || !this.mobile || !this.code)
         return this.$toast.fail({ message: "请填写完整", duration: 1200 });
-      if (!this.ismobile(this.mobile))
-        return this.$toast.fail({
-          message: "手机号码格式不正确",
-          duration: 1200
-        });
+      // if (!this.ismobile(this.mobile))
+      //   return this.$toast.fail({
+      //     message: "手机号码格式不正确",
+      //     duration: 1200
+      //   });
       if (this.password!=this.re_password)
         return this.$toast.fail({ message: "两次密码不一致", duration: 1200 });
       this.$axios
@@ -116,7 +126,8 @@ export default {
           password: this.password,
           re_password: this.re_password,
           mobile: this.mobile,
-          code: this.code
+          code: this.code,
+		  type:this.type,
         })
         .then(res => {
           if (res.data.code == 0) {

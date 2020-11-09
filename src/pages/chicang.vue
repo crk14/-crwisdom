@@ -15,7 +15,7 @@
 				</div>
 				<div class="one">
 					<div>开仓均价</div>
-					<div>浮动盈亏</div>
+					<div>未实现盈亏</div>
 				</div>
 				<div class="two">
 					<div>${{item.avg_cost}}</div>
@@ -31,15 +31,15 @@
 				</div>
 				<p class="p"></p>
 				<div class="three">
-					<div>未实现盈亏<span>{{item.unrealized_pnl}} USDT</span> </div>
+					<div>剩余可开<span>{{item.open_max}} 张</span> </div>
 					<div>保证金 <span>{{item.margin}} USDT</span></div>
 				</div>
 				<div class="three">
-					<div>持仓量<span>{{item.position}} {{item1.symbol_deal}}</span> </div>
+					<div>持仓量<span>{{item.position}} 张</span> </div>
 					<div>保证金率 <span>{{(item1.margin_ratio*100).toFixed(2)}}%</span></div>
 				</div>
 				<div class="three" style="padding-bottom: 5px;">
-					<div>可平量<span>{{item.avail_position}} {{item1.symbol_deal}}</span> </div>
+					<div>可平量<span>{{item.avail_position}} 张</span> </div>
 					<div>维持保证金率 <span>{{(item.maint_margin_ratio*100).toFixed(2)}}%</span></div>
 				</div>
 				<p class="p"></p>

@@ -8,7 +8,10 @@
 		</div>
 		<div class="img">
 			<img src="../assets/1701.png" @click="$router.push('/wdgd')"/>
-			<img src="../assets/1702.png" />
+			<img v-show="bool" src="../assets/1702.png" />
+			<div v-show="!bool" @click="$router.push('/heyue2'+'?id=1')" style="margin-top: 12px;
+    width: 48%;
+    height: 1.6rem;background-color: #4a79f5;border-radius: 5px;text-align: center;line-height: 1.6rem;color: #fff;">交易员入口</div>
 		</div>
 		<div class="title2">
 			<div class="one">交易员列表</div>
@@ -122,7 +125,8 @@ export default {
   data() {
     return {
 		value:'',
-		value2:1
+		value2:1,
+		bool:false
     };
   },
   created() {

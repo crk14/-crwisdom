@@ -1,6 +1,6 @@
 <template>
   <div class="chagepass">
-    <div class="tophader" onclick="window.history.go(-1)">
+    <div class="tophader" @click="$router.push('my')">
       <van-icon name="arrow-left" />
       <p>安全中心</p>
     </div>

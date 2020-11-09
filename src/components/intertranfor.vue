@@ -147,14 +147,23 @@ export default {
 		}else{
 			str = 3
 		}
-		
+		let type;
+		let email = this.accout;
+				let reg = /^([a-zA-Z]|[0-9])(\w|\-)+@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$/;
+				if(reg.test(email)){
+					// alert("邮箱格式正确");
+					type = 2
+				}else{
+					type = 1
+				}
       this.$axios.post("/index/member/userToUser", {
           id: this.id,
           num: this.num,
           trad_password: this.trad_password,
           code: this.code,
           mobile:this.accout,
-          types:str
+          types:str,
+		  type,
         }).then(res => {
           if (res.data.code == 0) {
             this.$toast.success({ message: res.data.msg, duration: 1200 });

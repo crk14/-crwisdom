@@ -1,9 +1,9 @@
 <template>
   <div class="index">
 	  <div style="display: flex;justify-content: space-between;">
-		  <div class="tophader" onclick="window.history.go(-1)">
+		  <div class="tophader" >
 		    <p style="margin-left: .2rem;">
-		      <img src="../assets/title2.png" alt />
+		      <img src="../assets/logo6.png" alt />
 		    </p>
 		  </div>
 		  <div class="index-img">
@@ -56,48 +56,48 @@
     <!-- </div> -->
 	<p class="hr" style="height: 1px;margin: 0 20px;background-color: #F5F5F5;"></p>
 	
-	<div class="index-body">
+	<!-- <div class="index-body">
 		<div class="item">
 			<div>USDT账户</div>
-			<p v-show="movielist.number">{{Number(movielist.number).toFixed(2)}}</p>
+			<p v-show="movielist.number">{{Number(movielist.number).toFixed(2)}}</p> -->
 			<!-- <p class="one">≈65088.58 CNY</p> -->
 			<!-- <p><span>余额</span></p> -->
-		</div>
+		<!-- </div>
 		<div class="item">
-			<div>CRW账户</div>
-			<p v-show="movielist.safe_num">{{Number(movielist.safe_num).toFixed(2) }}</p>
+			<div>JUW账户</div>
+			<p v-show="movielist.safe_num">{{Number(movielist.safe_num).toFixed(2) }}</p> -->
 			<!-- <p class="one">=227.96 CNY</p> -->
 			<!-- <p><span>余额</span></p> -->
-		</div>
+		<!-- </div>
 		<div class="item" :class="{'active':isshow}">
 			<div>点卡账户</div>
-			<p v-show="movielist.point_num">{{Number(movielist.point_num).toFixed(2)}} </p>
+			<p v-show="movielist.point_num">{{Number(movielist.point_num).toFixed(2)}} </p> -->
 			<!-- <p class="one">=16.28 CNY</p> -->
 			<!-- <p><span>即将不足</span></p> -->
-		</div>
+	<!-- 	</div>
 	</div>
-	<p class="hr" style="height: 6px;"></p>
-	<div style="display: flex;width: 100%;" v-if="img && img.cr_index">
+	<p class="hr" style="height: 6px;"></p> -->
+	<!-- <div style="display: flex;width: 100%;" v-if="img && img.cr_index">
 		<div style="width: 60%;height: 2.5rem;"><img :src="url + img.cr_index" style="width: 100%;height: 2.5rem;"/></div>
 		<div style="width: 40%;height: 2.5rem;border-left: 6px solid #f6f7f9;">
-			<div style="width: 100%;text-align: center;height: 57px;position: relative;"><img @click="$router.push('fenxiang')" :src="url + img.cr_share" style="width: 100%;height:100%;"/></div>
-			<p class="hr" style="height: 6px;"></p>
-			<div style="width: 100%;text-align: center;height: 57px;position: relative;"><img @click="$router.push('fuli')" :src="url + img.cr_welfare" style="width: 100%;height:100%;"/></div>
+			<div style="width: 100%;text-align: center;height: 47%;position: relative;"><img @click="$router.push('fenxiang')" :src="url + img.cr_share" style="width: 100%;height:100%;"/></div>
+			<p class="hr" style="height: 6%;"></p>
+			<div style="width: 100%;text-align: center;height: 47%;position: relative;"><img @click="$router.push('fuli')" :src="url + img.cr_welfare" style="width: 100%;height:100%;"/></div>
 		</div>
 	</div>
-	<p class="hr" style="height: 6px;"></p>
-	<div class="index-icon">
+	<p class="hr" style="height: 6px;"></p> -->
+	<!-- <div class="index-icon">
 		<div  @click="$router.push({path:'more',query:{type:1}})"><img src="../assets/title7.png" style=" margin-bottom: 3px;"/>
 		<p style="margin-top: -1px;">新手指南</p>
 		</div>
-		<div  @click="fn3()"><img src="../assets/title6.png" style=" margin-bottom: 3px;"/>		<p style="margin-top: -1px;">快速充值</p></div>
-		<div @click="fn3(true)"><img src="../assets/title5.png"/>		<p>CR直播</p></div>
+		<div  @click="fn3()"><img src="../assets/title6.png" style=" margin-bottom: 3px;"/>		<p style="margin-top: -1px;">快速充值</p></div> -->
+		<!-- <div @click="fn3(true)"><img src="../assets/title5.png"/>		<p>CR直播</p></div>
 		<div @click="fn3(true)"><img src="../assets/title4.png"/>		<p>自营商场</p></div>
-		<div @click="fn3(true)"><img src="../assets/title3.png"/>		<p>游戏社区</p></div>
-	</div>
+		<div @click="fn3(true)"><img src="../assets/title3.png"/>		<p>游戏社区</p></div> -->
+	<!-- </div> -->
     <p class="hr"></p>
 	<div class="bootom">
-		<div class="title">
+	<!-- 	<div class="title">
 			<div style="width: 4px;height: 18px;background-color: rgb(38,136,251);margin-right: 4px;margin-top: 2px;"></div>
 			<div style="font-size: 18px;margin-top: -3px;">行情</div>
 			<div style="margin: 0 7.6%;font-size: 15px;color: rgb(113,106,106);font-weight: 500;" :class="{'active':isshow2==true}" @click="isshow2=true">现货实时行情</div>
@@ -108,8 +108,16 @@
 			<div>名称</div>
 			<div>最新价</div>
 			<div>涨跌幅</div>
-		</div>
-		<div v-show="isshow2" class="body" v-for="(item,index) in list4" style="padding: 0.1rem 0.17rem 0.1rem 0.1rem;" :key="index">
+		</div> -->
+		<div v-show="isshow2" class="body" v-for="(item,index) in list4" style="padding: 0.19rem 0.17rem 0.19rem 0.1rem;" :key="index">
+			<!-- <img  class="index-img1" :src="'../assets/'+item.symbol+'.png'"/> -->
+			<img  v-show="item.symbol == 'BTC'" class="index-img1" src="../assets/btc.png"/>
+			<img  v-show="item.symbol == 'ETH'" class="index-img1" src="../assets/eth.png"/>
+			<img  v-show="item.symbol == 'ZEC'" class="index-img1" src="../assets/zec.png"/>
+			<img  v-show="item.symbol == 'HT'" class="index-img1" src="../assets/HT2.png"/>
+			<img  v-show="item.symbol == 'XRP'" class="index-img1" src="../assets/xrp.png"/>
+			<img  v-show="item.symbol == 'LTC'" class="index-img1" src="../assets/ltc.png"/>
+			<img  v-show="item.symbol == 'BCH'" class="index-img1" src="../assets/bch.png"/>
 			<div class="one" style="flex: 1;">{{item.symbol}}<span style="color: #999999;font-size: 13px;">/USDT</span><p>24H量 {{parseInt(item.amount)}}</p> </div>
 			<div class="two" style="flex: 1;" :class="{'active1':item.up_or_down<0}">{{item.close}} <p>≈{{(item.close*7).toFixed(1)}}CNY</p></div>
 			<div v-show="item.up_or_down<0" class="three active" >{{item.up_or_down.toFixed(2)}}%</div>
@@ -605,6 +613,7 @@ export default {
 .bootom{
 	padding-left: .2rem;
 	padding-right: .2rem;
+	margin-bottom: 50px;
 	.title{
 		font-weight: bold;
 		display: flex;
@@ -632,10 +641,10 @@ export default {
 			color: #000000;
 			// font-weight: 550;
 			p{
-				font-size: 13px;
+				font-size: 12px;
 				font-weight: 540;
 				color: rgb(169,167,168);
-				margin-top: 2px;
+				margin-top: 4px;
 			}
 		}
 		.two{
@@ -643,9 +652,9 @@ export default {
 			// font-weight: 550;
 			p{
 				font-weight: 540;
-				font-size: 13px;
+				font-size: 12px;
 				color: rgb(169,167,168);
-				margin-top: 2px;
+				margin-top: 4px;
 			}
 		}
 		.three{
@@ -653,9 +662,10 @@ export default {
 			background-color: rgb(0,191,137);
 			margin-top: 5px;
 			height: 27px;
-			width: 65px;
+			width: 52px;
 			line-height: 27px;
 			text-align: center;
+			font-size: 13px;
 		}
 		.active{
 			color: #FFFFFF;
@@ -719,5 +729,12 @@ export default {
 			// padding-left: .2rem;
 		}
 		
+	}
+	.index-img1{
+		width: 30px;
+		height: 30px;
+		display: block;
+		margin-right: 9px;
+		margin-top: 5px;
 	}
 </style>

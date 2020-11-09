@@ -16,7 +16,8 @@ Router.prototype.push = function push(location) {
 export default new Router({
   routes: [
     { path: '/', name: '首页', meta: { index: 0, footShow: true }, component: resolve => require(['./components/Index.vue'],resolve) },
-    { path: '/login', name: '登录',  component: resolve => require(['./components/login.vue'],resolve) ,meta: { nolog:true }},
+    { path: '/test', name: '首页1',  component: resolve => require(['./components/test.vue'],resolve) },
+	{ path: '/login', name: '登录',  component: resolve => require(['./components/login.vue'],resolve) ,meta: { nolog:true }},
     { path: '/sign', name: '注册',  component: resolve => require(['./components/sign.vue'],resolve) },
     { path: '/selview', name: '选择查看', component: resolve => require(['./components/selview.vue'],resolve) },
     { path: '/forgetpass', name: '忘记密码',  component: resolve => require(['./components/forgetpass.vue'],resolve) },
@@ -24,7 +25,7 @@ export default new Router({
     { path: '/chagepass', name: '安全中心', component: resolve => require(['./components/chagepass.vue'],resolve)  },
     { path: '/changedealpass', name: '修改交易密码', component: resolve => require(['./components/changedealpass.vue'],resolve)},
     { path: '/changephone', name: '修改手机号', component:  resolve => require(['./components/changephone.vue'],resolve) },
-    // { path: '/intertranfor', name: '互转中心', component: resolve => require(['./components/intertranfor.vue'],resolve) },
+    { path: '/intertranfor', name: '互转中心', component: resolve => require(['./components/intertranfor.vue'],resolve) },
     { path: '/callcenter', name: '联系客服', component: resolve =>require(['./components/callcenter.vue'],resolve) },
     { path: '/certification', name: '实名认证', component:resolve =>require(['./components/certification.vue'],resolve) },
     { path: '/personmsg', name: '个人信息', component: resolve =>require(['./components/personmsg.vue'],resolve)},
@@ -51,7 +52,7 @@ export default new Router({
     { path: '/addmetationadr', name: '添加钱包地址', component: resolve =>require(['./components/Addmetationadr.vue'],resolve) },
     { path: '/metationadr', name: '钱包地址', component: resolve =>require(['./components/Metationadr.vue'],resolve) },
     // { path: '/fund', name: 'CR基金', component: resolve =>require(['./components/fund.vue'],resolve) },
-	// { path: '/down', name: '下载页面', component: resolve =>require(['./pages/down.vue'],resolve) },
+	{ path: '/down', name: '下载页面', component: resolve =>require(['./pages/down.vue'],resolve) },
 	{ path: '/fuli', name: '福利中心', component: resolve =>require(['./pages/fuli.vue'],resolve) },
 	{ path: '/fenxiang', name: '分享邀请', component: resolve =>require(['./pages/fenxiang.vue'],resolve) },
 	{ path: '/heyue', name: '合约量化交易', component: resolve =>require(['./pages/heyue.vue'],resolve) },
@@ -63,6 +64,12 @@ export default new Router({
 	{ path: '/jyxq', name: '跟单详情', component: resolve =>require(['./pages/jyxq.vue'],resolve), },
 	{ path: '/gdset', name: '跟单设置', component: resolve =>require(['./pages/gdset.vue'],resolve), },
 	{ path: '/refund', name: '返佣记录', component: resolve =>require(['./pages/refund.vue'],resolve), },
+	{ path: '/custody', name: '基金托管', component: resolve =>require(['./pages/custody.vue'],resolve), },
+	{ path: '/fundxq', name: '基金详情', component: resolve =>require(['./pages/fundxq.vue'],resolve), },
+	{ path: '/gojilu', name: '基金购买记录', component: resolve =>require(['./pages/golilu.vue'],resolve), },
+	{ path: '/respass', name: '重置交易密码', component: resolve =>require(['./pages/respass.vue'],resolve), },
+	{ path: '/tuog', name: '基金托管记录', component: resolve =>require(['./pages/tuog.vue'],resolve), },
+	{ path: '/jyyym', name: '交易员操作页面', component: resolve =>require(['./pages/jyyym.vue'],resolve), },
 	// { path: '/find', name: '发现', component: resolve =>require(['./components/subrecored.vue'],resolve),meta: { index: 2, footShow: true } },
   ]
 })

@@ -88,7 +88,7 @@
 					if(res.data.code==0){
 						this.$toast.success({message:res.data.msg,duration:1200});
 						setTimeout(()=>{
-							this.$router.push("signlogin");
+							this.$router.push("login");
 						},1600)
 					}else{
 						this.$toast.fail({message:res.data.msg,duration:1200});

@@ -27,7 +27,7 @@
         <li v-for="(item,i) in info" :key="i">
              <p class="oldernum">
             <span>提币数量</span>
-            <span style="color:#000">{{item.cr_num}} CRW</span>
+            <span style="color:#000">{{item.cr_num}} JUW</span>
           </p>
            <p class="oldernum">
             <span>矿工费</span>
@@ -73,7 +73,7 @@
           <div class="botdiv">
             <p>{{item.create_time}}</p>
             <p>
-              <span>{{item.money_types==1?'USDT':'CRW'}}</span>
+              <span>{{item.money_types==1?'USDT':item.money_types==2?'JUW':'点卡'}}</span>
             </p>
           </div>
         </li>

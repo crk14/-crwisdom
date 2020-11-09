@@ -32,24 +32,29 @@
       <div
         style="font-size: .25rem;font-weight: 550;margin-left: .6rem;margin-top: .05rem;"
       >点卡余额：{{pointnum}}</div>
-      <div
+      <!-- <div
         style="font-size: .25rem;font-weight: 550;margin-left: .5rem;margin-top: .05rem;"
-      >剩余有效天数：{{time}}天</div>
+      >剩余有效天数：{{time}}天</div> -->
     </div>
     <div class="strategy">
       <div class="onep" style="display: flex;">
         <span class="dfirst" style="color: #999999;font-size: .24rem;">仓位监测</span>
         <div
-          style="font-size: .28rem;width: 2.5rem;text-align: center;"
-        >{{parseInt(Number(principals)*1000)/1000||0}}{{symbol2}}</div>
-        <span style="color: #999999;font-size: .24rem;">策略类型</span>
+          style="font-size: .28rem;width: 3.2rem;text-align: center;"
+        >{{parseInt(Number(principals)*1000)/1000||0}}USDT({{textsel}}) <van-icon name="arrow-down" @click="jiaoyi = !jiaoyi"/>
+		</div>
+        
+		<span style="color: #999999;font-size: .24rem;">策略类型</span>
+		
         <!-- <span v-show="!isshow" style="color: rgb(34,132,253);font-size: .24rem;margin-left: .9rem;"  @click="isshow = !isshow" >去选择 <van-icon name="arrow" /></span> -->
         <!-- {{index==0?'智能做多交易':'自定做多交易'}} -->
-        <span class="dtwos" style="width: 1.7rem;margin-top: -2px;">
-          <select v-show="!isshow2" v-model="shuju" style="font-size: 12px;margin-left: 20px;" @click="toshuju()" :disabled="bool5">
-            <option  :value="3" selected="selected">智能对冲策略</option>
-            <option  :value="2" >自定义策略</option>
-			<option :value="1" >多空双开策略</option>
+        <span class="dtwos" style="width: 1.1rem;margin-top: -2px;">
+          <select v-show="!isshow2" v-model="shuju" style="font-size: 12px;" :disabled="bool5">
+            <!-- <option  :value="3" >智能对冲策略(即将下架)</option> -->
+            <!-- <option  :value="2" >自定义策略(即将下架)</option> -->
+			<!-- <option :value="1" >多空双开策略(即将下架)</option> -->
+			<option  :value="4"  >升级对冲策略</option>
+			<option  :value="5" selected="selected">多空网格策略</option>
           </select>
         </span>
       </div>
@@ -77,6 +82,7 @@
     </p>
     <p class="headtitle">
       <span>|</span>实时监控
+	  <span v-show="idbool" @click="$router.push('/jyyym')" style="margin-left: 57%;font-size: 15px;">单独入口</span>
     </p>
     <div class="tranumber">
       <div class="cent">
@@ -117,14 +123,41 @@
         <li v-for="(item,i) in strategy_list" :key="i" style="position: relative;">
           <p class="cometop">
             <span style="font-size: .26rem;line-height: 20px;">{{item.bidui}}永续</span>
-            <span style="font-size: .22rem;margin-left: 7px;">
-              <span
+            <span style="font-size: .22rem;display: flex;" v-show="shuju==4">
+              <!-- <span
                 class="item-span"
                 :class="{'item-span1':item.up_down == 1}"
                 style="font-size: .2rem;padding: 0 2.5px;transform: scale(0.9);margin-top: 1.7px;"
-              >{{item.up_down == 0?'空-多':'多-空'}}{{item.leverage}}x</span>
+              >{{item.up_down == 0?'空-多':'多-空'}}{{item.leverage}}x</span> -->
+			  <span
+			    class="item-span1"
+			    style="font-size: .2rem;padding: 0 2.5px;transform: scale(0.9);margin-top: 2.7px;"
+			  >多</span>
+			  <span
+			    class="item-span"
+			    style="font-size: .2rem;padding: 0 2.5px;transform: scale(0.9);margin-top: 2.7px;"
+			  >空</span>
+			  <span
+			    style="font-size: .2rem;padding: 1px 2.5px 0;transform: scale(0.85);margin-top: 1.7px;background-color: #f5a623;color: #FFFFFF;"
+			  >{{item.leverage}}x</span>
             </span>
-            <span style="position: absolute;right: 21px;">
+			<span style="font-size: .22rem;margin-left: 7px;" v-show="shuju==5 || shuju==1">
+			  <span
+			    class="item-span"
+			    :class="{'item-span1':item.up_down == 1}"
+			    style="font-size: .2rem;padding: 0 2.5px;transform: scale(0.9);margin-top: 1.7px;"
+			  >{{item.up_down == 0?'空':'多'}}-{{item.leverage}}x</span>
+			 
+			</span>
+			<span style="font-size: .22rem;margin-left: 7px;" v-show="shuju!=4 && shuju !=5 &&shuju!=1">
+			  <span
+			    class="item-span"
+			    :class="{'item-span1':item.up_down == 1}"
+			    style="font-size: .2rem;padding: 0 2.5px;transform: scale(0.9);margin-top: 1.7px;"
+			  >{{item.up_down == 0?'空-多':'多-空'}}{{item.leverage}}x</span>
+			 
+			</span>
+            <span style="position: absolute;right: 17px;">
               <button
                 style="background:rgb(97,161,240);margin-left: 0;"
                 @click="fn5(item.id,item.stop_type)"
@@ -165,34 +198,34 @@
 			<p v-if="item.stop_type==10" class="item1">风险率过高</p>
 			<p v-if="item.stop_type==30018" class="item1">OKEX维护升级中</p>
           </div>
-          <div class="tabul">
+          <div class="tabul" v-show="shuju!=4">
             <div>
               <p>建仓单数(单)</p>
 
               <p><span v-show="shuju >= 2"> {{item.up_down == 0?'空:':'多:'}}</span> {{item.buy_count}}</p>
-			  <p  v-show="shuju >= 2">{{item.up_down == 0?'多:':'空:'}} {{item.buy_count_reverse}}</p>
+			  <p  v-show="shuju >= 2 && shuju!=5">{{item.up_down == 0?'多:':'空:'}} {{item.buy_count_reverse}}</p>
             </div>
             <div>
               <p>持仓数量(张)</p>
               <p><span v-show="shuju >= 2"> {{item.up_down == 0?'空:':'多:'}}</span> {{item.buy_count_amount}}</p>
-			  <p  v-show="shuju >= 2">{{item.up_down == 0?'多:':'空:'}} {{item.buy_count_amount_reverse}}</p>
+			  <p  v-show="shuju >= 2 && shuju!=5">{{item.up_down == 0?'多:':'空:'}} {{item.buy_count_amount_reverse}}</p>
             </div>
             <div>
               <p>持仓均价({{item.bidui.split('/')[1]}})</p>
-              <p><span v-show="shuju >= 2"> {{item.up_down == 0?'空:':'多:'}}</span> {{item.buy_count_average}}</p>
-              <p  v-show="shuju >= 2">{{item.up_down == 0?'多:':'空:'}} {{item.buy_count_average_reverse}}</p>
+              <p><span v-show="shuju >= 2 "> {{item.up_down == 0?'空:':'多:'}}</span> {{item.buy_count_average}}</p>
+              <p  v-show="shuju >= 2 && shuju!=5">{{item.up_down == 0?'多:':'空:'}} {{item.buy_count_average_reverse}}</p>
               <!-- <p>{{item.profit_lv}}%</p> -->
             </div>
             <div>
               <p>尾仓均价({{item.bidui.split('/')[1]}})</p>
 
               <p><span v-show="shuju >= 2"> {{item.up_down == 0?'空:':'多:'}}</span> {{item.lastprice}}</p>
-			  <p  v-show="shuju >= 2">{{item.up_down == 0?'多:':'空:'}} {{item.lastprice_reverse}}</p>
+			  <p  v-show="shuju >= 2 && shuju!=5">{{item.up_down == 0?'多:':'空:'}} {{item.lastprice_reverse}}</p>
             </div>
             <div>
               <p>平仓单数(单)</p>
               <p><span v-show="shuju >= 2"> {{item.up_down == 0?'空:':'多:'}}</span> {{item.sell_count}}</p>
-			  <p  v-show="shuju >= 2">{{item.up_down == 0?'多:':'空:'}} {{item.sell_count_reverse}}</p>
+			  <p  v-show="shuju >= 2 && shuju!=5">{{item.up_down == 0?'多:':'空:'}} {{item.sell_count_reverse}}</p>
             </div>
             <div>
               <p>实现利润({{item.bidui.split('/')[1]}})</p>
@@ -200,6 +233,41 @@
               <p>{{item.profit_cash}}</p>
             </div>
           </div>
+		  <div class="tabul" v-show="shuju==4">
+		    <div>
+		      <p>建仓单数(单)</p>
+		  
+		      <p><span>多:</span>  {{item.buy_count_up}}</p>
+		  			  <p>空:  {{item.buy_count_down}}</p>
+		    </div>
+		    <div>
+		      <p>持仓数量(张)</p>
+		      <p><span>多:</span>  {{item.buy_count_amount_up}}</p>
+		  			  <p>空: {{item.buy_count_amount_down}}</p>
+		    </div>
+		    <div>
+		      <p>持仓均价({{item.bidui.split('/')[1]}})</p>
+		      <p><span>多:</span>  {{item.buy_count_average_up}}</p>
+		      <p>空: {{item.buy_count_average_down}}</p>
+		      <!-- <p>{{item.profit_lv}}%</p> -->
+		    </div>
+		    <div>
+		      <p>尾仓均价({{item.bidui.split('/')[1]}})</p>
+		  
+		      <p><span>多:</span>  {{item.lastprice_up}}</p>
+		  			  <p>空: {{item.lastprice_down}}</p>
+		    </div>
+		    <div>
+		      <p>平仓单数(单)</p>
+		      <p><span>多:</span> {{item.sell_count_up}}</p>
+		  			  <p>空: {{item.sell_count_down}}</p>
+		    </div>
+		    <div>
+		      <p>实现利润({{item.bidui.split('/')[1]}})</p>
+		  
+		      <p>{{item.profit_cash}}</p>
+		    </div>
+		  </div>
         </li>
       </ul>
     </div>
@@ -259,6 +327,7 @@
       <div class="tophader">
         <van-icon name="arrow-left" @click="changright" />
         <p>添加货币</p>
+		<span @click="changright" style="position: fixed;right: 18px;top: 0px;color: rgb(34, 132, 253);font-size: 17px;">完成</span>
       </div>
       <div class="poup-title">
         <div>搜索</div>
@@ -350,29 +419,30 @@
     </div>
     <van-dialog v-model="show2" title="预算设置" show-cancel-button :before-close="beforeClose">
       <p style="height: 15px;"></p>
-	  <div style="display: flex;padding-bottom: 15px;">
-				<span style="margin-left: 16px;font-size: 15px;">开单方向：</span> 
-	  		  <van-checkbox v-model="checked2">开多</van-checkbox>
-	  		  <van-checkbox v-model="checked3">开空</van-checkbox>
+	  <div style="display: flex;padding-bottom: 15px;" v-show="shuju!=4">
+				<span style="margin-left: 16px;font-size: 14px;">开单方向：</span> 
+	  		  <van-checkbox v-model="checked2" style="font-size: 14px;">开多</van-checkbox>
+	  		  <van-checkbox v-model="checked3" style="font-size: 14px;">开空</van-checkbox>
 	  </div>
 	  <div v-show="shuju==2" style="display: flex;border-bottom: 1px solid #ebedf0;padding-bottom: 15px;">
-	  				<span style="margin-left: 16px;font-size: 15px;">补仓方式： </span> 
+	  				<span style="margin-left: 16px;font-size: 14px;">补仓方式： </span> 
 	  		  <!-- <van-checkbox v-model="checked4">倍投</van-checkbox>
 	  		  <van-checkbox v-model="checked5">首单</van-checkbox> -->
-			  <van-radio-group v-model="checked4" direction="horizontal">
-			    <van-radio :name="true">倍投</van-radio>
-			    <van-radio :name="false">首单</van-radio>
+			  <van-radio-group v-model="checked4" direction="horizontal" icon-size="16px">
+				  <van-radio :name="false" style="font-size: 14px;">首单</van-radio>
+			    <van-radio :name="true" style="font-size: 14px;">倍投</van-radio>
 			  </van-radio-group>
 	  			  
 	  </div>
       <!-- <van-field v-model="number" type="number" label="价格(USD):" /> -->
 	  <div style="display: flex;flex-flow:row wrap;">
-		  <van-field v-show="checked2" v-model="number2"    type="number2" label="开多张数:" />
-	  <van-field v-show="checked3" v-model="number3" type="number3" label="开空张数:" />
+	<van-field v-show="checked2 && shuju !=4" v-model="number2"    type="number2" label="开多张数:" />
+	<van-field v-show="checked3 && shuju !=4" v-model="number3" type="number3" label="开空张数:" />
+	<van-field v-show=" shuju ==4" v-model="number2"    type="number2" label="首单张数:" />
 	  <van-field v-model="number4" type="number4" label="杠杆倍数:" />
-	  <van-field v-show="shuju==2" v-model="makelist" type="makelist" label="反转单数:" />
-	  <van-field v-show="shuju==2" v-model="interval" type="interval" label="做单间隔:" />
-	  <van-field v-show="shuju==2" v-model="profitratio" type="profitratio" label="止盈比例:" />
+	  <van-field v-show="shuju==2" v-model="makelist" type="number" label="反转单数:" />
+	  <van-field v-show="shuju==2" v-model="interval" type="number" label="做单间隔:" />
+	  <van-field v-show="shuju==2" v-model="profitratio" type="number" label="止盈比例:" />
 	  </div>
      
       <p style="height: 15px;"></p>
@@ -381,29 +451,34 @@
       <p style="height: 15px;"></p>
       <!-- <van-field v-model="number" type="number" label="价格(USD):" /> -->
 	  <div style="display: flex;flex-flow:row wrap">
-      <van-field v-show="bool4 == 1" v-model="number2" type="number2" label="开多张数:" />
-      <van-field v-show="bool4 == 0" v-model="number3" type="number3" label="开空张数:" />
+     <van-field v-show="bool4 == 1 && shuju !=4" v-model="number2" type="number" label="开多张数:" />
+     <van-field v-show="bool4 == 0 && shuju !=4" v-model="number3" type="number" label="开空张数:" />
+     <van-field v-show="shuju ==4" v-model="number8" type="number" label="首单张数:" />
       <van-field v-model="number4" type="number4" label="杠杆倍数:" />
-	  <van-field v-show="shuju==2" v-model="makelist" type="makelist" label="反转单数:" />
-	  <van-field v-show="shuju==2" v-model="interval" type="interval" label="做单间隔:" />
-	  <van-field v-show="shuju==2" v-model="profitratio" type="profitratio" label="止盈比例:" />
+	  <van-field v-show="shuju==2 || shuju==4" v-model="makelist" type="number" label="反转单数:" />
+	  <van-field v-show="shuju==2 || shuju==4" v-model="interval" type="number" label="做单间隔:" />
+	 <van-field v-show="shuju==5" v-model="interval2" type="number" label="补仓间隔:" />
+	 <van-field v-show="shuju==5" v-model="ordernum" type="number" label="做单数量:" />
+	 <van-field v-show="shuju==2 || shuju==4 || shuju==5" v-model="profitratio" type="profitratio" label="止盈比例:" />
 	  </div>
       <p style="height: 15px;"></p>
     </van-dialog>
+	<van-picker v-show="jiaoyi" show-toolbar title="选择仓位币对对金额" :columns="columns"  @confirm="conwan" @cancel="jiaoyi=!jiaoyi"/>
   </div>
 </template>
  
  <script>
 import Vue from "vue";
-import { Dialog, Field, Popup,Checkbox,RadioGroup, Radio } from "vant";
+import { Dialog, Field, Popup,Checkbox,RadioGroup, Radio,Picker } from "vant";
 Vue.use(Field);
 Vue.use(Dialog);
 Vue.use(Popup);
 Vue.use(Checkbox);
 Vue.use(RadioGroup);
 Vue.use(Radio);
+Vue.use(Picker);
 export default {
-  components: { Dialog, Field, Popup,Checkbox,RadioGroup,Radio },
+  components: { Dialog, Field, Popup,Checkbox,RadioGroup,Radio,Picker },
   data() {
     return {
 		checked2:true,
@@ -415,8 +490,11 @@ export default {
       number2: "",
       number3: "",
       number4: "",
+	  number8:'',
 	  makelist:'',
 	  interval:'',
+	  interval2:'',
+	  ordernum:'',
 	  profitratio:'',
       show2: false,
       isshow: false,
@@ -445,7 +523,7 @@ export default {
       bourse: "",
       strategy_list: [],
       symbol_list: [],
-      types: 4,
+      types: 1,
       selsym: [],
       symbol: "USDT",
       jysymbol: 0,
@@ -463,7 +541,7 @@ export default {
       pointnum: "",
       ljsyl: "",
       list3: [],
-      shuju: 3,
+      shuju: 5,
       show3: false,
       show5: false,
       show6: true,
@@ -480,25 +558,39 @@ export default {
       moeneru: null,
       beishu: null,
 	  huobi:true,
-	  bool5:false
+	  bool5:false,
+	  ipone:false,
+	  jiaoyi:false,
+	  shengji:true,
+	  idbool:false,
+	   columns: [
+			  
+			],
+			textsel:'ETH',
+			
     };
   },
   created() {
-    // var obj = sessionStorage.getItem("jsonback");
+	  if (this.$route.query.id == 1) {
+	  	this.idbool = true
+	  }
     if (localStorage.getItem("bourse1")) {
       this.bourse = localStorage.getItem("bourse1");
     }
 	if (localStorage.getItem("types")) {
 	  this.types = localStorage.getItem("types");
-	  if(this.types == 4){
-		  this.shuju = 3
+	  if(this.types == 5){
+	  		  this.shuju = 4
 	  }
-	  if(this.types == 3){
-	  		  this.shuju = 2
+	  else if(this.types == 1){
+	  		  this.shuju = 5
+			  this.start();
+	  }else{
+		  this.types = 1
+		  this.start();
 	  }
-	  if(this.types == 2){
-	  		  this.shuju = 1
-	  }
+	}else{
+			this.start();
 	}
     this.$axios
       .get("/index/mywallet/mywalletInfo", { page: 1, limit: 1 })
@@ -519,10 +611,23 @@ export default {
           }
         }
       });
-    this.start();
     if (this.bourse == 4) {
       this.selectsymbol[3].a = "OKB";
     }
+	this.$axios
+	     .post("/index/swapstrategy/get_sug_symbol", {
+	       symbol: this.symbol,
+	       bourse: this.bourse,
+	     })
+	     .then((res) => {
+	       console.log(this.strategy_list);
+			 let obj= res.data.sug_list
+			 let obj2 = []
+			 obj.forEach(item=>{
+				 obj2.push(item.symbol_deal)
+			 })
+			  this.columns = obj2
+	     });
   },
   watch: {
     symbol(newValue, oldValue) {
@@ -549,24 +654,28 @@ export default {
 		  this.types = 4;
 		  this.index = 2;
 	  }
+	  if(newValue == 4){
+	  		  this.types = 5;
+	  		  this.index = 3;
+	  }
+	  if(newValue == 5){
+	  		  this.types = 1;
+	  		  this.index = 4;
+	  }
 	  this.start();
-    },
-    bool3(newValue, oldValue) {
-      if (newValue) {
-        // this.selsym = []
-      }
     },
   },
   methods: {
-	  toshuju(){
-		  // if(this.strategy_list.length > 0){
-			 //  this.$toast.fail({ message: "请删除当前类型策略", duration: 2000 });
-			 //  this.bool5 = true
-		  // }else{
-			 //  this.bool5 = false
-		  // }
-	  },
+	  conwan(i){
+		  this.textsel = i
+		  this.tostring()
+		  this.jiaoyi = false
+		  },
     fn2() {
+		if(!this.shengji){
+			this.$toast.fail({ message: "策略系统正在升级中请稍后再试", duration: 2000 });
+			return
+		}
       if (this.isshow2) {
         Dialog.confirm({
           title: "提醒",
@@ -583,7 +692,7 @@ export default {
         return;
       }
       if (this.shuju) {
-        console.log(this.Symbol);
+		
 		this.show2 = true
         // return
         // if (this.shuju == 1) {
@@ -613,6 +722,10 @@ export default {
         this.$toast.fail({ message: "止盈停止后才可删除", duration: 2000 });
         return;
       }
+	  if(!this.shengji){
+	  	this.$toast.fail({ message: "策略系统正在升级中请稍后再试", duration: 2000 });
+		return
+	  }
       Dialog.confirm({
         title: "提醒",
         message: "是否删除策略？",
@@ -630,16 +743,26 @@ export default {
       });
     },
     fn6(item) {
+		if(!this.shengji){
+			this.$toast.fail({ message: "策略系统正在升级中请稍后再试", duration: 2000 });
+			return
+		}
       this.number2 = item.first_amount;
       this.number3 = item.first_amount;
+	  this.number8 = item.first_amount;
       this.number4 = item.leverage;
       this.bool4 = item.up_down;
       this.id2 = item.id;
       this.show3 = true;
-	  if(item.order_num){
+	  this.ordernum=item.order_num
+	  if(item.interval){
 		  this.makelist = item.order_num
 		  this.profitratio = item.profit
-		  this.interval = item.interval
+		  if(this.shuju == 5){
+		  			  this.interval2 = item.interval
+		  }else{
+		  			  this.interval = item.interval
+		  }
 	  }
 	   
     },
@@ -663,44 +786,71 @@ export default {
 				obj.amount_scale = 0
 			}
 		}
-		
-		obj.order_num = this.makelist
+		if(this.shuju == 4){
+			obj.amount_scale = 2
+			// if(this.checked4){
+			// 	obj.amount_scale = 2
+			// }else{
+			// 	obj.amount_scale = 0
+			// }
+		}
 		obj.profit = this.profitratio
 		obj.interval = this.interval
+		if(this.shuju == 5){
+		
+			obj.interval = this.interval2
+		}
         if (this.bool4 == 0 || this.bool4 == 1) {
-			console.log(obj)
           obj.id = this.id2;
           obj.up_down = this.bool4;
+		  obj.order_num = this.ordernum
+		
           str = "set_strategy";
           if (this.bool4 == 0) {
-            obj.first_amount = this.number3;
+			  obj.first_amount = this.number3;
+			if(this.shuju==4){
+						  obj.order_num = this.makelist
+						  obj.first_amount = this.number8;
+						  console.log(obj.first_amount)
+			}
             if (!this.number3 || !this.number4) {
               this.$toast.fail({ message: "请填写完整", duration: 2000 });
               done();
               return;
             }
           } else {
-            obj.first_amount = this.number2;
+			  obj.first_amount = this.number2;
             if (!this.number2 || !this.number4) {
               this.$toast.fail({ message: "请填写完整", duration: 2000 });
               done();
               return;
             }
           }
+		  console.log(this.bool4,this.shuju,obj.first_amount)
         } else {
-			if(this.checked3){
-				if (!this.number3 || !this.number4) {
-				  this.$toast.fail({ message: "请填写完整", duration: 2000 });
-				  done();
-				  return;
+			if(this.shuju != 4){
+				console.log(66)
+				if(this.checked3){
+					if (!this.number3 || !this.number4) {
+					  this.$toast.fail({ message: "请填写完整", duration: 2000 });
+					  done();
+					  return;
+					}
+				}else{
+					if (!this.number2 || !this.number4) {
+					  this.$toast.fail({ message: "请填写完整", duration: 2000 });
+					  done();
+					  return;
+					}
 				}
 			}else{
-				if (!this.number2 || !this.number4) {
+				if (!this.number4) {
 				  this.$toast.fail({ message: "请填写完整", duration: 2000 });
 				  done();
 				  return;
 				}
 			}
+			
           obj.down_buy_num = this.number3;
           obj.up_buy_num = this.number2;
           obj.type = this.types;
@@ -709,6 +859,7 @@ export default {
           obj.symbol_deal = this.selsym.join(",");
 		  
           let arr = [1, 0];
+		 
           if(this.checked2){
           			  obj.up_down='1'
           }
@@ -836,30 +987,43 @@ export default {
         });
       if (this.bourse) {
 		  const env = process.env.NODE_ENV;
-		  if(env==='production'){  // 生产环境
-		  this.$axios
-		    .post("/index/swapstrategy/get_balance", {
-		      symbol: this.symbol2,
-		      bourse: this.bourse,
-		    })
-		    .then((res) => {
-		      if (res.data.code == 0 && res.data.principal) {
-		        this.principal = res.data.principal;
-		        this.principals = res.data.principal;
-		      } else {
-		        // layer.open({ content: res.data.msg, skin: "msg", time: 2 });
-		      }
-		    });
-		  }else{  // 本地环境
-		  console.log(6)
-		  }
+		  // if(env==='production'){  // 生产环境
+		this.tostring()
+		  // }else{  // 本地环境
+		  // console.log(6)
+		  // }
         
       }
     },
+	tostring(){
+		this.$axios
+		  .post("/index/swapstrategy/get_balance", {
+		    symbol: this.symbol2,
+		    bourse: this.bourse,
+					  symbol_deal:this.textsel,
+		  })
+		  .then((res) => {
+		    if (res.data.code == 0 && res.data.principal) {
+		      this.principal = res.data.principal;
+		      this.principals = res.data.principal;
+		    } else {
+		      // layer.open({ content: res.data.msg, skin: "msg", time: 2 });
+		    }
+		  });
+	},
     start(bool) {
-     
+     if (!bool) {
+       this.start1();
+     }
+	 let str;
+	 this.strategy_list = []
+	 if(this.shuju == 4){
+		 str = 'get_lock_strategy_list'
+	 }else{
+		  str= 'get_strategy_list'
+	 }
       this.$axios
-        .post("/index/swapstrategy/get_strategy_list", {
+        .post(`/index/swapstrategy/${str}`, {
           symbol: this.symbol2,
           bourse: this.bourse,
           type: this.types,
@@ -868,9 +1032,7 @@ export default {
           this.strategy_list = res.data.list;
         });
 		localStorage.setItem('types',this.types)
-		if (!bool) {
-		  this.start1();
-		}
+		
     },
     selecli(i) {
       this.index = i;
@@ -927,7 +1089,12 @@ export default {
       this.jsbidui = false;
     },
     bounce(s, i, type) {
+		
       if (s == 0) {
+		  if(!this.shengji){
+		  	this.$toast.fail({ message: "策略系统正在升级中请稍后再试", duration: 2000 });
+		  	return
+		  }
         console.log(type);
         if (type == 2) {
           this.$axios
@@ -946,6 +1113,7 @@ export default {
       } else if (s == 3) {
         this.matterplay = true;
       } else if (s == 4) {
+		  
         if (!this.bourse)
           return this.$toast.fail({ message: "请选择交易所", duration: 2000 });
         this.bidui = true;
@@ -1035,6 +1203,10 @@ export default {
       }
     },
     open_strategy(s, i, b) {
+		if(!this.shengji){
+			this.$toast.fail({ message: "策略系统正在升级中请稍后再试", duration: 2000 });
+			return
+		}
       this.$axios
         .post("/index/swap/start_strategy", { id: s, up_down: b })
         .then((res) => {
@@ -1287,6 +1459,7 @@ export default {
 		margin-top: -1px;
       color: #2185ff;
       margin-right: 0.1rem;
+	  line-height: 19px;
       // margin-top: -0.2rem;
     }
   }
@@ -1703,6 +1876,11 @@ export default {
 .van-radio--horizontal {
     margin-right: 35px;
     margin-left: 16px;
+}
+.van-picker{
+	position: absolute;
+	    top: 152px;
+	    width: 100%;
 }
 </style>
  
