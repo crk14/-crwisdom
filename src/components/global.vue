@@ -13,7 +13,8 @@
       <p class="toptwo">{{id==1?'火币全球站(huobipro)':'OKEX'}}</p>
 
       <!-- @click="$router.push('accecard')" -->
-      <p class="topsan">查看获取API教程</p>
+	  <p class="topsan" v-show="id==1" @click="$router.push('accecard')">查看获取API教程</p>
+      <!-- <p class="topsan" >查看获取API教程</p> -->
     </div>
     <div class="borders">
       <ul>

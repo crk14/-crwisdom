@@ -12,7 +12,7 @@ module.exports = {
             '/index': {
                 // 账号：18616969878   xyf969878
                 /* 目标代理服务器地址  15779096610 */
-                target: 'http://192.168.0.104:81/',	//http://127.0.0.2 http://bookislight.com
+                target: 'http://192.168.0.104/',	//http://127.0.0.2 http://bookislight.com
                 /* 允许跨域 */
                 ws: true,
                 changeOrigin: true,
@@ -20,9 +20,8 @@ module.exports = {
                     '^/index': '/index' //这里理解成用‘/api’代替target里面的地址，后面组件中我们掉接口时直接用api代替 比如我要调用'http://40.00.100.100:3002/user/add'，直接写‘/api/user/add’即可
                 }
             },
-			// 'http://bookislight.com'
 			"dev_index":{
-				target: 'http://szjuw.com',	//http://127.0.0.2 http://bookislight.com
+				target: 'http://bookislight.com',	//http://127.0.0.2 http://bookislight.com
 				/* 允许跨域 */
 				ws: true,
 				changeOrigin: true,

@@ -7,9 +7,10 @@
     line-height: .8rem;
     margin-top: -.4rem;"
 			 onclick="window.history.go(-1)" />
-			<p>现货量化交易
+			<p>CR现货量化机器人(专业版)
 			</p>
 		</div>
+		<img style="position: absolute;top: 44px;left: 47%;width: 30px;height: 40px;" src="../assets/auto.png"/>
 		<div class="topsel" style="position: relative;">
 			<p class="left" @click="bounce(1)">
 				<img v-if="bourse==1" src="../assets/src_resource_image_page_huobi_logo@2x.png" alt />
@@ -40,7 +41,7 @@
 					<!-- <span v-show="isshow2" @click="isshow2=false" style="font-size: 12px;color: rgb(34, 132, 253);padding-left: 36px;">去选择 <span style="margin-left: 3px;">></span></span> -->
 					<select v-show="!isshow2" v-model="shuju" style="font-size: 12px;margin-left: 20px;">
 						<!-- <option  :value="1" selected="selected">智能策略</option> -->
-						<option :value="2" selected="selected">智能策略</option>
+						<option :value="2" selected="selected">专业设置版</option>
 					</select>
 				</span>
 			</div>
@@ -102,8 +103,8 @@
 						<span style="font-size: .22rem;margin-left: 17px;"><span class="item-span" :class="{'item-span1':item.zhangfu>0}"
 							 style="font-size: .24rem;"> {{item.close1?item.close1:''}}</span> </span>
 						<span style="position: absolute;right: 25px;">
-							<button style="background:rgb(97,161,240);margin-left: 0;" v-show="item.types==2" @click="fn5(item.id,item.stop_type)">删除策略</button>
-							<button style="background:rgb(97,161,240);" v-show="item.types==2" @click="fn6(item)">设置策略</button>
+							<button style="background:rgb(97,161,240);margin-left: 0;" v-show="item.types==1" @click="fn5(item.id,item.stop_type)">删除策略</button>
+							<button style="background:rgb(97,161,240);" v-show="item.types==1" @click="fn6(item)">设置策略</button>
 							<button class="button1" :class="{'button3':item.stop_type != 0}" v-if="item.status==0" @click="open_strategy(item.id,)">{{item.stop_type== 0?'开启交易':'恢复交易'}}</button>
 							<button style="background:#BD1616" @click="bounce(0,item.id,item.stop_type)" v-else>{{item.stop_type!== 2?'停止交易':'恢复交易'}}</button>
 						</span>
@@ -313,178 +314,92 @@
 			<van-field v-model="number2" type="number2" label="最大做单数量:" />
 			<p style="height: 15px;"></p>
 		</van-dialog>
-		<van-popup v-model="show3" position="top" :style="{ height: '100%'}">
-			<p class="popup2" style="height: 40px;line-height: 40px;font-weight: 550;font-size: 18px;text-align: center;color: rgb(80,80,80);">
-				<van-icon name="arrow-left" @click="fn4()" /> 策略设置</p>
-			<div class="divli1">
-				<div class="divli" style="border-top: 6px solid rgb(240,240,240);">
-					<p>
-						<span class="onespan">首单金额</span>
-					</p>
-					<p class="right">
-						<span>
-							<input type="text" v-model="backinfo.first_amount" class="inputclass" placeholder="请输入" /> {{symbol}}
-						</span>
-					</p>
+		<van-dialog v-model="show3" title="设置预算" show-cancel-button :before-close="beforeClose">
+			<p style="height: 15px;"></p>
+			
+			<div style="display: flex;flex-flow:row wrap">
+				<div  class="heyue-body" >
+					<span>首单金额:</span>
+					<input v-model="backinfo.first_amount" type="number"/>
+					<span>$</span>
 				</div>
-				<p class="item">指单个币种首次买入的金额数量</p>
-			</div>
-			<div class="divli1">
-				<div class="divli">
-					<p>
-						<span class="onespan">做单数量</span>
-					</p>
-					<p class="right">
-						<span>
-							<input type="text" v-model="backinfo.order_num" class="inputclass" placeholder="请输入" /> 单
-						</span>
-					</p>
+				<div  class="heyue-body" >
+					<span>补仓倍率:</span>
+					<input v-model="backinfo.repair_scale" type="number"/>
+					<span>倍</span>
 				</div>
-				<p class="item">指单个币种最多补仓次数</p>
-			</div>
-			<p class="imgge1">首单设置</p>
-			<div class="divli1">
-				<div class="divli">
-					<p>
-						<span class="onespan">买入涨幅</span>
-					</p>
-					<p class="right">
-						<span>
-							<input type="text" v-model="backinfo.rise" class="inputclass" placeholder="请输入" /> %
-						</span>
-					</p>
+				<div  class="heyue-body" >
+					<span>做单数量:</span>
+					<input v-model="backinfo.order_num" type="number"/>
+					<span>单</span>
 				</div>
-				<p class="item">指启动交易时获取当前实时价格上涨多少百分比即买入首单</p>
-			</div>
-			<div class="divli1">
-				<div class="divli">
-					<p>
-						<span class="onespan">买入跌幅</span>
-					</p>
-					<p class="right">
-						<span>
-							<input type="text" v-model="backinfo.fall" class="inputclass" placeholder="请输入" /> %
-						</span>
-					</p>
+				<div  class="heyue-body" >
+					<span>买入涨幅:</span>
+					<input v-model="backinfo.rise" type="number"/>
+					<span>%</span>
 				</div>
-				<p class="item">指启动交易时获取当前实时价格下跌多少百分比启动首单建仓监控并追踪最低行情价格</p>
-			</div>
-			<div class="divli1">
-				<div class="divli">
-					<p>
-						<span class="onespan">跌幅回调</span>
-					</p>
-					<p class="right">
-						<span>
-							<input type="text" v-model="backinfo.fall_back" class="inputclass" placeholder="请输入" /> %
-						</span>
-					</p>
+				<div  class="heyue-body heyue-body1" >
+					<span>买入跌幅:</span>
+					<input v-model="backinfo.fall" type="number"/>
+					<span>%</span>
 				</div>
-				<p class="item">指达到买入跌幅建仓监控点行情上涨多少百分比即买入首单</p>
-			</div>
-			<p class="imgge1">补仓设置
-
-			</p>
-			<div class="divli1">
-				<div class="divli">
-					<p>
-						<span class="onespan">补仓跌幅</span>
-					</p>
-					<p class="right">
-						<span>
-							<input type="text" v-model="backinfo.repair_fall" class="inputclass" placeholder="请输入" /> %
-						</span>
-					</p>
+				<div  class="heyue-body heyue-body1" >
+					<span>跌幅回调:</span>
+					<input v-model="backinfo.fall_back" type="number"/>
+					<span>%</span>
 				</div>
-				<p class="item">指首单买入后行情继续下跌达到多少百分比时启动补仓监控并追踪最低行情价格</p>
-			</div>
-			<div class="divli1">
-				<div class="divli">
-					<p>
-						<span class="onespan">补仓回调</span>
-					</p>
-					<p class="right">
-						<span>
-							<input type="text" v-model="backinfo.repair_fall_back" class="inputclass" placeholder="请输入" /> %
-						</span>
-					</p>
+				<div  class="heyue-body heyue-body1" >
+					<span>补仓跌幅:</span>
+					<input v-model="backinfo.repair_fall" type="number"/>
+					<span>%</span>
 				</div>
-				<p class="item">指达到补仓跌幅监控点行情上涨多少百分比即进行买入补仓</p>
-			</div>
-			<div class="divli1">
-				<div class="divli">
-					<p>
-						<span class="onespan">补仓倍率</span>
-					</p>
-					<p class="right">
-						<span>
-							<input type="text" v-model="backinfo.repair_scale" class="inputclass" placeholder="请输入" /> 倍
-						</span>
-					</p>
+				<div  class="heyue-body heyue-body1" >
+					<span>补仓回调:</span>
+					<input v-model="backinfo.repair_fall_back" type="number"/>
+					<span>%</span>
 				</div>
-				<p class="item">指达到补仓条件时买入上一仓的多少倍金额数量</p>
-			</div>
-			<p class="imgge1">止盈设置
-			</p>
-			<div class="divli1">
-				<div class="divli">
-					<p>
-						<span class="onespan">止盈比例</span>
-					</p>
-					<p class="right">
-						<span>
-							<input type="text" v-model="backinfo.profit_stop" class="inputclass" placeholder="请输入" /> %
-						</span>
-					</p>
+				<div  class="heyue-body heyue-body1" >
+					<span>止盈比例:</span>
+					<input v-model="backinfo.profit_stop" type="number"/>
+					<span>%</span>
 				</div>
-				<p class="item">指买入后盈利最低达到多少百分比启动止盈监控并追踪最高行情价格</p>
-			</div>
-			<div class="divli1">
-				<div class="divli">
-					<p>
-						<span class="onespan">止盈回调
-
-						</span>
-					</p>
-					<p class="right">
-						<span>
-							<input type="text" v-model="backinfo.profit_stop_back" class="inputclass" placeholder="请输入" /> %
-						</span>
-					</p>
+				<div  class="heyue-body heyue-body1" >
+					<span>止盈回调:</span>
+					<input v-model="backinfo.profit_stop_back" type="number"/>
+					<span>%</span>
 				</div>
-				<p class="item">达到止盈比例监控点时行情下跌多少百分比即卖出平仓止盈</p>
-			</div>
-			<p class="imgge1">止损设置
-				<span style="font-weight: 500; font-size: 12px;margin-right: 0.2rem;display: flex;">
-					<div style="margin-right: 4px;line-height: 34px;height: 34px;">关</div>
-					<van-switch v-model="show5" size=".26rem" />
-					<div :class="{'active2':show5}" style="margin-left: 4px;line-height: 34px;height: 34px;">开</div>
-				</span>
-			</p>
-			<p class="imgge1" style="background-color: #FFFFFF;font-weight: 500;" v-show="show5">止损类型
-				<span class="item" :class="{'active':show6}">
-					<span @click="show6 = true"><span v-show="show6"></span></span>
-					逐单止损
-				</span>
-				<span class="item" :class="{'active':!show6}" style="margin-right: 50px;margin-left: 20px;">
-					<span @click="show6 = false"> <span v-show="!show6"></span></span>
-					整体止损
-				</span>
-			</p>
-			<div class="divli" v-show="show5">
-				<p>
-					<span class="onespan">止损比例</span>
-				</p>
-				<p class="right">
-					<span>
-						<input type="text" v-model="backinfo.loss_stop" class="inputclass" placeholder="请输入" /> %
+				
+				</div>
+				<p class="imgge1">止损设置
+					<span style="font-weight: 500; font-size: 12px;margin-right: 0.2rem;display: flex;">
+						<div style="margin-right: 4px;line-height: 34px;height: 34px;">关</div>
+						<van-switch v-model="show5" size=".26rem" />
+						<div :class="{'active2':show5}" style="margin-left: 4px;line-height: 34px;height: 34px;">开</div>
 					</span>
 				</p>
-			</div>
+				<p class="imgge1" style="background-color: #FFFFFF;font-weight: 500;" v-show="show5">止损类型
+					<span class="item" :class="{'active':show6}">
+						<span @click="show6 = true"><span v-show="show6"></span></span>
+						逐单止损
+					</span>
+					<span class="item" :class="{'active':!show6}" style="margin-right: 10%">
+						<span @click="show6 = false"> <span v-show="!show6"></span></span>
+						整体止损
+					</span>
+				</p>
+				<div class="divli" v-show="show5">
+					<p>
+						<span class="onespan">止损比例</span>
+					</p>
+					<p class="right">
+						<span>
+							<input type="text" v-model="backinfo.loss_stop" class="inputclass" placeholder="请输入" /> %
+						</span>
+					</p>
+				</div>
+			<p style="height: 15px;"></p>
+		</van-dialog>
 
-			<button type="button" class="changebton" style="background-color: #2167ff;margin: .7rem auto .3rem;width: 71%;height: .6rem;line-height: .6rem;"
-			 @click="fn4(true)">应用设置</button>
-		</van-popup>
 	</div>
 </template>
 
@@ -548,7 +463,7 @@
 				bourse: "",
 				strategy_list: [],
 				symbol_list: [],
-				types: 2,
+				types: 1,
 				selsym: [],
 				symbol: "USDT",
 				jysymbol: 0,
@@ -581,8 +496,18 @@
 			};
 		},
 		created() {
-			var obj = sessionStorage.getItem("jsonback");
-			console.log(localStorage.getItem("bourse"))
+			this.$axios
+				.post("/index/robot/robot_systerm", {
+					robot_type:1,
+				})
+				.then((res) => {
+					if (res.data.code == 0) {
+						if(res.data.state != 1){
+							console.log(66)
+							this.$router.push('/shangchen')
+						}
+					} 
+				});
 			if (localStorage.getItem("bourse") == 1) {
 				this.bourse = localStorage.getItem("bourse");
 			}
@@ -592,7 +517,6 @@
 					limit: 1
 				})
 				.then(res => {
-
 					let info = res.data.info;
 					this.pointnum = info.point_num
 					var timestamp = Date.parse(new Date()) / 1000;
@@ -636,16 +560,7 @@
 					this.backinfo.loss_stop_switch = 0
 				}
 			},
-			shuju(newValue, oldValue) {
-				if (newValue == 1) {
-					this.types = 1
-					this.index = 0
-				}
-				if (newValue == 2) {
-					this.types = 2
-					this.index = 1
-				}
-			},
+			
 			bool3(newValue, oldValue) {
 				if (newValue) {
 					this.selsym = []
@@ -653,14 +568,19 @@
 			},
 		},
 		beforeDestroy() {
-			// console.log(this.time1, 99999999999)
 			clearInterval(this.time1)
 			this.time1 = null;
 		},
-		destroyed() {
-			// console.log(9999999999999)
-		},
 		methods: {
+			beforeClose: function(action, done) {
+					  	if (action === "confirm") {
+							this.fn4(true)
+							done()
+						} else if (action === "cancel") {
+								// 取消
+								done(); // 关闭提示框
+							}
+			},
 			fn2() {
 				if (this.isshow2) {
 					Dialog.confirm({
@@ -753,7 +673,7 @@
 							loss_stop: this.backinfo.loss_stop,
 							symbol: this.backinfo.symbol,
 							bourse: this.backinfo.bourse,
-							types: this.backinfo.types,
+							types: 1,
 							symbol_deal: this.backinfo.symbol_deal,
 							id: this.backinfo.id
 						}
@@ -762,8 +682,7 @@
 					} else {
 						this.backinfo.symbol = this.symbol
 						this.backinfo.bourse = this.bourse
-						this.backinfo.types = 2
-						console.log(this.selsym)
+						this.backinfo.types = 1
 						this.backinfo.symbol_deal = this.selsym.join(",")
 						console.log(this.backinfo)
 						str = 'set_strategy_all'
@@ -892,7 +811,7 @@
 				}
 				clearInterval(this.time1)
 				this.time1 = null;
-				this.$router.push('showdetail?bourse=' + this.bourse + '&type=1')
+				this.$router.push('showdetail?bourse=' + this.bourse + '&type=1&poni=1')
 			},
 			clileft(s, num) {
 				this.bourse = num;
@@ -919,14 +838,13 @@
 				});
 			},
 			send() {
-				var jsonback = sessionStorage.getItem("jsonback");
 
 				if (!this.bourse)
 					return this.$toast.fail({
 						message: "请选择交易所",
 						duration: 1200
 					});
-				if (this.types == 2 && !jsonback)
+				if (this.types == 1)
 					return this.$toast.fail({
 						message: "请点击去设置",
 						duration: 1200
@@ -937,13 +855,12 @@
 						duration: 1200
 					});
 				var obj = {};
-				if (this.types == 2) obj = JSON.parse(jsonback);
 				obj.types = this.types;
 
 				obj.bourse = this.bourse;
 				obj.symbol = this.symbol;
 				obj.symbol1 = this.selsym.join(",");
-				if (this.types == 2) {
+				if (this.types == 1) {
 					if (obj.gridswitch) {
 						obj.gridswitch = "open";
 					} else {
@@ -1953,20 +1870,19 @@
 			color: rgb(69, 196, 58);
 		}
 	}
-
 	.divli1 {
 		border-bottom: 1px solid #f5f6fa;
 		color: rgb(153, 153, 153);
-
+	
 		font-size: 13px;
-
+	
 		.item {
 			padding: 0 .2rem;
 			margin: 5px 0;
 		}
 	}
-
 	.divli {
+		font-size: 14px;
 		display: flex;
 		-webkit-box-pack: justify;
 		-ms-flex-pack: justify;
@@ -1975,32 +1891,30 @@
 		padding: .1rem .2rem .1rem .2rem;
 		font-size: .3rem;
 		background: #fff;
-		color: #000;
 		border-bottom: 1px solid #eee;
-
+				color: #646566;
 		.right {
 			color: #000;
 
 			.inputclass {
 				text-align: right;
-				color: #000;
 			}
 		}
 	}
 
 	.imgge1 {
 		height: 34px;
+		margin-top: 10px;
 		line-height: 34px;
-		font-weight: 550;
+		// font-weight: 550;
 		font-size: 15px;
 		background-color: rgb(240, 240, 240);
 		padding-left: .2rem;
 		display: flex;
 		justify-content: space-between;
-
+		color: #646566;
 		.item {
-			color: rgb(157, 153, 153);
-			margin-left: 34px;
+			// margin-left: 4%;
 			display: flex;
 			font-size: 14px;
 
@@ -2081,4 +1995,23 @@
 			color: #2284fd;
 		}
 	}
+	.heyue-body{
+		width: 42%;
+		display: flex;
+		margin-left: 16px;
+		overflow: hidden;
+		color: #646566;
+		font-size: 14px;
+		line-height: 24px;
+		background-color: #fff;
+		border-bottom: 1px solid #ebedf0;
+		line-height: 35px;
+		input{
+			width: 50px;
+			text-align: center;
+		}
+	}
+	.heyue-body1{
+		border-bottom: 1.5px solid #ebedf0;
+		}
 </style>

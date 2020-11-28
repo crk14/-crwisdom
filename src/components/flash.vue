@@ -15,10 +15,10 @@
         <p>USDT余额</p>
         <p>{{info.number||0}}</p>
       </div>
-      <!-- <div>
-        <p>JUW余额</p>
+      <div>
+        <p>CRW余额</p>
         <p style="padding-top:.1rem;">{{info.safe_num||0}}</p>
-      </div> -->
+      </div>
     </div>
     <div class="page-body">
       <p>购买通道</p>
@@ -26,90 +26,34 @@
       <div class="item">
         <div class="item1">
           <div class="one">USDT购买</div>
-          <div class="two">点卡: 700点</div>
-        </div>
-        <div class="item1" style="margin-top: 15px;">
-          <div class="three">
-            售价
-            <span>100</span>USDT
-          </div>
-          <div class="four" @click="confirm(100,true)">立即购买 》</div>
-        </div>
-      </div>
-      <p class="hr" style="padding: 0;background-color: rgb(230,231,235)"></p>
-	  <div class="item">
-	    <div class="item1">
-	      <div class="one">USDT购买</div>
-	      <div class="two">点卡: 3500点</div>
-	    </div>
-	    <div class="item1" style="margin-top: 15px;">
-	      <div class="three">
-	        售价
-	        <span>500</span>USDT
-	      </div>
-	      <div class="four" @click="confirm(500,true)">立即购买 》</div>
-	    </div>
-	  </div>
-	  <p class="hr" style="padding: 0;background-color: rgb(230,231,235)"></p>
-	  <div class="item">
-	    <div class="item1">
-	      <div class="one">USDT购买</div>
-	      <div class="two">点卡: 7000点</div>
-	    </div>
-	    <div class="item1" style="margin-top: 15px;">
-	      <div class="three">
-	        售价
-	        <span>1000</span>USDT
-	      </div>
-	      <div class="four" @click="confirm(1000,true)">立即购买 》</div>
-	    </div>
-	  </div>
-	  <p class="hr" style="padding: 0;background-color: rgb(230,231,235)"></p>
-	  <div class="item">
-	    <div class="item1">
-	      <div class="one">USDT购买</div>
-	      <div class="two">点卡: 14000点</div>
-	    </div>
-	    <div class="item1" style="margin-top: 15px;">
-	      <div class="three">
-	        售价
-	        <span>2000</span>USDT
-	      </div>
-	      <div class="four" @click="confirm(2000,true)">立即购买 》</div>
-	    </div>
-	  </div>
-	  <p class="hr" style="padding: 0;background-color: rgb(230,231,235)"></p>
-	  <div class="item">
-	    <div class="item1">
-	      <div class="one">USDT购买</div>
-	      <div class="two">点卡: 35000点</div>
-	    </div>
-	    <div class="item1" style="margin-top: 15px;">
-	      <div class="three">
-	        售价
-	        <span>5000</span>USDT
-	      </div>
-	      <div class="four" @click="confirm(5000,true)">立即购买 》</div>
-	    </div>
-	  </div>
-	  <p class="hr" style="padding: 0;background-color: rgb(230,231,235)"></p>
-     <!-- <div class="item">
-        <div class="item1">
-          <div class="one">JUW购买</div>
           <div class="two">点卡: 1400点</div>
         </div>
         <div class="item1" style="margin-top: 15px;">
           <div class="three">
             售价
-            <span>1400</span>JUW
+            <span>200</span>USDT
+          </div>
+          <div class="four" @click="confirm(true)">立即购买 》</div>
+        </div>
+      </div>
+      <p class="hr" style="padding: 0;background-color: rgb(230,231,235)"></p>
+      <div class="item">
+        <div class="item1">
+          <div class="one">CRW购买</div>
+          <div class="two">点卡: 1400点</div>
+        </div>
+        <div class="item1" style="margin-top: 15px;">
+          <div class="three">
+            售价
+            <span>1400</span>CRW
           </div>
           <div class="four" @click="confirm(false)">立即购买 》</div>
         </div>
-      </div> -->
-      <!-- <p class="hr" style="padding: 0;background-color: rgb(230,231,235)"></p> -->
+      </div>
+      <p class="hr" style="padding: 0;background-color: rgb(230,231,235)"></p>
       <p
         style="color: #2167ff;font-size: 0.31rem;padding: 0.4rem 0.42rem;font-weight: 540;"
-      >点卡是JUW 量化推出的交易服务手续费,购买点卡数量比例: 1USDT = 7点 </p>
+      >点卡是CR Wisdom推出的交易服务手续费,购买点卡数量比例: 1USDT = 7点 1CRW=1点</p>
     </div>
   </div>
 </template>
@@ -150,7 +94,7 @@ export default {
         ? (this.num = this.info.number)
         : (this.num = this.info.safe_num);
     },
-    confirm(number,bool) {
+    confirm(bool) {
       //      if (!this.num) return this.$toast.fail({ message: "请输入数量", duration: 1200 });
       //      if(this.types==1&&Number(this.num)<100) return this.$toast.fail({ message: "数量不能少于100", duration: 1200 });
       //      if(this.types==2&&Number(this.num)<700) return this.$toast.fail({ message: "数量不能少于700", duration: 1200 });
@@ -161,18 +105,18 @@ export default {
       // }
 
       if (bool) {
-        if (this.info.number < 100) {
+        if (this.info.number < 200) {
           this.$toast.fail({ message: "USDT余额不足", duration: 1200 });
           return;
         }
-        this.num = number;
+        this.num = 200;
         this.types = 1;
       } else {
         if (this.info.safe_num < 1400) {
-          this.$toast.fail({ message: "JUW余额不足", duration: 1200 });
+          this.$toast.fail({ message: "CR余额不足", duration: 1200 });
           return;
         }
-        this.num =number;
+        this.num = 1400;
         this.types = 2;
       }
       Dialog.confirm({
@@ -337,7 +281,7 @@ export default {
 .page-body {
   background-color: #ffffff;
   width: 100%;
-  min-height: 12.7rem;
+  height: 12.7rem;
   p {
     font-size: 0.4rem;
     font-weight: bold;

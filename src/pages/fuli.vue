@@ -3,6 +3,7 @@
     <div class="tophader">
       <van-icon name="arrow-left" onclick="window.history.go(-1)" />
       <p>福利中心</p>
+      <span style="position: absolute;right: .15rem;top: 0;color: #909090;font-size: 14px;" @click="$router.push('noticedateil?id=86')">规则说明</span>
     </div>
     <div class="fuli-body">
       <img v-show="activeName=='a'" src="../assets/1102.png" class="body-img" />
@@ -37,7 +38,7 @@
 	  会员福利:
 	    <span
 	      style="font-size: .38rem;"
-	    >{{memberaccount.toFixed(2) + ' JUW'}}</span>
+	    >{{memberaccount.toFixed(2) + ' CRW'}}</span>
 	  </div>
 	  <div
 	    v-show="activeName=='b'"
@@ -49,6 +50,24 @@
 	      style="font-size: .38rem;"
 	    >{{sqdk.toFixed(2) + ' 点卡'}}</span>
 	  </div>
+	  <div
+	    v-show="activeName=='b'"
+	    class="title"
+	    style="left: .6rem;top: 2.65rem;font-size: .32rem;"
+	  >
+	  代理福利:
+	    <span
+	      style="font-size: .38rem;"
+	    >{{agentcount.toFixed(2) + ' CRW'}}</span>
+	  </div>
+	 
+      <div
+        v-show="activeName =='c'"
+        class="title"
+        style="left: .6rem;top: 2.2rem;font-size: .42rem;"
+      >
+        <!-- <span style="font-size: .57rem;">{{info.number}}</span> -->
+      </div>
       <div
         v-show="activeName!='c'"
         class="title"
@@ -63,7 +82,10 @@
 				<div class="title" style="left: 4.7rem;top: 2.7rem;display: flex;font-size: 15px;">划转 <img src="../assets/208.png" style="width: 13px;height: 13px;margin-top: 4px;margin-left: 2px;"/></div>
       </div>-->
     </div>
-<div class="page-fuli">
+
+    <van-tabs v-model="activeName" color="#124cfb">
+      <van-tab title="会员福利" name="a">
+        <div class="page-fuli">
           <div class="title1">
             <span>我的邀请: {{invite.invite_num}}</span>
             <span>正式用户: {{invite.team_num}}</span>
@@ -84,7 +106,96 @@
             </div>
           </div>
         </div>
-    
+      </van-tab>
+      <van-tab title="代理福利" name="b">
+        <div class="page-fuli">
+          <div class="title1">
+            <span>我的邀请: {{invite.invite_num}}</span>
+            <span>注册用户: {{invite.register_num}}</span>
+            <span>正式用户: {{invite.team_num}}</span>
+          </div>
+          <div class="item" v-for="(item,index) in daililist" :key="index">
+            <img class="img" :src="item.avatar" />
+            <div class="two" style="overflow: hidden;flex: 1;text-overflow: ellipsis;white-space: nowrap">
+              {{item.nick_name}}
+              <p>{{item.create_time}}</p>
+            </div>
+            <div class="three" style="color: rgb(40,60,103);font-size: 14px;width: auto;">
+              消费点卡：{{parseInt(item.trans_num)}}{{item.remark=="推荐级别奖"?'USDT':'点'}}
+              <p>{{item.remark|remark2}}：{{(item.num *1).toFixed(2)}} CRW</p>
+            </div>
+          </div>
+        </div>
+      </van-tab>
+      <van-tab title="代理申请" name="c">
+        <p class="hr" style="padding: 0;background-color: rgb(230,231,235);"></p>
+        <div class="item2" :class="{'item3':level>=1}">
+          <div class="item1">
+            <div class="one">社区代理</div>
+            <!-- <div class="two">点卡: 10000点</div> -->
+          </div>
+          <div class="two" style="text-indent:44px">
+            一次性充值
+            <span>3000</span>USDT购买
+            <span>21000</span>点卡,购买成功后平台额外赠送
+            <span>9000</span>点卡,共获得
+            <span>30000</span>点卡并获得社区代理资格
+          </div>
+          <p class="two">(点卡可用于自已交易抵扣系统使用服务费,或转让给网体正式用户使用)</p>
+          <div class="item1" style="margin-top: 15px;">
+            <div class="three">
+              购买
+              <span>3000</span>USDT
+            </div>
+            <div class="four" @click="confirm(3000,9000)">立即申请 》</div>
+          </div>
+        </div>
+        <p class="hr" style="padding: 0;background-color: rgb(230,231,235);"></p>
+        <div class="item2" :class="{'item3':level>=2}">
+          <div class="item1">
+            <div class="one">城市合伙人</div>
+            <!-- <div class="two">点卡: 10000点</div> -->
+          </div>
+          <div class="two" style="text-indent:44px">
+            一次性充值
+            <span>{{num2}}</span>USDT购买
+            <span>{{num2*7}}</span>点卡,购买成功后平台额外赠送点卡福利
+            <span>{{num2*7}}</span>点卡,共获得
+            <span>{{num2*14}}</span>点卡并获得城市合伙人资格
+          </div>
+          <p class="two">(点卡可用于自已交易抵扣系统使用服务费,或转让给网体正式用户使用)</p>
+          <div class="item1" style="margin-top: 15px;">
+            <div class="three">
+              购买
+              <span>{{num2}}</span>USDT
+            </div>
+            <div class="four" @click="confirm(num2,num2*7)">立即申请 》</div>
+          </div>
+        </div>
+        <p class="hr" style="padding: 0;background-color: rgb(230,231,235);"></p>
+        <!-- <div class="item2" :class="{'item3':level>=3}">
+          <div class="item1">
+            <div class="one">高级合伙人</div> -->
+            <!-- <div class="two">点卡: 10000点</div> -->
+         <!-- </div>
+          <div class="two" style="text-indent:44px">
+            一次性充值
+            <span>{{num3}}</span>USDT购买
+            <span>{{num3==15000?'10万':num3*7}}</span>点卡,购买成功后平台额外赠送点卡福利
+            <span>{{num3==15000?'20万':num3*14}}</span>点卡,共获得
+            <span>{{num3==15000?'30万':num3*21}}</span>点卡并获得高级合伙人资格
+          </div>
+          <p class="two">(点卡可用于自已交易抵扣系统使用服务费,或转让给网体正式用户使用)</p>
+          <div class="item1" style="margin-top: 15px;">
+            <div class="three">
+              购买
+              <span>{{num3}}</span>USDT
+            </div>
+            <div class="four" @click="confirm(num3,num3*14)">立即申请 》</div>
+          </div> -->
+        <!-- </div> -->
+        <p class="hr" style="padding: 0;background-color: rgb(230,231,235);"></p>
+      </van-tab>
     </van-tabs>
   </div>
 </template>

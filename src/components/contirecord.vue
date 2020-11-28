@@ -5,6 +5,7 @@
       <p v-if="type==1">充币记录</p>
       <p v-if="type==2">提币记录</p>
       <p v-if="type==3">购买记录</p>
+	  <p v-if="type==4">购买记录</p>
       <p v-if="type==10">互转记录</p>
     </div>
     <p class="hr"></p>
@@ -27,7 +28,7 @@
         <li v-for="(item,i) in info" :key="i">
              <p class="oldernum">
             <span>提币数量</span>
-            <span style="color:#000">{{item.cr_num}} JUW</span>
+            <span style="color:#000">{{item.cr_num}} CRW</span>
           </p>
            <p class="oldernum">
             <span>矿工费</span>
@@ -73,7 +74,7 @@
           <div class="botdiv">
             <p>{{item.create_time}}</p>
             <p>
-              <span>{{item.money_types==1?'USDT':item.money_types==2?'JUW':'点卡'}}</span>
+              <span>{{item.money_types==1?'USDT':item.money_types==2?'CRW':'点卡'}}</span>
             </p>
           </div>
         </li>

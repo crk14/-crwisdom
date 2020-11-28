@@ -10,8 +10,8 @@
 			  <p>{{item.create_time}}</p>
 			  </div>
 			  <div class="three" style="color: rgb(40,60,103);font-size: 14px;flex: 1;text-align: right;">
-				 {{item.money_type==1?'':'购买点卡:'+parseInt(item.trans_num) +'点'}}
-			  <p>{{item.remark}}:{{item.money_type==1?(item.num*1).toFixed(3)+'USDT':parseInt(item.num)+'JUW'}} </p>
+				 {{item.money_type==1?'':'购买点卡:1400点'}}
+			  <p>{{item.remark}}:{{item.money_type==1?(item.num*1).toFixed(3)+'USDT':parseInt(item.num)+'CRW'}} </p>
 			  </div>
 		  </div>
 		

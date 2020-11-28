@@ -15,6 +15,13 @@
           <p>首页</p>
         </router-link>
       </li>
+	  <li @click="clis(4)">
+	    <router-link to="/shangchen" :class="iscli==4?'curry':''">
+	      <img v-if="iscli==4" src="./assets/sc1234.png" alt />
+	      <img v-else src="./assets/sc123.png" alt />
+	      <p>商城</p>
+	    </router-link>
+	  </li>
       <li @click="clis(1)">
         <router-link to="/notecase" :class="iscli==1?'curry':''">
           <img v-if="iscli==1" src="./assets/904.png" alt />
@@ -26,7 +33,7 @@
 		  <router-link to="/find" :class="iscli==2?'curry':''">
           <img v-if="iscli==2" src="./assets/tongji2.png" alt />
           <img v-else src="./assets/tongji.png" alt />
-          <p>排行</p>
+          <p>发现</p>
 		  </router-link>
       </li>
       <li @click="clis(3)">
@@ -90,6 +97,8 @@ export default {
         this.iscli = 3;
       }else if (this.$router.history.current.path == "/find") {
 	    this.iscli = 2;
+	  }else if (this.$router.history.current.path == "/shangchen") {
+	    this.iscli = 4;
 	  }
     }
   },

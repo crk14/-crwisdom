@@ -126,7 +126,7 @@ export default {
     return {
 		value:'',
 		value2:1,
-		bool:false
+		bool:true
     };
   },
   created() {

@@ -21,7 +21,7 @@
           placeholder="请输入您的钱包地址"
         />
         <p class="hr"></p>
-        <p>可用JUW余额：{{info.safe_num}}</p>
+        <p>可用USDT余额：{{info.number}}</p>
       </li>
       <li>
         <p>提币数量</p>
@@ -31,7 +31,7 @@
             autocomplete="off"
             name="userName"
             v-model="num"
-            :placeholder="'提币数为'+info.reg_limit+'JUW的整数倍'"
+            placeholder="请输入提币数量"
           />
         </div>
         <p class="hr"></p>
@@ -158,7 +158,7 @@ export default {
         // this.reality=s-(s*this.reg_ratio);
         // var ord=s/100;
         // this.feevalue=ord*this.reg_ratio;
-        var b=Number(s)/Number(this.cr_to_usdt)
+        var b=Number(s)
         this.reality = parseInt(Number(b - Number((this.feevalue/100)*b))*100000)/100000
       }else{
         this.reality=0

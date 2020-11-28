@@ -1,22 +1,8 @@
 <template>
 	<div>
-		<van-icon onclick="window.history.go(-1)" name="arrow-left" style="position: absolute;left: 5px;top: 5px;z-index: 100;" size="25px"
+		<van-icon onclick="window.history.go(-1)" name="arrow-left" style="position: absolute;left: 5px;top: 5px;" size="25px"
 		 color="#ffffff" />
-		<img style="width: 100%;height: 100%;position: relative;" src="../assets/baana6.png"/>
-		<div class="body">
-			<p>我的邀请码</p>
-			<div>{{info}}</div>
-			<button @click="fn1(info,true)">复制</button>
-			<img src="../assets/banyuan.png" style="width: 100.5%;"/>
-			<div id="qrcode" ref="imgsave">
-				<img v-show="myimg" :src="img" alt />
-			</div>
-		</div>
-		<div class="button">
-			<div  @click="fn1(infourl,false)" >复制邀请链接</div>
-			<div type="button" @click="savecode1" >生成邀请海报</div>
-		</div>
-		<!-- <img class="img" src="../assets/10099.png" />
+		<img class="img" src="../assets/10099.png" />
 		<div class="title">
 			<img style="width: 100%;" src="../assets/10010.png" />
 			<div class="one">
@@ -37,7 +23,7 @@
 				<button type="button" @click="savecode1" class="changebton">生成邀请海报</button>
 			</div>
 
-		</div> -->
+		</div>
 		<textarea cols="20" rows="10" id="biao1" style="opacity: 0;height: 1px;">{{info}}</textarea>
 		<textarea cols="20" rows="10" id="biao2" style="opacity: 0;height: 1px;">{{infourl}}</textarea>
 	</div>
@@ -55,18 +41,9 @@
 				number: 0,
 				memberaccount: 0,
 				list: [],
-				ishow: false
 			};
 		},
 		created() {
-			console.log(navigator.userAgent)
-			this.$axios.post("/index/member/getUserInfo").then(res => {
-				if (res.data.code == 0) {
-					if (res.data.info.is_need == 2) {
-						this.ishow = true
-					}
-				}
-			});
 			this.$axios.post("/index/member/getInviteImg").then(res => {
 				if (res) {
 					if (res.data.code == 0) {
@@ -79,12 +56,12 @@
 					this.memberaccount = res.data.member_account
 				}
 			});
-			this.$axios.get("/index/rank/get_share_rank").then(res => {
-				if (res.data.code == 0) {
-					this.list = res.data.data
-					// this.memberaccount = res.data.member_account
-				}
-			});
+			// this.$axios.get("/index/rank/get_share_rank").then(res => {
+			// 	if (res.data.code == 0) {
+			// 		this.list = res.data.data
+			// 		// this.memberaccount = res.data.member_account
+			// 	}
+			// });
 		},
 		mounted() {
 			this.$axios.post("/index/member/spread").then(res => {
@@ -191,17 +168,24 @@
 			},
 			savecode1() {
 				var ts = this;
-				jsBridge.ready(function() {
-					jsBridge.saveImageToAlbum(ts.imgpng, function(succ) {
-						succ ? ts.$toast.success({
-							message: "保存成功",
-							duration: 1200
-						}) : ts.$toast.fail({
-							message: "保存失败：转码失败或没有相册使用权限",
-							duration: 1200
+				if (!!navigator.userAgent.match(/citicbankmobile/i)) {
+					jsBridge.ready(function() {
+						jsBridge.saveImageToAlbum(ts.imgpng, function(succ) {
+							succ ? ts.$toast.success({
+								message: "保存成功",
+								duration: 1200
+							}) : ts.$toast.fail({
+								message: "保存失败：转码失败或没有相册使用权限",
+								duration: 1200
+							});
 						});
 					});
-				});
+				} else {
+					if(ts.imgpng){
+						window.open(ts.imgpng)
+					}
+				}
+				
 
 			},
 			savecode() {
@@ -229,63 +213,57 @@
 </script>
 
 <style lang="less" scoped>
-	.button{
-		position: absolute;
-		width: 70%;
-		bottom: 8%;
-		display: flex;
-		justify-content: space-between;
-		left: 15%;
-		div{
-			width: 45%;
-			border: 1px solid #FFFFFF;
-			line-height: 30px;
-			color: #FFFFFF;
-			text-align: center;
-			border-radius: 3px;
-		}
+	.img {
+		width: 100%;
+		height: 7.2rem;
 	}
-	.body{
-		width: 70%;
-		margin: 0 auto;
-		position: absolute;
-		height: 47%;
-		background-color: #FFFFFF;
-		top: 35%;
-		left: 15%;
-		border-radius: 6px;
-		text-align: center;
-		p{
-			font-size: 13px;
-			color: rgb(164,164,164);
-			margin-top: 12px;
+
+	.title {
+		background-color: rgb(233, 236, 243);
+		width: 90%;
+		margin-top: -5px;
+		padding: 0.07rem 5%;
+		min-height: 8.3rem;
+
+		.one {
+			margin-top: -5px;
+			background-color: #FFFFFF;
+			min-height: 2.2rem;
+			padding: .3rem .3rem 20px .3rem;
+
+			text-align: center;
+
+			#qrcode {
+				// margin-left: 40%;
+				margin: 0 auto;
+				width: 100px;
+				height: 100px;
+			}
+
+			p {
+				font-size: 14px;
+
+				.bun {
+					font-size: 12px;
+					padding: 1.5px 8px;
+					background-color: rgb(213, 227, 255);
+					border-radius: 9px;
+				}
+			}
+
+			button {
+				border-radius: 5px;
+				height: 40px;
+				line-height: 40px;
+				margin: 30px auto 0;
+			}
 		}
-		div{
-			font-weight: 550;
-			height: 40px;
-			font-size: 26px;
-			// color: rgb(78,90,237);
-			margin-top: 12px;
-			background: linear-gradient(to top, rgb(80,112,225), rgb(80,112,225));
-			-webkit-background-clip: text;
-			color: transparent;
-			-webkit-text-fill-color: transparent;
-			text-fill-color: transparent;
-		}
-		button{
-			width: 70px;
-			line-height: 26px;
-			border-radius: 15px;
-			font-size: 13px;
-			color: #ffffff;
-			margin: 14px 0;
-			background-color: rgb(249,56,113);
-		}
-		#qrcode{
-			width: 100px;
-			height: 100px;
-			margin: 0 auto;
-			margin-top: 13px;
-		}
+
+	}
+
+	.abcd {
+		position: fixed;
+		top: 0px;
+		left: 0px
 	}
 </style>

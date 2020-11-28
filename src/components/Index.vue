@@ -1,9 +1,9 @@
 <template>
   <div class="index">
 	  <div style="display: flex;justify-content: space-between;">
-		  <div class="tophader" >
+		  <div class="tophader" onclick="window.history.go(-1)">
 		    <p style="margin-left: .2rem;">
-		      <img src="../assets/logo6.png" alt />
+		      <img src="../assets/title2.png" alt />
 		    </p>
 		  </div>
 		  <div class="index-img">
@@ -56,61 +56,44 @@
     <!-- </div> -->
 	<p class="hr" style="height: 1px;margin: 0 20px;background-color: #F5F5F5;"></p>
 	
-	<!-- <div class="index-body">
+	<div class="index-body">
 		<div class="item">
-			<div>USDT账户</div>
-			<p v-show="movielist.number">{{Number(movielist.number).toFixed(2)}}</p> -->
+			<div>USDT汇率</div>
+			<p v-show="movielist.number">{{6.5}}</p>
 			<!-- <p class="one">≈65088.58 CNY</p> -->
 			<!-- <p><span>余额</span></p> -->
-		<!-- </div>
+		</div>
 		<div class="item">
-			<div>JUW账户</div>
-			<p v-show="movielist.safe_num">{{Number(movielist.safe_num).toFixed(2) }}</p> -->
+			<div>CRW账户</div>
+			<p v-show="movielist.safe_num">{{Number(movielist.safe_num).toFixed(2) }}</p>
 			<!-- <p class="one">=227.96 CNY</p> -->
 			<!-- <p><span>余额</span></p> -->
-		<!-- </div>
+		</div>
 		<div class="item" :class="{'active':isshow}">
 			<div>点卡账户</div>
-			<p v-show="movielist.point_num">{{Number(movielist.point_num).toFixed(2)}} </p> -->
+			<p v-show="movielist.point_num">{{Number(movielist.point_num).toFixed(2)}} </p>
 			<!-- <p class="one">=16.28 CNY</p> -->
 			<!-- <p><span>即将不足</span></p> -->
-	<!-- 	</div>
+		</div>
 	</div>
-	<p class="hr" style="height: 6px;"></p> -->
-	<!-- <div style="display: flex;width: 100%;" v-if="img && img.cr_index">
+	<p class="hr" style="height: 6px;"></p>
+	<div style="display: flex;width: 100%;" v-if="img && img.cr_index">
 		<div style="width: 60%;height: 2.5rem;"><img :src="url + img.cr_index" style="width: 100%;height: 2.5rem;"/></div>
 		<div style="width: 40%;height: 2.5rem;border-left: 6px solid #f6f7f9;">
 			<div style="width: 100%;text-align: center;height: 47%;position: relative;"><img @click="$router.push('fenxiang')" :src="url + img.cr_share" style="width: 100%;height:100%;"/></div>
 			<p class="hr" style="height: 6%;"></p>
-			<div style="width: 100%;text-align: center;height: 47%;position: relative;"><img @click="$router.push('fuli')" :src="url + img.cr_welfare" style="width: 100%;height:100%;"/></div>
+			<div style="width: 100%;text-align: center;height: 47%;position: relative;"><img @click="$router.push({path:'more',query:{type:1}})" :src="url + img.cr_welfare" style="width: 100%;height:100%;"/></div>
 		</div>
 	</div>
-	<p class="hr" style="height: 6px;"></p> -->
-	<!-- <div class="index-icon">
-		<div  @click="$router.push({path:'more',query:{type:1}})"><img src="../assets/title7.png" style=" margin-bottom: 3px;"/>
-		<p style="margin-top: -1px;">新手指南</p>
-		</div>
-		<div  @click="fn3()"><img src="../assets/title6.png" style=" margin-bottom: 3px;"/>		<p style="margin-top: -1px;">快速充值</p></div> -->
-		<!-- <div @click="fn3(true)"><img src="../assets/title5.png"/>		<p>CR直播</p></div>
-		<div @click="fn3(true)"><img src="../assets/title4.png"/>		<p>自营商场</p></div>
-		<div @click="fn3(true)"><img src="../assets/title3.png"/>		<p>游戏社区</p></div> -->
-	<!-- </div> -->
+	<!-- <p class="hr" style="height: 6px;"></p> -->
     <p class="hr"></p>
 	<div class="bootom">
-	<!-- 	<div class="title">
-			<div style="width: 4px;height: 18px;background-color: rgb(38,136,251);margin-right: 4px;margin-top: 2px;"></div>
-			<div style="font-size: 18px;margin-top: -3px;">行情</div>
-			<div style="margin: 0 7.6%;font-size: 15px;color: rgb(113,106,106);font-weight: 500;" :class="{'active':isshow2==true}" @click="isshow2=true">现货实时行情</div>
-			<div style="margin-right: 9%;font-size: 15px;color: rgb(113,106,106);font-weight: 500;" :class="{'active':isshow2==false}" @click="isshow2=false">合约实时行情</div>
-			<img src="../assets/jiahao.png" @click="tobidui" />
-		</div>
-		<div class="body">
+		<div class="body" style="font-size: 0.26rem;padding: .14rem 10%;">
 			<div>名称</div>
 			<div>最新价</div>
 			<div>涨跌幅</div>
-		</div> -->
-		<div v-show="isshow2" class="body" v-for="(item,index) in list4" style="padding: 0.19rem 0.17rem 0.19rem 0.1rem;" :key="index">
-			<!-- <img  class="index-img1" :src="'../assets/'+item.symbol+'.png'"/> -->
+		</div>
+		<div v-show="isshow2" class="body" v-for="(item,index) in list4" style="padding: 0.19rem 0.17rem 0.17rem 0.19rem;" :key="index">
 			<img  v-show="item.symbol == 'BTC'" class="index-img1" src="../assets/btc.png"/>
 			<img  v-show="item.symbol == 'ETH'" class="index-img1" src="../assets/eth.png"/>
 			<img  v-show="item.symbol == 'ZEC'" class="index-img1" src="../assets/zec.png"/>
@@ -124,36 +107,8 @@
 			<div v-show="item.up_or_down>0" class="three" style="display: flex;"><div style="font-size: 12px;margin-left: 5px;height: 27px;line-height: 27px;">+</div> <span style="">{{item.up_or_down.toFixed(2)}}%</span> </div>
 		</div>
 	</div>
-	<!-- 交易币对弹窗 -->
-	   <van-popup
-	     v-model="bidui"
-	     position="right"
-	     class="poup"
-	     :style="{ height: '100%' ,width:'100%'}"
-	   >
-	     <div class="tophader">
-	       <van-icon name="arrow-left" @click="bidui = false" />
-	       <p>添加货币</p>
-			
-	     </div>
-		 
-		  <div class="poup-body">
-			  <span>货币对</span>
-			  <!-- <span>行情</span> -->
-			  <span>操作</span>
-		  </div>
-	     <ul>
-	<li class="li-item"  v-for="(item,i) in list3"
-	         :key="i" >
-		 <div style="padding-left: .4rem;font-size: 14px;width: 86px;">{{item.symbol1.toUpperCase()}}/<span style="color: #CCCCCC;">{{item.symbol.toUpperCase()}}</span> </div>
-		 <div style="padding-left: 1rem;color: #2284fd;" v-show="!item.bool" @click="selecli_symbolcli(item.symbol1)">添加</div>
-		 <div style="padding-left: 1.62rem;color: #C0C5CB;" v-show="item.bool">已添加</div>
-	</li>
-	      <!-- <div class="beijing">
-	         <button class="changebton" @click="selecli_symbolcli()">确定选择</button>
-	       </div> -->
-	     </ul>
-	   </van-popup>
+	
+	
   </div>
 </template>
 
@@ -172,7 +127,7 @@ export default {
 	  isshow:true,
 	  isshow2:true,
 	  movielist:{},
-	  bidui:false,
+	  // bidui:false,
 	  list3:[],
 	  list4:[],
 	  time:'',
@@ -190,13 +145,6 @@ export default {
       .then(res => {
         this.img = res.data.info;
       });
-
-      // this.$axios
-      // .get("/index/article/indexBannerArt")
-      // .then(res => {
-      //   this.arr = res.data.info;
-      // });
-
     this.$axios
       .get("/index/article/image", { page: 1, limit: 10 })
       .then(res => {
@@ -208,9 +156,6 @@ export default {
       .then(res => {
         this.list = res.data.info;
       });
-
-   
-
     this.$axios
       .get("/index/article/indexArt", { page: 1, limit: 10 })
       .then(res => {
@@ -252,6 +197,7 @@ export default {
 		  		  		this.list4 = res.data.data
 		  		  });
 		  },10000)
+		  localStorage.setItem('time',JSON.stringify( this.time))
 	  },
 	  fn3(bool){
 	  		  if(bool){
@@ -259,20 +205,6 @@ export default {
 	  		  }else{
 	  			  this.$toast.fail({ message: '钱包维护中,请联系客服', duration: 1200 });
 	  		  }
-	  },
-	  tobidui(){
-		  this.bidui = true
-		  this.$axios
-		    .post("/index/strategy/get_symbol", {
-		      symbol: 'USDT',
-		      bourse: 1
-		    })
-		    .then(res => {
-		    
-		  	  this.list3 = res.data.symbol
-		  	  
-		   
-		  	})
 	  },
     linkmore(){
       location.href=this.newlink;
@@ -613,7 +545,7 @@ export default {
 .bootom{
 	padding-left: .2rem;
 	padding-right: .2rem;
-	margin-bottom: 50px;
+	margin-bottom: 60px;
 	.title{
 		font-weight: bold;
 		display: flex;
@@ -634,7 +566,7 @@ export default {
 		display: flex;
 		justify-content: space-between;
 		color: rgb(96,94,95);
-		padding: .1rem .3rem .1rem .1rem;
+		padding: .14rem .3rem .14rem .1rem;
 		border-bottom: 1.3px solid #EEEEEE;
 		.one{
 			font-size: 15.5px;
@@ -731,10 +663,10 @@ export default {
 		
 	}
 	.index-img1{
-		width: 30px;
-		height: 30px;
-		display: block;
-		margin-right: 9px;
-		margin-top: 5px;
+	    width: 24px;
+	    height: 24px;
+	    display: block;
+	    margin-right: 9px;
+	    margin-top: 0px;
 	}
 </style>

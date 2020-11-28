@@ -11,7 +11,7 @@
         <p>互转类型</p>
         <!-- <input type="password" v-model="oldpass" placeholder="请输入旧的交易密码" /> -->
         <select v-model="valss">
-          <option v-for="(item,i) in optionval" :value="item.a" :key="i">{{item.a}}</option>
+          <option  selected="selected">CRW</option>
         </select>
         <p class="hr"></p>
       </li>
@@ -59,10 +59,10 @@ export default {
       num: "",
       trad_password: "",
       code: "",
-      optionval: [{ a: "USDT" }, { a: "CRW" }],
+      optionval: [ { a: "CRW" }],
       accout:'',
       info:{},
-      valss:'USDT',
+      valss:'CRW',
 	  valss2:''
     };
   },
@@ -71,7 +71,6 @@ export default {
 	    if (res.data.code == 0) {
 			if(res.data.info.level>0){
 				this.level = true
-				this.optionval = [{ a: "USDT" }, { a: "CRW" },{a:'点卡'}]
 			}
 	    }
 	  });
@@ -80,7 +79,7 @@ export default {
       .then(res => {
         if(res.data.info){
           this.info = res.data.info;
-		  this.valss2 = this.info.number
+		  this.valss2 = this.info.safe_num
         }
          if (res.data.real==-1&&res.data.code==0) {
           layer.open({content: res.data.msg,skin: 'msg',time: 2});
