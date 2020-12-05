@@ -30,7 +30,7 @@
 		</div>
 	</div>
 	<div style="position: relative;">
-		<img src="../assets/fuxingpng.png" style="position: absolute;top: 30px;width: 100.2%;"/>
+		<img src="../assets/fuxingpng.png" style="position: absolute;top: 24px;width: 100.5%;"/>
 	</div>
     <div class="labwarp" style="margin-top: 48px;background-color: #fff;margin-bottom: 50px;">
       <div class="tablecon" style="">

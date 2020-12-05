@@ -28,8 +28,8 @@
 			<div>
 				<span>|</span>配置
 			</div>
-			<div style="font-size: .25rem;font-weight: 550;margin-left: .6rem;margin-top: .05rem;">点卡余额：{{pointnum}}</div>
-			<!-- <div style="font-size: .25rem;font-weight: 550;margin-left: .5rem;margin-top: .05rem;">剩余有效天数：{{time}}天</div> -->
+			<!-- <div style="font-size: .25rem;font-weight: 550;margin-left: .6rem;margin-top: .05rem;">点卡余额：{{pointnum}}</div> -->
+			<div style="font-size: .25rem;font-weight: 550;margin-left: 50%;margin-top: .05rem;">剩余有效天数：{{time}}天</div>
 
 		</div>
 		<div class="strategy">
@@ -496,6 +496,7 @@
 			};
 		},
 		created() {
+			this.time = this.$route.query.time
 			this.$axios
 				.post("/index/robot/robot_systerm", {
 					robot_type:1,
@@ -519,19 +520,7 @@
 				.then(res => {
 					let info = res.data.info;
 					this.pointnum = info.point_num
-					var timestamp = Date.parse(new Date()) / 1000;
-					if (info.start_time) {
-						let time = parseInt((timestamp - info.start_time) / 60 / 60 / 24)
-						this.time = 150 - time
-					} else {
-						console.log(info.start_time, info.point_num)
-						if (info.point_num > 0) {
-							let time = parseInt((timestamp - info.start_time) / 60 / 60 / 24)
-							this.time = 150 - time
-						} else {
-							this.time = 0
-						}
-					}
+					
 				})
 			this.start();
 			if (this.bourse == 4) {

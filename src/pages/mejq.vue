@@ -22,7 +22,7 @@
 					<div class="button">
 						<button  v-show="!list1" @click="fn(1,list1)" >试用7天</button>
 						<button  v-show="list1" @click="fn(1,list1)" :class="{'active1':list1 && list1.active}" >激活</button>
-						<button @click="list1&& list1.active || list1.probation?$router.push('/intetrading2'):fn2(true)">进入系统</button>
+						<button @click="list1&& list1.active || list1.probation?$router.push(`/intetrading2?time=${list1.remain_day}`):fn2(true)">进入系统</button>
 					</div>
 				</div>
 				<div v-show="list1 && list1.active " class="i-t">已激活</div>
@@ -67,7 +67,7 @@
 						</div>
 						
 						<div class="button">
-							<button  v-show="!list3" @click="fn(3,list3)" >试用7天</button>
+							<button  v-show="!list3" @click="fn(3,list3,true)" >试用7天</button>
 							<button v-show="list3" @click="fn(3,list3)" :class="{'active1':list3 && list3.active}" >激活</button>
 							<button @click="list3&& list3.active|| list3.probation?$router.push('/heyue2?type=3'):fn2(true)">进入系统</button>
 						</div>
@@ -275,7 +275,8 @@ import { Dialog } from "vant";
 			margin-left: .9rem;
 			position: relative;
 			button{
-				padding: 0 12px;
+				padding: 0;
+				width: 34.4%;
 				border-radius: 12px;
 				border: 1.2px solid rgb(14,138,254);
 				margin-right: 20px;

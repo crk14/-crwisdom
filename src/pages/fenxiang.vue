@@ -103,17 +103,19 @@
 			},
 			fn1(s, bool) {
 				if (bool) {
-					if (!!navigator.userAgent.match(/citicbankmobile/i)) {
 						this.fn2(s)
-					} else {
-						this.copyUrl2()
-					}
+					// if (jsBridge.ready()) {
+					// 	this.fn2(s)
+					// } else {
+						// this.copyUrl2()
+					// }
 				} else {
-					if (!!navigator.userAgent.match(/citicbankmobile/i)) {
-						this.fn2(s)
-					} else {
-						this.copyUrl3()
-					}
+					this.fn2(s)
+					// if (jsBridge.ready()) {
+					// 	this.fn2(s)
+					// } else {
+						// this.copyUrl3()
+					// }
 				}
 
 			},
@@ -168,24 +170,23 @@
 			},
 			savecode1() {
 				var ts = this;
-				if (!!navigator.userAgent.match(/citicbankmobile/i)) {
-					jsBridge.ready(function() {
-						jsBridge.saveImageToAlbum(ts.imgpng, function(succ) {
-							succ ? ts.$toast.success({
-								message: "保存成功",
-								duration: 1200
-							}) : ts.$toast.fail({
-								message: "保存失败：转码失败或没有相册使用权限",
-								duration: 1200
-							});
+			// if(jsBridge.ready()){
+				jsBridge.ready(function() {
+					jsBridge.saveImageToAlbum(ts.imgpng, function(succ) {
+						succ ? ts.$toast.success({
+							message: "保存成功",
+							duration: 1200
+						}) : ts.$toast.fail({
+							message: "保存失败：转码失败或没有相册使用权限",
+							duration: 1200
 						});
 					});
-				} else {
-					if(ts.imgpng){
-						window.open(ts.imgpng)
-					}
-				}
-				
+				});
+			// }else{
+				// if(ts.imgpng){
+				// 		window.open(ts.imgpng)
+					// }
+			// }
 
 			},
 			savecode() {
