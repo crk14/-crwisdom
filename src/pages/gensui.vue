@@ -83,7 +83,8 @@
 					<p>人数有限，只带粉丝，</p>
 				</div>
 				<!-- <img class="img2" src="../assets/13033.png"/> -->
-				<button class="right" @click.stop="$router.push('/gdset?id='+2)">跟随</button>
+				<!-- <button class="right" @click.stop="$router.push('/gdset?id='+2)">跟随</button> -->
+				<button class="right" @click.stop="$toast.fail({message: `暂未开放`,duration: 1200})">跟随</button>
 			</div>
 			<div class="two">
 				<div class="left">
@@ -241,17 +242,20 @@ export default {
 							   white-space:nowrap;
 							   overflow:hidden;
 							   text-overflow:ellipsis;
-							   width: 193px;
+							   // width: 193px;
+							   width: 100%;
 						}
 					}
 					.right{
 						background-color: rgb(30,105,250);
 						color: #FFFFFF;
-						height: 24px;
-						width: 56px;
+						line-height: 22px;
+						width: 55px;
 						border-radius: 9px;
-						margin-top: 5px;
-						margin-right: 10px;
+						margin-top:3%;
+						margin-right: 3%;
+						font-size: 13px;
+						height: 22px;
 					}
 				}
 				.two{

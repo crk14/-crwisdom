@@ -83,7 +83,7 @@
 			</div>
 			<van-icon name="play" />
 		</div>
-		<button @click="settime()" v-show="bool2" style="position: absolute;right: .15rem;top:120px;background: rgb(34, 132, 253);color: #FFFFFF;height: .5rem;line-height: .5rem;">确认</button>
+		<button @click="settime()" v-show="bool2" style="position: absolute;right: .15rem;top:2.4rem;background: rgb(34, 132, 253);color: #FFFFFF;height: .5rem;line-height: .5rem;width: 1rem;font-size: 12px;">确认</button>
 		<div class="datebox" v-show="show">
 			<van-datetime-picker v-model="currentDate" @confirm="confirm(0)" @cancel="cancel(0)" type="date" />
 		</div>
@@ -369,6 +369,7 @@
 		},
 		methods: {
 			onRefresh(){
+				this.list = []
 				this.jiesuan()
 				  setTimeout(() => {
 				        this.isLoading = false;
@@ -459,6 +460,7 @@
 			},
 			confirm(s) {
 				if (s == 0) {
+					
 					this.value =
 						this.currentDate.getFullYear() +
 						"-" +
@@ -468,7 +470,7 @@
 					this.show = false;
 
 					if (this.valuefor != "") {
-						if ((new Date(this.value)) <= (new Date(this.valuefor))) {
+						if ((new Date(parseInt(this.value))) <= (new Date(parseInt(this.valuefor)) )) {
 							this.show = false;
 						} else {
 							this.$toast.fail({
@@ -486,8 +488,7 @@
 						(this.currentDate.getMonth() + 1) +
 						"-" +
 						this.currentDate.getDate();
-
-					if ((new Date(this.value)) <= (new Date(this.valuefor))) {
+					if ((new Date(parseInt(this.value))) <= (new Date(parseInt(this.valuefor)))) {
 						this.showfor = false;
 					} else {
 						this.$toast.fail({
@@ -498,19 +499,24 @@
 						this.showfor = true;
 					}
 				}
-
-
-
 			},
 			jiesuan() {
 				this.state = false;
 				let str = ''
+				let trant='';
 				if (this.heyue) {
 					str = 'swapstrategy'
+					if(this.poni){
+						trant = ''
+					}else{
+						trant ='trend_'
+					}
 				} else {
 					str = 'spotstrategy'
 				}
-				this.$axios.post(`/index/${str}/transaction_list`, {
+				 
+				
+				this.$axios.post(`/index/${str}/${trant}transaction_list`, {
 					symbol: this.symbol,
 					bourse: this.bourse,
 					starttime: this.starttime,
@@ -520,9 +526,8 @@
 				}).then(res => {
 					this.state = true;
 					if (res.data.code == 0) {
-						// this.count = res.data.list.data.length;
-						// console.log(res.data.list.length)
 						this.maxcost = res.data.max_cost
+						this.count = res.data.count;
 						if (res.data.list.length > 0) {
 							for (var i = 0; i < res.data.list.length; i++) {
 								this.list.push(res.data.list[i]);
@@ -636,7 +641,6 @@
 							}
 						}
 						this.profit = res.data.profit;
-						this.count = res.data.count;
 					}
 				});
 
@@ -862,7 +866,7 @@
 
 	.seltbox {
 		display: flex;
-		padding: 0 0.3rem;
+		padding: 0 1.5%;
 
 		p {
 			font-size: 0.24rem;

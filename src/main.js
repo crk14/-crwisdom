@@ -61,28 +61,28 @@ axios.interceptors.response.use((res) =>{
 
 
 router.beforeEach((to, from, next) => {
-	document.documentElement.scrollTop =0;
-	document.body.scrollTop=0;
-	var dom=document.getElementById("app");
-	var bodys = document.querySelector('html');
+	// document.documentElement.scrollTop =0;
+	// document.body.scrollTop=0;
+	// var dom=document.getElementById("app");
+	// var bodys = document.querySelector('html');
 
-	if (to.path == "/my"||to.path == "/setting"||to.path == "/chagepass"||to.path == "/ranklist"||to.path == "/mypromote"||to.path == "/team"||to.path == "/metationpage") {
-		bodys.setAttribute('style', 'background-color:#F5F6FA')
-	}
-	else {
-		bodys.setAttribute('style', 'background-color:#fff')
-	}
+	// if (to.path == "/my"||to.path == "/setting"||to.path == "/chagepass"||to.path == "/ranklist"||to.path == "/mypromote"||to.path == "/team"||to.path == "/metationpage") {
+	// 	bodys.setAttribute('style', 'background-color:#F5F6FA')
+	// }
+	// else {
+	// 	bodys.setAttribute('style', 'background-color:#fff')
+	// }
 
 
-	if(dom){
-		dom.style.position='fixed';
-	}
+	// if(dom){
+	// 	dom.style.position='fixed';
+	// }
 
-	setTimeout(()=>{
-		if(dom){
-			dom.style.position='unset';
-		}
-	},300)
+	// setTimeout(()=>{
+	// 	if(dom){
+	// 		dom.style.position='unset';
+	// 	}
+	// },300)
 	next();
 
 })

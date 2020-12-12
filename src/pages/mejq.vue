@@ -5,6 +5,7 @@
 		  <p >我的机器人</p>
 		</div>
 		<p class="hr" style="height: 2px;"></p>
+	
 		<div class="itme1">
 			<img style="width: 100%;height: 125px;" src="../assets/mejq.png"/>
 			<div class="item">
@@ -14,45 +15,49 @@
 				</p>
 				<div >
 					<div class="div">
+						<p class="p2" >现货量化机器人(智能版)</p>
+					<!-- 	<p class="p1">剩余点卡(智能版): <span style="color: rgb(255,147,31);margin-left: 16px; font-size: 23px;font-weight: bold;">{{Number(point_num).toFixed(0)}}</span><span style="color: rgb(103,103,103);font-size: 14px;"></span>点 <span v-show="list3 &&list3.probation">(试用期可进入系统)</span></p>
+					<p class="p1">激活时间: {{list3 &&list3.active_time?list3.active_time:'未激活'}}</p> -->
+						<p class="p1">剩余点卡(智能版): <span style="color: rgb(255,147,31);margin-left: 16px; font-size: 23px;font-weight: bold;">0</span><span style="color: rgb(103,103,103);font-size: 14px;"></span>点 </p>
+						<p class="p1">激活时间: 未激活</p>
+						</div>
+						
+						<div class="button">
+							<!-- <button  v-show="!list3" @click="fn(3,list3,true)" >试用7天</button> -->
+							<!-- <button v-show="list3" @click="fn(3,list3)" :class="{'active1':list3 && list3.active}" >激活</button> -->
+							<!-- <button @click="list3&& list3.active|| list3.probation?$router.push('/heyue2?type=3'):fn2(true)">进入系统</button> -->
+						<button  @click="fn(3,2,true)"  >激活</button>
+						<button @click="fn(3,2,true)">进入系统</button>
+						</div>
+					</div>
+					<!-- <div v-show="list3 && list3.active " class="i-t">已激活</div>
+					<div v-show="list3 && list3.active == 0 && list3.remain_day &&!list3.probation" class="i-t active">待激活</div>
+					<div v-show="!list3 " class="i-t active2">未购买</div>
+					<div v-show="list3 &&list3.remain_day &&list3.probation " class="i-t active3">试用期</div> -->
+					<div  class="i-t active2">未购买</div>
+			</div>
+			<div class="item">
+				<p>
+					<img class="img" src="../assets/sc002.png" />
+					<img src="../assets/crwindow.png" />
+				</p>
+				<div >
+					<div class="div">
 						<p class="p2" >现货量化机器人(专业版)</p>
-						<p class="p1">剩余时长: <span style="color: rgb(255,147,31);margin-left: 16px; font-size: 23px;font-weight: bold;">{{list1?list1.remain_day:'0'}}</span><span style="color: rgb(103,103,103);font-size: 14px;">天</span> <span v-show="list1 && list1.probation">(试用期可进入系统)</span> </p>
+						<p class="p1">剩余时长: <span style="color: rgb(255,147,31);margin-left: 16px; font-size: 23px;font-weight: bold;">{{list1?list1.remain_day:'0'}}</span><span style="color: rgb(103,103,103);font-size: 14px;">天</span> <span v-show="list1 && list1.probation"></span> </p>
 						<p class="p1">激活时间: {{list1 &&list1.active_time?list1.active_time:'未激活'}}</p>
 					</div>
 					
 					<div class="button">
-						<button  v-show="!list1" @click="fn(1,list1)" >试用7天</button>
-						<button  v-show="list1" @click="fn(1,list1)" :class="{'active1':list1 && list1.active}" >激活</button>
+						<!-- <button  v-show="!list1" @click="fn(1,list1)" >试用7天</button> -->
+						<button  @click="fn(1,list1)" :class="{'active1':list1 && list1.active}" >激活</button>
 						<button @click="list1&& list1.active || list1.probation?$router.push(`/intetrading2?time=${list1.remain_day}`):fn2(true)">进入系统</button>
 					</div>
 				</div>
 				<div v-show="list1 && list1.active " class="i-t">已激活</div>
 				<div v-show="list1 && list1.active == 0 && list1.remain_day &&!list1.probation" class="i-t active">待激活</div>
-				<div v-show="!list1 " class="i-t active2">未购买</div>
-				<div v-show="list1 &&list1.remain_day &&list1.probation " class="i-t active3">试用期</div>
-			</div>
-			<div class="item">
-				<p>
-					<img class="img" src="../assets/sc003.png" />
-					<img src="../assets/crwindow.png" />
-				</p>
-				<div >
-					<div class="div">
-						<p class="p2" >合约量化机器人(专业版)</p>
-						<p class="p1">剩余时长: <span style="color: rgb(255,147,31);margin-left: 16px; font-size: 23px;font-weight: bold;">{{list2?list2.remain_day:'0'}}</span><span style="color: rgb(103,103,103);font-size: 14px;">天</span> <span v-show="list2 &&list2.probation">(试用期可进入系统)</span></p>
-								<p class="p1">激活时间: {{list2 &&list2.active_time?list2.active_time:'未激活'}}</p>
-							</div>
-							
-							<div class="button">
-								<button  v-show="!list2" @click="fn(2,list2)" >试用7天</button>
-								<button  v-show="list2" @click="fn(2,list2)" :class="{'active1':list2 && list2.active}" >激活</button>
-								<button @click="list2&& list2.active|| list2.probation?$router.push(`/heyue2?type=2&time=${list2.remain_day}`):fn2(true)">进入系统</button>
-							</div>
-						</div>
-						<div v-show="list2 && list2.active " class="i-t">已激活</div>
-						<div v-show="list2 && list2.active == 0 && list2.remain_day &&!list2.probation" class="i-t active">待激活</div>
-						<div v-show="!list2 " class="i-t active2">未购买</div>
-						<div v-show="list2 &&list2.remain_day &&list2.probation " class="i-t active3">试用期</div>
-						
+				<div v-show="!list1  || !list1.remain_day || list1.probation" class="i-t active2">未购买</div>
+				<!-- <div v-show="list1 &&list1.remain_day &&list1.probation " class="i-t active3">试用期</div> -->
 			</div>
 			<div class="item">
 				<p>
@@ -62,22 +67,48 @@
 				<div >
 					<div class="div">
 						<p class="p2" >合约量化机器人(智能版)</p>
-						<p class="p1">剩余点卡: <span style="color: rgb(255,147,31);margin-left: 16px; font-size: 23px;font-weight: bold;">{{Number(point_num).toFixed(0)}}</span><span style="color: rgb(103,103,103);font-size: 14px;"></span>点 <span v-show="list3 &&list3.probation">(试用期可进入系统)</span></p>
+						<p class="p1">剩余点卡(智能版): <span style="color: rgb(255,147,31);margin-left: 16px; font-size: 23px;font-weight: bold;">{{Number(point_num).toFixed(0)}}</span><span style="color: rgb(103,103,103);font-size: 14px;"></span>点 <span v-show="list3 &&list3.probation"></span></p>
 					<p class="p1">激活时间: {{list3 &&list3.active_time?list3.active_time:'未激活'}}</p>
 						</div>
 						
 						<div class="button">
-							<button  v-show="!list3" @click="fn(3,list3,true)" >试用7天</button>
-							<button v-show="list3" @click="fn(3,list3)" :class="{'active1':list3 && list3.active}" >激活</button>
+							<!-- <button  v-show="!list3" @click="fn(3,list3,true)" >试用7天</button> -->
+							<button  @click="fn(3,list3)" :class="{'active1':list3 && list3.active}" >激活</button>
 							<button @click="list3&& list3.active|| list3.probation?$router.push('/heyue2?type=3'):fn2(true)">进入系统</button>
 						</div>
 					</div>
 					<div v-show="list3 && list3.active " class="i-t">已激活</div>
 					<div v-show="list3 && list3.active == 0 && list3.remain_day &&!list3.probation" class="i-t active">待激活</div>
-					<div v-show="!list3 " class="i-t active2">未购买</div>
-					<div v-show="list3 &&list3.remain_day &&list3.probation " class="i-t active3">试用期</div>
+					<div v-show="!list3  || !list3.remain_day || list3.probation" class="i-t active2">未购买</div>
+					<!-- <div v-show="list3 &&list3.remain_day &&list3.probation " class="i-t active3">试用期</div> -->
 					
 			</div>
+			<div class="item">
+				<p>
+					<!-- <img class="img" src="../assets/sc003.png" /> -->
+					<img class="img img1" src="../assets/crliang.gif" />
+					<img src="../assets/crwindow.png" />
+				</p>
+				<div >
+					<div class="div">
+						<p class="p2" >合约量化机器人(专业版)</p>
+						<p class="p1">剩余时长: <span style="color: rgb(255,147,31);margin-left: 16px; font-size: 23px;font-weight: bold;">{{list2?list2.remain_day:'0'}}</span><span style="color: rgb(103,103,103);font-size: 14px;">天</span> <span v-show="list2 &&list2.probation"></span></p>
+								<p class="p1">激活时间: {{list2 &&list2.active_time?list2.active_time:'未激活'}}</p>
+							</div>
+							
+							<div class="button">
+								<!-- <button  v-show="!list2" @click="fn(2,list2)" >试用7天</button> -->
+								<button  @click="fn(2,list2)" :class="{'active1':list2 && list2.active}" >激活</button>
+								<button @click="list2&& list2.active|| list2.probation?$router.push(`/heyue2?type=2&time=${list2.remain_day}`):fn2(true)">进入系统</button>
+							</div>
+						</div>
+						<div v-show="list2 && list2.active " class="i-t">已激活</div>
+						<div v-show="list2 && list2.active == 0 && list2.remain_day &&!list2.probation" class="i-t active">待激活</div>
+						<div v-show="list2.probation|| !list2 || !list2.remain_day " class="i-t active2">未购买</div>
+						<!-- <div v-show="list2 &&list2.remain_day &&list2.probation " class="i-t active3">试用期</div> -->
+						
+			</div>
+	
 		</div>
 		<van-dialog v-model="bool" title="续费须知" show-cancel-button :before-close="beforeClose">
 			<div class="p">续费名称: {{id==1?'现货量化机器人(专业版)的时长':id==2?'合约量化机器人(专业版)的时长':'合约量化机器人(智能版)的点卡'}}</div>
@@ -148,21 +179,10 @@ import { Dialog } from "vant";
 				   return
 			   }
 			   let obj;
-			   let str
-			   if(!bool){
-				   // this.fn2()
-				   // return
-				   obj={
-					   robot_type:id,
-					   probation:1
-				   }
-				   str = "确认试用"
-			   }else{
+			   let str = "确认激活"
 				   obj={
 					   robot_type:id,
 				   }
-				   str = "确认激活"
-			   }
 			   Dialog.confirm({
 			     title: str,
 			     message:
@@ -246,6 +266,10 @@ import { Dialog } from "vant";
 			display: block;
 			margin-left: 12px;
 			margin-bottom: 11px;
+		}
+		.img1{
+			width: 60px;
+			margin-left: 17px;
 		}
 		img{
 			width: 98px;

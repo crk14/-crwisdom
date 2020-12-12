@@ -314,7 +314,7 @@
 					</div>
 					<!-- <div style="padding-left: 1rem;width: 32px;" class="active" :class="{'active1':item.up_or_down==1}">{{item.close.toFixed(2)}}</div> -->
 					<div style="padding-left: 1rem;color: #2284fd;text-align: center;" v-show="!item.bool" @click="selecli_symbolcli(item.symbol_deal+ '/' + item.symbol,i)">添加</div>
-					<div style="padding-left: 1.62rem;color: #C0C5CB;text-align: center;" v-show="item.bool">已添加</div>
+					<div style="padding-left: 1.52rem;color: #C0C5CB;text-align: center;" v-show="item.bool">已添加</div>
 				</li>
 			</ul>
 		</van-popup>
@@ -915,7 +915,7 @@
 					})
 				} else {
 					this.$router.push(
-						"showdetail?bourse=" + this.bourse + "&type=1" + "&heyeu=1"
+						"showdetail?bourse=" + this.bourse + "&type=1" + "&heyeu=1&poni=1"
 					);
 				}
 			},

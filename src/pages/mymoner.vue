@@ -9,7 +9,7 @@
 		  <div class="two" style="margin-left:8px;overflow: hidden;flex: 1;text-overflow: ellipsis;white-space: nowrap">
 		    {{item.nick_name}} - {{item.robot_type==1?'现货量化机器人(专业版)':item.robot_type==2?'合约量化机器人(专业版)':item.robot_type==3?'合约量化机器人(智能版)':'量化机器人(配额库存)'}}
 		 <p >数量: {{item.robot_num}}套 			<span style="margin-left: 90px">金额: {{item.pay_money}} {{item.money_types==1?'USDT':'CRW'}}</span></p>
-		  <p >购买时间：{{item.create_time}} 		    <span style="margin-left: 22px;">{{item.level_name}}</span></p>
+		  <p >购买时间：{{item.create_time}} 		    <span style="margin-left: 5%;">{{item.level_name}}</span></p>
 		  </div>
 		 
 		</div>

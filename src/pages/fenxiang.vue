@@ -22,7 +22,26 @@
 				</p>
 				<button type="button" @click="savecode1" class="changebton">生成邀请海报</button>
 			</div>
-
+		</div>
+		<div class="title">
+			<div class="one">
+				<div class="title1">
+				  <span>我的邀请: {{invite.invite_num}}</span>
+				  <span>正式用户: {{invite.team_num}}</span>
+				</div>
+				<div class="item" v-for="(item,index) in huiyuanlish" :key="index">
+				  <img class="img" :src="item.avatar" />
+				  <div class="two" style="margin-left:2px;overflow: hidden;flex: 1;text-overflow: ellipsis;white-space: nowrap">
+				    {{item.nick_name}}-{{item.mobile?item.mobile:item.email}}
+				    <p style="margin-top: .1rem;">注册时间：{{item.register_time}}</p>
+				  </div>
+				  <div class="three">
+				    <img v-if="item.is_need ==2" src="../assets/111.png" />
+				    <img v-if="item.is_need ==1" src="../assets/301.png" />
+				    <span>{{item.is_need == 2?item.level_name:'注册会员'}}</span>
+				  </div>
+				</div>
+			</div>
 		</div>
 		<textarea cols="20" rows="10" id="biao1" style="opacity: 0;height: 1px;">{{info}}</textarea>
 		<textarea cols="20" rows="10" id="biao2" style="opacity: 0;height: 1px;">{{infourl}}</textarea>
@@ -41,6 +60,8 @@
 				number: 0,
 				memberaccount: 0,
 				list: [],
+				huiyuanlish: [],
+				invite: {},
 			};
 		},
 		created() {
@@ -56,12 +77,17 @@
 					this.memberaccount = res.data.member_account
 				}
 			});
-			// this.$axios.get("/index/rank/get_share_rank").then(res => {
-			// 	if (res.data.code == 0) {
-			// 		this.list = res.data.data
-			// 		// this.memberaccount = res.data.member_account
-			// 	}
-			// });
+			this.$axios.get("/index/welfarecenter/invite_team").then((res) => {
+			  if (res.data.code == 0) {
+			    this.invite = res.data;
+			  }
+			});
+			this.$axios.get("/index/welfarecenter/member").then((res) => {
+			  if (res.data.code == 0) {
+			    this.huiyuanlish = res.data.info;
+			  }
+			});
+			
 		},
 		mounted() {
 			this.$axios.post("/index/member/spread").then(res => {
@@ -224,7 +250,7 @@
 		width: 90%;
 		margin-top: -5px;
 		padding: 0.07rem 5%;
-		min-height: 8.3rem;
+		min-height: 6.5rem;
 
 		.one {
 			margin-top: -5px;
@@ -266,5 +292,53 @@
 		position: fixed;
 		top: 0px;
 		left: 0px
+	}
+	.item {
+	  padding: 0.2rem 0 0.2rem 0.17rem;
+	  display: flex;
+	  background-color: #ffffff;
+	  border-bottom: 2px solid #e8ecef;
+	  .img {
+	    width: 45px;
+	    height: 40px;
+	    border-radius: 50% 50%;
+	    // margin-right: .16rem;
+	    display: block;
+	  }
+	  .two {
+		  text-align: left;
+	    margin-left: 0.2rem;
+	    color: rgb(40, 60, 103);
+	    font-size: 13px;
+	    flex: 1;
+	    p {
+	      margin-top: 0.14rem;
+	      color: rgb(143, 145, 148);
+	      font-size: 12px;
+	    }
+	  }
+	  .three {
+	    position: relative;
+	    font-size: 13px;
+	    color: rgb(83, 93, 95);
+		  width: 65px;
+		  text-align: right;
+	    img {
+	      position: absolute;
+	      left: 28px;
+	      top: 19px;
+	      height: 24px;
+	      width: 20px;
+	    }
+	  }
+	}
+	.title1{
+		display: flex;
+		justify-content: space-between;
+		border-bottom: 2px solid #e8ecef;
+		color: #000;
+		padding: 0 3% 5px;
+		width: 94%;
+		
 	}
 </style>

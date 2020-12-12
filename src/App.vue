@@ -1,12 +1,8 @@
 <template>
-  <!-- <div id="app" :style="{position: this.$store.state.fiedx?'fixed':'unset'}"> -->
   <div id="app">
-    <!-- <van-pull-refresh v-model="isLoading" @refresh="onRefresh"> -->
       <transition :name="transitionName">
-        <!-- :key="$route.fullPath"  跳转当前页面可以刷新 -->
-        <router-view class="child-view" :key="$route.fullPath" v-if="isRouterAlive"></router-view>
-      </transition>
-    <!-- </van-pull-refresh> -->
+        <router-view class="child-view" :key="$route.fullPath" v-show="isRouterAlive"></router-view>
+	  </transition>
     <ul class="footer" v-if="$route.meta.footShow">
       <li @click="clis(0)">
         <router-link to="/" :class="iscli==0?'curry':''">
@@ -18,7 +14,7 @@
 	  <li @click="clis(4)">
 	    <router-link to="/shangchen" :class="iscli==4?'curry':''">
 	      <img v-if="iscli==4" src="./assets/sc1234.png" alt />
-	      <img v-else src="./assets/sc123.png" alt />
+	      <img v-else src="./assets/shangcheng.png" alt />
 	      <p>商城</p>
 	    </router-link>
 	  </li>

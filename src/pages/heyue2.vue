@@ -7,7 +7,6 @@
     line-height: .8rem;
     margin-top: -.4rem;"
 			 onclick="window.history.go(-1)" />
-			<!-- <p>合约量化交易</p> -->
 			<p>{{typeid==2?'CR合约量化机器人(专业版)':'CR合约量化机器人(智能版)'}}</p>
 			<p></p>
 		</div>
@@ -29,19 +28,19 @@
 			<div>
 				<span>|</span>配置
 			</div>
-			<div v-show="typeid ==3" style="font-size: .25rem;font-weight: 550;margin-left: 47%;margin-top: .05rem;">点卡余额：{{pointnum}}</div>
+			<div v-show="typeid ==3" style="font-size: .25rem;font-weight: 550;margin-left: 45%;margin-top: .05rem;">点卡余额：{{pointnum}}</div>
 			<div v-show="typeid ==2"
-        style="font-size: .25rem;font-weight: 550;flex: 1;margin-left: 50%; margin-top: .05rem;"
+        style="font-size: .25rem;font-weight: 550;flex: 1;margin-left: 48.5%; margin-top: .05rem;"
       >剩余有效天数：{{time4}}天</div>
 		</div>
-		<div class="strategy">
-			<div class="onep" v-show="shuju == 5" style="display: flex;margin: 4px 0;">
+		<div class="strategy" v-show="typeid!=3">
+			<div class="onep" style="display: flex;margin: 4px 0;">
 				<span class="dfirst" style="color: #999999;font-size: .24rem;">仓位监测</span>
 				<div style="font-size: .28rem;width: 3.2rem;text-align: center;">{{parseInt(Number(principals)*1000)/1000||0}}USDT({{textsel}})
 					<van-icon name="arrow-down" @click="jiaoyi = !jiaoyi" />
 				</div>
 			</div>
-			<p style="margin-right: .7rem;">
+			<p style="margin-right: .7rem;"  >
 				<span>计价方式</span>
 
 				<span :class="{'active6':symbol2=='USDT'}" style="text-align: center;" @click="symbol2='USDT'">USDT保证金合约</span>
@@ -49,16 +48,58 @@
 				<span :class="{'active6':symbol2=='USD'}" style="text-align: center;">币本位保证金合约</span>
 			</p>
 		</div>
-		<p style="display: flex;height: 35px;line-height: 35px;border-bottom: 4px solid #f5f6fa;font-size: .26rem;color: rgb(34, 132, 253);">
+		<p v-show="typeid!=3" style="display: flex;height: 35px;line-height: 35px;border-bottom: 4px solid #f5f6fa;font-size: .26rem;color: rgb(34, 132, 253);">
 			<span @click="bounce(4)" style="flex:1;text-align: center;">添加货币对{{jysymbol>0?'('+jysymbol+')':''}}</span>
 			<span style="color: #D0D0D0;">|</span>
 			<span style="flex:1;text-align: center;" @click="fn2()">一键设置预算</span>
 		</p>
+		<div v-show="typeid==3" class="note-t">
+			<div class="div">
+				 计 价 方 式
+				 <div></div>
+			</div>
+			<div class="div2">
+				<div class="avtive" style="width: 45%;margin-left: -7px;" >USDT保证金合约</div>
+			</div>
+		</div>
+		<div v-show="typeid==3" class="note-t">
+			<div class="div">
+				 选择交易对
+				 <div></div>
+			</div>
+			<div class="div2">
+				<div :class="{'avtive':symbol3.search('BTC') != -1}" @click="symbol3='BTC'"><span>BTC</span>/USDT</div>
+				<div :class="{'avtive':symbol3.search('ETH') != -1}" @click="symbol3='ETH'"><span>ETH</span>/USDT</div>
+			</div>
+		</div>
+		<div class="note-t" v-show="typeid==3">
+			<div class="div" >
+				 选 择 仓 位
+				 <div ></div>
+			</div>
+			<div class="div2 ">
+				<div   :class="{'avtive':monery==5000}" @click="monery=5000">5000 USDT</div>
+				<div  :class="{'avtive':monery==10000}" @click="$toast.fail({message: '暂未开放',duration: 2000})">10000 USDT</div>
+			</div>
+		
+		</div>
+		<div class="note-t" v-show="typeid==3">
+			<div class="div" >
+				 开 仓 设 置
+				 <div ></div>
+			</div>
+			<div class="item">
+				<div>开仓张数: <input type="number" v-model="number5"/></div>
+				<div>杠杆倍率: <input type="number" v-model="number4"/></div>
+			</div>
+		
+		</div>
 		<p class="headtitle">
 			<span>|</span>实时监控
-			<span v-show="idbool" @click="$router.push('/jyyym')" style="margin-left: 57%;font-size: 15px;">单独入口</span>
+			<!-- <span v-show="idbool" @click="$router.push('/jyyym')" style="margin-left: 57%;font-size: 15px;">单独入口</span> -->
+			<button v-if="typeid== 3" @click="confim()" style="margin-left: 38%;line-height: 22px; background: #4389eb;color: #fff;border-radius: 4px;font-size: 14px;width: 36%;">一键生成应用</button>
 		</p>
-		<div class="tranumber">
+		<div class="tranumber" v-if="typeid== 2">
 			<div class="cent">
 				<div class="box">
 					<p style="color: #C0C5CB;">成交单数</p>
@@ -66,40 +107,36 @@
 					<p class="box1">{{count}}单</p>
 				</div>
 			</div>
-			<div class="cent" v-show="typeid== 2">
+			<div class="cent" >
 				<div class="box">
 					<p style="color: #C0C5CB;">完成利润</p>
 					<p class="box1">{{profit}} {{symbol}}</p>
 				</div>
 			</div>
-			<div class="cent" v-show="typeid== 2">
+			<div class="cent" >
 				<div class="box">
 					<p style="color: #C0C5CB;">收益率</p>
 					<p class="box1">{{ljsyl?ljsyl:0}}%</p>
 				</div>
 			</div>
-			<div class="cent" v-show="typeid== 3">
-				<div class="box">
-					<p style="color: #C0C5CB;">未结算收益</p>
-					<p class="box1">{{profit}}USDT</p>
-				</div>
-			</div>
-			<div class="cent" v-show="typeid== 3">
-				<div class="box">
-					<p style="color: #C0C5CB;">已结算收益</p>
-					<p class="box1">{{profit}}USDT</p>
-				</div>
-			</div>
+			
+		</div>
+		<div class="headtitle" v-if="typeid== 3" style="justify-content: space-between;font-size: 13px;">
+					<p >总交易笔数: {{count}}笔</p>
+		
+					<p >总结算收益$: {{profit}}</p>
+			
+			
 		</div>
 		<div class="runy">
 			<p class="headtitle">
-				<span>|</span>运行结果
+				<span>|</span>运行状态
 			</p>
 			<p class="headtitle" @click="toshowdetail(true)">
-				<span>|</span>持仓状态
+				<span>|</span>持仓详情  <img src="../assets/1008.png"/>
 			</p>
 			<p class="headtitle" @click="toshowdetail()">
-				<span>|</span>成交记录
+				<span>|</span>交易记录  <img src="../assets/1008.png"/>
 			</p>
 			<!-- <p @click="$router.push('showdetail?type=0')">点卡明细</p> -->
 		</div>
@@ -108,8 +145,8 @@
 			<ul>
 				<li v-for="(item,i) in strategy_list" :key="i" style="position: relative;">
 					<p class="cometop">
-						<span style="font-size: .26rem;line-height: 20px;">{{item.bidui}}永续</span>
-						<span style="font-size: .22rem;display: flex;" v-show="shuju==4 || shuju==2">
+						<span style="font-size: 13px;line-height: 20px;font-weight: 550;">{{item.symbol_deal}}/<span style="color: #828282;font-weight: 540;">USDT永续</span></span>
+						<span style="font-size: 13px;display: flex;margin-left: 2%;" v-show="shuju==2">
 							<span class="item-span1" style="font-size: .2rem;padding: 0 2.5px;transform: scale(0.9);margin-top: 2.7px;">多</span>
 							<span class="item-span" style="font-size: .2rem;padding: 0 2.5px;transform: scale(0.9);margin-top: 2.7px;">空</span>
 							<span style="font-size: .2rem;padding: 1px 2.5px 0;transform: scale(0.85);margin-top: 1.7px;background-color: #f5a623;color: #FFFFFF;">{{item.leverage}}x</span>
@@ -119,13 +156,13 @@
 
 						</span>
 			
-						<span style="position: absolute;right: 17px;" v-if="shuju !=2">
+						<span style="position: absolute;right: 17px;" v-if="shuju ==5">
 							<button style="background:rgb(97,161,240);margin-left: 0;" @click="fn5(item.id,item.stop_type)">删除策略</button>
 							<button style="background:rgb(97,161,240);" @click="fn6(item)">设置预算</button>
 							<button class="button1" :class="{'button3':item.stop_type != 0}" v-if="item.status==0" @click="open_strategy(item.id,'1',item.up_down)">{{item.stop_type== 0?'开启交易':'恢复交易'}}</button>
 							<button style="background:#BD1616" @click="bounce(0,item.id,item.stop_type)" v-else>{{item.stop_type!== 2?'停止交易':'恢复交易'}}</button>
 						</span>
-						<span style="font-size: 0.26rem;margin-left: auto;" v-show="shuju == 2">账户权益: {{item.balance?item.balance:0}}USDT</span>
+						<span style="font-size: 13px;margin-left: auto;" v-show="shuju == 2">账户权益: {{item.balance?item.balance:0}}USDT</span>
 					</p>
 					<div class="pressbox gundong" v-if="item.status==1">
 						<p v-if="item.status==1 && item.stop_type == 0">
@@ -178,76 +215,38 @@
 							<p>{{item.profit_cash}}</p>
 						</div>
 					</div>
-					<div class="tabul" v-show="shuju==4">
-						<div>
-							<p>建仓单数(单)</p>
-
-							<p><span>多:</span> {{item.buy_count_up}}</p>
-							<p>空: {{item.buy_count_down}}</p>
-						</div>
-						<div>
-							<p>持仓数量(张)</p>
-							<p><span>多:</span> {{item.buy_count_amount_up}}</p>
-							<p>空: {{item.buy_count_amount_down}}</p>
-						</div>
-						<div>
-							<p>持仓均价({{item.bidui?item.bidui.split('/')[1]:'USDT'}})</p>
-							<p><span>多:</span> {{item.buy_count_average_up}}</p>
-							<p>空: {{item.buy_count_average_down}}</p>
-							<!-- <p>{{item.profit_lv}}%</p> -->
-						</div>
-						<div>
-							<p>尾仓均价({{item.bidui?item.bidui.split('/')[1]:'USDT'}})</p>
-
-							<p><span>多:</span> {{item.lastprice_up}}</p>
-							<p>空: {{item.lastprice_down}}</p>
-						</div>
-						<div>
-							<p>平仓单数(单)</p>
-							<p><span>多:</span> {{item.sell_count_up}}</p>
-							<p>空: {{item.sell_count_down}}</p>
-						</div>
-						<div>
-							<p>实现利润({{item.bidui?item.bidui.split('/')[1]:'USDT'}})</p>
-
-							<p>{{item.profit_cash}}</p>
-						</div>
-					</div>
 					<div class="tabul1" v-if="shuju==2">
-						<div class="two">
-							<div style="text-align: left;">
-								<p class="p">建仓单数</p>
-								<p>多: {{item.up_count?item.up_count:0}}<span style="margin-left: 2px;">单</span></p>
-								<p>空: {{item.down_count?item.down_count:0}}<span style="margin-left: 2px;">单</span></p>
-								<P class="p">交易笔数</P>
-								<p>{{item.sell_count}}</p>
+						<div class="two two2" >
+							<div style="text-align: left;width: 26%;">
+								<!-- <p class="p1" style=""><span class="span2"> </span> 建 仓 单 数</p> -->
+								<p class="p1"><span class="span2"> </span> 建 仓 数 量</p>
+								<P ><span class="span2"> </span> 持 仓 均 价</P>
+								<P class="p"  ><span class="span2"> </span> 交 易 笔 数</P>
+								<p style="width: 75%;padding-left: 25%;">{{item.sell_count}}</p>
 							</div>
-							<div style="text-align: center;">
-								<p class="p">持仓数量</p>
-								<p>多: {{item.up_filled_qty?item.up_filled_qty:0}} 张</p>
-								<p>空: {{item.down_filled_qty?item.down_filled_qty:0}} 张</p>
-								<P class="p">浮动收益</P>
-								<p>{{(item.profit_cash*1).toFixed(2)}}<span style="margin-left: 2px;">USDT</span></p>
-											
-								
+							<div class="div" style="text-align: center;">
+								<!-- <p class="p1"><span class="span"></span> 多: {{item.up_count?item.up_count:0}}<span style="margin-left: 2px;">单</span><span class="span1"></span> </p> -->
+								<p class="p1"><span class="span"></span>多: {{item.up_filled_qty?item.up_filled_qty:0}} 张<span class="span1"></span></p>
+								<p><span class="span"></span>多: {{(item.up_price_avg*1).toFixed(2)}}<span class="span1"></span></p>
+								<P class="p"><span class="span span3"></span>结 算 收 益<span class="span1 span3"></span></P>
+								<p><span class="span"></span>{{(item.profit_cash*1).toFixed(2)}}<span style="margin-left: 2px;">USDT</span><span class="span1"></span></p>
 							</div>
-							<div style="text-align: right;">
-								<P class="p">持仓均价</P>
-									<p>多: {{(item.up_price_avg*1).toFixed(2)}}<span style="margin-left: 2px;">USDT</span></p>
-									<p>空: {{(item.down_price_avg*1).toFixed(2)}}<span style="margin-left: 2px;">USDT</span></p>
-								<p class="p">收益率</p>
+							<div class="div" >
+								<!-- <p class="p1">空: {{item.down_count?item.down_count:0}}<span style="margin-left: 2px;">单</span></p> -->
+								<p class="p1">空: {{item.down_filled_qty?item.down_filled_qty:0}} 张</p>
+								<p>空: {{(item.down_price_avg*1).toFixed(2)}}</p>
+								<p class="p">收 益 率</p>
 								<p>{{item.syl.toFixed(2)}}%</p>
 							</div>
 						</div>
-						
 					</div>
-					<div class="tabul1" v-show="shuju==2">
-						<div class="button" style="padding-top: 7px;border-top: 1px solid #eee;">
+					<div class="tabul1" v-if="shuju==2">
+						<div class="button" style="padding-top: 7px;">
 							<button @click="fn5(item.id,item.stop_type)">删除策略</button>
-							<button :class="{'active':item.status == 1}" @click="check=2;id3=item.id;show7=true">一键平仓</button>
+							<button :class="{'active':item.status == 1}" @click="check=2;clearance2(item.id,true)">一键平多</button>
+							<button :class="{'active':item.status == 1}" @click="check=2;clearance2(item.id,false)">一键平空</button>
 							<button :class="{'active':item.status == 1}" @click="check=0;close_now3(item.id)">临时停止</button>
-							<button  @click="fn6(item)">设置预算</button>
-							<button :class="{'active':item.status == 0}" @click="open_strategy(item.id,'1',item.up_down)" style="margin-right: 15px;">启动交易</button>
+							<button :class="{'active':item.status == 0}"  @click="open_strategy(item.id,'1',item.up_down)">启动交易</button>
 						</div>
 						</div>
 				</li>
@@ -281,16 +280,6 @@
 				<img src="../assets/xiand.png" alt />
 			</p>
 		</van-popup>
-
-		<!-- 右上侧弹框 -->
-		<van-popup v-model="showrt" class="pouprt">
-			<ul>
-				<li @click="$router.push('showdetail?bourse='+bourse+'&type=1')">
-					<img src="../assets/jscard.png" alt />结算明细
-				</li>
-			</ul>
-		</van-popup>
-
 		<!-- 交易币对弹窗 -->
 		<van-popup v-model="bidui" position="right" class="poup" :style="{ height: '100%' ,width:'100%'}">
 			<div class="tophader">
@@ -317,12 +306,11 @@
 					</div>
 					<!-- <div style="padding-left: 1rem;width: 32px;" class="active" :class="{'active1':item.up_or_down==1}">{{item.close.toFixed(2)}}</div> -->
 					<div style="padding-left: 1rem;color: #2284fd;text-align: center;" v-show="!item.bool" @click="selecli_symbolcli(item.symbol_deal+ '/' + item.symbol,i)">添加</div>
-					<div style="padding-left: 1.62rem;color: #C0C5CB;text-align: center;" v-show="item.bool">已添加</div>
+					<div style="padding-left: 1.52rem;color: #C0C5CB;text-align: center;" v-show="item.bool">已添加</div>
 				</li>
 			</ul>
 		</van-popup>
 
-		<!-- 结算币对弹窗 -->
 
 		<!-- 问题弹框 -->
 		<van-popup v-model="matterplay" class="matter">
@@ -333,20 +321,6 @@
 				<p>3、在智能交易开启后，如有出现手动介入的情况，系统将立即 停止交易。</p>
 			</div>
 		</van-popup>
-
-		<!-- 智能交易弹框 -->
-		<div class="warpbox" v-show="trandshow" @click="trandplay(1)">
-			<div class="pouprt trandup">
-				<van-icon name="play" class="trandicon" />
-				<ul>
-					<li v-for="(item,i) in list" :key="i" @click="selecli(i)" :ref="'selt'+i">{{item.a}}</li>
-
-					<!-- <li>智能多空交易</li>
-          <li>自定多空交易</li>-->
-				</ul>
-			</div>
-		</div>
-
 		<!-- 关闭交易 -->
 		<van-popup v-model="closedeal" class="closedeal">
 			<p class="title">关闭交易</p>
@@ -375,12 +349,12 @@
 		</div>
 		<van-dialog v-model="show2" title="预算设置" show-cancel-button :before-close="beforeClose">
 			<p style="height: 15px;"></p>
-			<div style="display: flex;padding-bottom: 15px;" v-show="shuju==5">
+			<div style="display: flex;padding-bottom: 15px;" >
 				<span style="margin-left: 16px;font-size: 14px;">开单方向：</span>
 				<van-checkbox shape="square" v-model="checked2" style="font-size: 14px;" icon-size="16">开多</van-checkbox>
 				<van-checkbox shape="square" v-model="checked3" style="font-size: 14px;" icon-size="16">开空</van-checkbox>
 			</div>
-			<div style="display: flex;padding-bottom: 10px;" v-show="shuju==5">
+			<div style="display: flex;padding-bottom: 10px;" >
 				<span style="margin-left: 16px;font-size: 14px;">开单类型：</span>
 				<van-checkbox shape="square" v-model="checked5" style="font-size: 13px;margin-left: 0;" icon-size="14">首仓平投</van-checkbox>
 				<van-checkbox shape="square" v-model="checked6" style="font-size: 13px;margin-left: 0;" icon-size="14">首仓倍投</van-checkbox>
@@ -434,26 +408,21 @@
 		</van-dialog>
 		<van-dialog v-model="show3" title="设置预算" show-cancel-button :before-close="beforeClose">
 			<p style="height: 15px;"></p>
-			<div style="display: flex;padding-bottom: 10px;" v-show="shuju==5">
+			<div style="display: flex;padding-bottom: 10px;" >
 				<span style="margin-left: 16px;font-size: 14px;">开单类型：</span>
 				<van-checkbox shape="square" v-model="checked5" style="font-size: 13px;margin-left: 0;" icon-size="14">首仓平投</van-checkbox>
 				<van-checkbox shape="square" v-model="checked6" style="font-size: 13px;margin-left: 0;" icon-size="14">首仓倍投</van-checkbox>
 			<van-checkbox shape="square" v-model="checked7" style="font-size: 13px;margin-left: 0;" icon-size="14">尾仓倍投</van-checkbox>
 			</div>
 			<div style="display: flex;flex-flow:row wrap">
-				<div v-show="bool4 == 1 && shuju==5" class="heyue-body" >
+				<div v-show="bool4 == 1 " class="heyue-body" >
 					<span>开多张数:</span>
 					<input v-model="number2" type="number"/>
 					<span>张</span>
 				</div>
-				<div v-show="bool4 == 0 && shuju==5" class="heyue-body" >
+				<div v-show="bool4 == 0" class="heyue-body" >
 					<span>开空张数:</span>
 					<input v-model="number3" type="number"/>
-					<span>张</span>
-				</div>
-				<div v-show="shuju==2" class="heyue-body" >
-					<span>开仓张数:</span>
-					<input v-model="number5" type="number"/>
 					<span>张</span>
 				</div>
 				<div  class="heyue-body" >
@@ -462,28 +431,23 @@
 					<span>倍</span>
 				</div>
 				
-				<div v-show="shuju==5" class="heyue-body" >
+				<div  class="heyue-body" >
 					<span>补仓间隔:</span>
 					<input v-model="interval2" type="number"/>
 					<span>%</span>
 				</div>
-				<div v-show="shuju==5" class="heyue-body" >
+				<div  class="heyue-body" >
 					<span>最大补仓:</span>
 					<input v-model="ordernum" type="number"/>
 					<span>单</span>
 				</div>
-				<!-- <div v-show="shuju==5" class="heyue-body" >
-					<span>做单数量:</span>
-					<input v-model="ordernum" type="number"/>
-					<span>单</span>
-				</div> -->
-				<div v-show="shuju==5" class="heyue-body" >
+				<div  class="heyue-body" >
 					<span>止盈比例:</span>
 					<input v-model="profitratio" type="number"/>
 					<span>%</span>
 				</div>
 			</div>
-			<div style="display: flex;padding-top: 8px;" v-show="shuju==5">
+			<div style="display: flex;padding-top: 8px;" >
 				<span style="margin-left: 16px;font-size: 14px;">止盈方式：</span>
 				<van-checkbox icon-size="16" shape="square" v-model="checked8" style="font-size: 14px;">尾仓止盈</van-checkbox>
 				<van-checkbox icon-size="16" shape="square" v-model="checked9" style="font-size: 14px;">整体止盈</van-checkbox>
@@ -491,13 +455,6 @@
 			<p style="height: 15px;"></p>
 		</van-dialog>
 		<van-picker v-show="jiaoyi" show-toolbar title="选择仓位币对对金额" :columns="columns" @confirm="conwan" @cancel="jiaoyi=!jiaoyi" />
-	<van-dialog v-model="show7" title="选择多空" show-cancel-button :before-close="beforeClose1">
-		<div class="body-i">
-			<van-checkbox v-model="checked10" style="font-size: 14px;">开多</van-checkbox>
-			<van-checkbox v-model="checked11" style="font-size: 14px;">开空</van-checkbox>
-		</div>
-	
-	</van-dialog>
 	</div>
 </template>
 
@@ -531,10 +488,9 @@
 		},
 		data() {
 			return {
-				num1:'',
+				monery:5000,
 				checked2: true,
 				checked3: true,
-				checked4: false,
 				checked5: true,
 				checked6: false,
 				checked7: false,
@@ -550,7 +506,6 @@
 				number3: "",
 				number4: "",
 				number5: "",
-				number8: '',
 				makelist: '',
 				interval: '',
 				interval2: '',
@@ -560,11 +515,9 @@
 				isshow: false,
 				isshow2: false,
 				show: false,
-				showrt: false,
 				matterplay: false,
 				bidui: false,
 				jsbidui: false,
-				trandshow: false,
 				closedeal: false,
 				width: 0,
 				seletext: "",
@@ -583,11 +536,6 @@
 						a: "HT"
 					},
 				],
-				list: [{
-					a: "智能做多交易"
-				}, {
-					a: "自定做多交易"
-				}],
 				index: 0,
 				check: 0,
 				count: 0,
@@ -598,6 +546,7 @@
 				types: 3,
 				selsym: [],
 				symbol: "USDT",
+				symbol3:'BTC',
 				jysymbol: 0,
 				istxt: -1,
 				principal: "",
@@ -626,17 +575,13 @@
 				symbol2: "USDT",
 				bool4: null,
 				id2: null,
-				moeneru: null,
-				beishu: null,
 				huobi: true,
-				bool5: false,
-				ipone: false,
 				jiaoyi: false,
 				idbool: false,
 				textsel: 'ETH',
 				typeid:'3',
 				columns:[],
-				time4:365
+				time4:365,
 			};
 		},
 		created() {
@@ -648,7 +593,7 @@
 				.then((res) => {
 					if (res.data.code == 0) {
 						if(res.data.state != 1){
-							// this.$router.push('/shangchen')
+							this.$router.push('/shangchen')
 						}
 					} 
 				});
@@ -659,6 +604,8 @@
 			if(this.typeid == 3){
 				this.types = 2
 				this.shuju = 2
+				this.number5 = 50
+				this.number4 = 100
 			}
 			if (localStorage.getItem("bourse1")) {
 				this.bourse = localStorage.getItem("bourse1");
@@ -729,9 +676,19 @@
 				this.start1(true);
 			},
 			symbol2(newValue, oldValue) {
-				this.strategy_list = [];
-				this.start(newValue);
-				this.start1(true);
+					this.strategy_list = [];
+					this.start(newValue);
+					this.start1(true);
+				
+			},
+			symbol3(newValue, oldValue) {
+					if(newValue == 'BTC'){
+						this.number5 = 50
+						this.number4 = 100
+					}else if(newValue == 'ETH'){
+						this.number4 = 50
+						this.number5 = 100
+					}
 			},
 			shuju(newValue, oldValue) {
 				
@@ -752,56 +709,6 @@
 			},
 		},
 		methods: {
-			beforeClose1: function(action, done) {
-				if (action === "confirm") {
-					Dialog.confirm({
-					  title: "确定平仓",
-					  message:
-					    "是否要一键平仓？",
-					})
-					  .then(() => {
-					    // on confirm
-						let arr = [1, 0];
-						if (this.checked10) {
-							this.up_down = '1'
-						}
-						if (this.checked11) {
-							this.up_down = '0'
-						}
-						if (this.checked10 && this.checked11) {
-							this.up_down = arr.join(",");
-						}
-						done(); // 关闭提示框
-					  this.$axios
-					  	.post("/index/swap/trend_clearance", {
-					  		id:this.id3,
-							up_down: this.up_down
-					  	})
-					  	.then((res) => {
-					  		if (res.data.code == 0) {
-					  			this.$toast.success({
-					  				message: res.data.msg,
-					  				duration: 2000
-					  			});
-					  			this.start();
-					  			this.closedeal = false;
-					  		} else {
-					  			this.$toast.fail({
-					  				message: res.data.msg,
-					  				duration: 2000
-					  			});
-					  			this.closedeal = false;
-					  		}
-					  	});
-					  })
-					  .catch(() => {
-					    // on cancel
-						done(); // 关闭提示框
-					  });
-				} else if (action === "cancel") {
-					done(); // 关闭提示框
-				}
-			},
 			conwan(i) {
 				this.textsel = i
 				this.tostring()
@@ -824,14 +731,8 @@
 					return;
 				}
 				if (this.shuju) {
-
+				
 					this.show2 = true
-					// return
-					// if (this.shuju == 1) {
-					//   this.show2 = true;
-					// } else {
-					//   this.show3 = true;
-					// }
 				} else {
 					Dialog.confirm({
 						title: "提醒",
@@ -881,13 +782,64 @@
 						});
 				});
 			},
+			confim(){
+				let obj ={}
+				obj.symbol = 'USDT'
+				obj.symbol_deal = this.symbol3
+				obj.amount = this.monery
+				obj.type = 2
+				obj.bourse = 4
+				if(this.symbol3 == 'BTC'){
+					if(this.number5>300){
+						this.$toast.fail({
+							message: '开仓张数不能大于300张',
+							duration: 1200
+						})
+						return
+					}
+				}else{
+					if(this.number5>500){
+						this.$toast.fail({
+							message: '开仓张数不能大于500张',
+							duration: 1200
+						})
+						return
+					}
+				}
+				
+				obj.first_amount = this.number5;
+				obj.leverage= this.number4;
+					obj.up_down = '1,0';
+				
+				this.$axios.post(`/index/swapstrategy/set_strategy_all`, obj).then((res) => {
+					if (res.data.code == 0) {
+						localStorage.setItem("bourse1", this.bourse);
+						setTimeout(() => {
+							this.istxt = res.data.err_code;
+						}, 800);
+						if (this.istxt == 0) {
+							setTimeout(() => {
+								this.istxt = -10;
+							}, 3000);
+						}
+						setTimeout(() => {
+							this.istxt = -1;
+							this.start();
+						}, 5000);
+					} else {
+						this.$toast.fail({
+							message: res.data.msg,
+							duration: 1200
+						});
+					}
+				})
+			},
 			fn6(item) {
 				if(this.shuju == 2){
 					this.number5 = item.first_amount;
 				}
 				this.number2 = item.first_amount;
 				this.number3 = item.first_amount;
-				this.number8 = item.first_amount;
 				this.number4 = item.leverage;
 				this.bool4 = item.up_down;
 				this.id2 = item.id;
@@ -929,25 +881,10 @@
 			beforeClose: function(action, done) {
 				if (action === "confirm") {
 					let obj = {};
-
 					obj.leverage = this.number4;
-
 					let str = "";
 					let amount_scale = ''
-					if (this.shuju == 2) {
-						if (!this.number5 && !this.number4) {
-							this.$toast.fail({
-								message: "请填写完整",
-								duration: 2000
-							});
-							done();
-							return;
-						}
-					obj.first_amount =this.number5
-					}
 					obj.profit = this.profitratio
-					obj.interval = this.interval
-					if (this.shuju == 5) {
 						obj.interval = this.interval2
 						if(this.checked8){
 							obj.profit_case = 0
@@ -963,7 +900,6 @@
 						if(this.checked7){
 							obj.amount_scale = 2
 						}
-					}
 					if (this.bool4 == 0 || this.bool4 == 1 || this.bool4 == 2 ) {
 						obj.id = this.id2;
 						obj.up_down = this.bool4;
@@ -1075,15 +1011,6 @@
 				this.bool4 = null;
 				this.id2 = null;
 			},
-			onInput(i, id) {
-				this.index1 = i;
-				if (this.strategy_list[i].status == 1) {
-					this.closedeal = true;
-					this.closeid = id;
-				} else {
-					this.open_strategy(id, i);
-				}
-			},
 			toshowdetail(bool = false) {
 				if (!this.bourse) {
 					this.$toast.fail({
@@ -1109,7 +1036,7 @@
 						}
 					})
 				} else {
-					let str;
+					let str='';
 					if(this.typeid == 2){
 						str = '&poni=1'
 					}
@@ -1169,15 +1096,6 @@
 							this.principal = res.data.principal;
 						}
 					});
-				if (this.bourse) {
-					const env = process.env.NODE_ENV;
-					// if(env==='production'){  // 生产环境
-					this.tostring()
-					// }else{  // 本地环境
-					// console.log(6)
-					// }
-
-				}
 			},
 			tostring() {
 				if(this.shuju == 2){
@@ -1221,8 +1139,15 @@
 					})
 					.then((res) => {
 						this.strategy_list = res.data.list;
+						if(this.typeid == 3){
+							let arr = []
+							res.data.list.forEach(item=>{
+								arr.push(item.symbol_deal)
+							})
+							let symbole = arr.join('')
+							this.symbol3 = symbole
+						}
 					});
-				localStorage.setItem('types', this.types)
 
 			},
 			selecli(i) {
@@ -1297,9 +1222,7 @@
 					this.closeid = i;
 				} else if (s == 1) {
 					this.show = true;
-				} else if (s == 2) {
-					this.showrt = true;
-				} else if (s == 3) {
+				}  else if (s == 3) {
 					this.matterplay = true;
 				} else if (s == 4) {
 
@@ -1316,7 +1239,6 @@
 			},
 			getxingqing() {
 				this.huobi = true
-				this.list3 = [];
 				this.jysymbol = 0;
 				this.$axios
 					.post("/index/swapstrategy/get_sug_symbol", {
@@ -1344,13 +1266,7 @@
 			firmcolse(s) {
 				this.check = s;
 			},
-			trandplay(s) {
-				if (s == 0) {
-					this.trandshow = true;
-				} else {
-					this.trandshow = false;
-				}
-			},
+			
 			open_strategy(s, i, b) {
 				this.$axios
 					.post("/index/swap/start_strategy", {
@@ -1424,14 +1340,34 @@
 				    `是否要临时停止?`,
 				})
 				  .then(() => {
-				    // on confirm
 					this.close_now(id)
 				  })
 				  .catch(() => {
-				    // on cancel
 				  });
 			},
-			close_now(id) {
+			clearance2(id,bool){
+				let obj = {};
+				obj.id = id
+				let str = ''
+				if(bool){
+					obj.up_down = 1
+					str = '多'
+				}else{
+					obj.up_down = 0
+					str = '空'
+				}
+				Dialog.confirm({
+				  title: "确定平仓",
+				  message:
+				    `是否要一键平${str}？`,
+				})
+				  .then(() => {
+					this.close_now(1,obj)
+				  })
+				  .catch(() => {
+				  });
+			},
+			close_now(id,obj) {
 				this.closeid
 				let id2 = this.closeid?this.closeid:id
 				if (this.check == 0) {
@@ -1445,9 +1381,12 @@
 									message: res.data.msg,
 									duration: 2000
 								});
-
+								let string = 'get_strategy_list'
+								if(this.typeid == 3){
+									string = 'get_trend_strategy_list'
+								}
 								this.$axios
-									.post("/index/swapstrategy/get_strategy_list", {
+									.post(`/index/swapstrategy/${string}`, {
 										symbol: this.symbol,
 										bourse: this.bourse,
 										type: this.types,
@@ -1457,7 +1396,14 @@
 										res.data.list.forEach((item, index) => {
 											this.$set(this.strategy_list, index, item);
 										});
-										console.log(this.strategy_list, res.data.list);
+										if(this.typeid == 3){
+											let arr = []
+											res.data.list.forEach(item=>{
+												arr.push(item.symbol_deal)
+											})
+											let symbole = arr.join('')
+											this.symbol3 = symbole
+										}
 									});
 
 								this.closedeal = false;
@@ -1493,16 +1439,16 @@
 				} else {
 					// var id = s;
 					let str;
-					if(this.shuju == 2){
+					let object={};
+					if(this.typeid == 3){
 						str = 'trend_clearance'
+						object = obj
 					}else{
 						str = 'clearance'
+						object.id =id2
 					}
 					this.$axios
-						.post(`/index/swap/${str}`, {
-							id: id2
-						})
-						.then((res) => {
+						.post(`/index/swap/${str}`, object).then((res) => {
 							if (res.data.code == 0) {
 								this.$toast.success({
 									message: res.data.msg,
@@ -1621,55 +1567,6 @@
 			}
 		}
 	}
-
-	.pouprt {
-		top: 8%;
-		left: 83%;
-		width: 2rem;
-		border-radius: 3px;
-
-		li {
-			padding: 0.2rem;
-			text-align: center;
-			font-size: 0.24rem;
-			color: #333333;
-
-			img {
-				width: 0.22rem;
-				position: relative;
-				top: 0.03rem;
-				margin-right: 0.12rem;
-			}
-		}
-	}
-
-	.warpbox {
-		position: fixed;
-		width: 100%;
-		height: 100%;
-		top: 0;
-		background: rgba(0, 0, 0, 0.5);
-	}
-
-	.trandup {
-		position: absolute;
-		background: #fff;
-		top: 6.4%;
-		left: 50%;
-		width: 2.9rem;
-		margin-left: -1.45rem;
-	}
-
-	.trandicon {
-		position: absolute;
-		left: 48%;
-		z-index: 3000;
-		top: -7%;
-		transform: rotate(-90deg);
-		color: #fff;
-		z-index: 2100;
-	}
-
 	.matter {
 		top: 42%;
 		width: 90%;
@@ -1699,7 +1596,7 @@
 		display: flex;
 		justify-content: space-between;
 		padding: 0.1rem 0.3rem;
-		border-bottom: 2px solid #f5f6fa;
+		border-bottom: 2.5px solid #f5f6fa;
 		font-size: 0.3rem;
 
 		p {
@@ -1725,6 +1622,7 @@
 				line-height: 19px;
 				// margin-top: -0.2rem;
 			}
+			
 		}
 	}
 
@@ -1742,6 +1640,21 @@
 			margin-top: 0px;
 			color: #2185ff;
 			margin-right: 0.1rem;
+		}
+		p{
+			    border: 1px solid #2284fd;
+				width: 48%;
+				border-radius: 6px;
+				padding: 9px 0;
+				text-align: center;
+				margin: 4px 0;
+		}
+		img{
+			    width: 11px;
+			    height: 11px;
+			    // display: block;
+			    margin-top: 5px;
+			    margin-left: 2px;
 		}
 	}
 
@@ -1827,7 +1740,7 @@
 
 		li {
 			border-bottom: 2px solid #e5e5e5;
-			padding: 0.4rem 0.3rem 0;
+			padding: 0.2rem 0.3rem 0;
 		}
 
 		.cometop {
@@ -1917,42 +1830,84 @@
 		}
 	}
 .tabul1{
+	position:relative;
+	min-height:33px;
 	.two {
 		width: 100%;
 		display: flex;
-		margin-bottom: 7px;
-		font-size: 13px;
-		div {
+		margin: 6px 0;
+		.div{
 			flex: 1;
+		}
+		div {
 			text-align: center;
-			line-height: 22px;
-			color: rgb(94, 94, 94);
-	
-			.p {
-				line-height: 26px;
-				margin-top: 5px;
+			p{
+				line-height: 36px;
+				font-size: 13px;
+				border-bottom: 2.5px solid #f5f6fa;
 				color: #000;
+				position: relative;
+				.span{
+						position: absolute;
+						width: 2px;
+						height: 16px;
+						background-color: #e5e5e5;
+						top: 7px;
+						left: 0;
+					}
+					.span1{
+							position: absolute;
+							width: 2px;
+							height: 16px;
+							background-color: #e5e5e5;
+							top: 7px;
+							right: 0;
+						}
+					.span2{
+						margin-right: 5px;
+					}
+					.span3{
+						height: 25px;
+					}
 			}
+			.p{
+				border: 0;
+				line-height: 16px;
+				height: 16px;
+				padding-top: 7px;
+			}
+			.p1{
+				margin-top: 4px;
+				border-top: 2.5px solid #f5f6fa;
+			}
+			
 		}
 	}
+	
 	.button {
 		width: 104%;
-		text-align: right;
+		// text-align: right;
+		position:absolute;
+		left:-2%;
 		margin-bottom: 8px;
-	font-size: 12px;
+	    font-size: 0.2rem;
+		display:flex;
+		justify-content:space-around;
+		top:-4px;
 		button {
-			width: 62px;
+			// width: 62px;
 			line-height: 20px;
 			color: rgb(199, 199, 199);
 			border: 1px solid rgb(188, 187, 193);
 			border-radius: 4px;
 			background-color: #FFFFFF;
-			margin-right: 4px;
+			// margin-right: 4px;
+			// margin:0 1%;
 		}
 		.active{
 			background-color: #4389eb;
 			color: #FFFFFF;
-			border: 0;
+			border: 1px solid #4389eb;
 		}
 	}
 }
@@ -1997,15 +1952,6 @@
 			width: 100%;
 		}
 	}
-
-	.beijing {
-		width: 100%;
-		background: #ffffff;
-		height: 1.5rem;
-		position: sticky;
-		bottom: 0;
-	}
-
 	.gundong {
 		width: 64.5%;
 		background: url(../assets/gundong7.gif) no-repeat;
@@ -2125,107 +2071,6 @@
 		}
 	}
 
-	.divli {
-		display: flex;
-		-webkit-box-pack: justify;
-		-ms-flex-pack: justify;
-		justify-content: space-between;
-		position: relative;
-		padding: 0.2rem;
-		font-size: 0.3rem;
-		border-bottom: 1px solid #f5f6fa;
-		background: #fff;
-		color: #000;
-
-		.right {
-			color: #999;
-
-			.inputclass {
-				text-align: right;
-				color: #000;
-			}
-		}
-	}
-
-	.imgge1 {
-		height: 34px;
-		line-height: 34px;
-		font-weight: 550;
-		font-size: 15px;
-		background-color: rgb(240, 240, 240);
-		padding-left: 15px;
-		display: flex;
-		justify-content: space-between;
-
-		.item {
-			color: rgb(157, 153, 153);
-			margin-left: 34px;
-			display: flex;
-			font-size: 14px;
-
-			span {
-				width: 10px;
-				height: 10px;
-				border-radius: 50%;
-				margin-top: 10px;
-				border: 1px solid rgb(157, 153, 153);
-				display: block;
-				margin-right: 3.5px;
-			}
-		}
-
-		.active {
-			color: #000000;
-
-			span {
-				border: 1px solid rgb(33, 103, 255);
-				padding: 1px;
-				width: 8px;
-				height: 8px;
-				background-color: #ffffff;
-				position: relative;
-
-				span {
-					width: 4px;
-					height: 4px;
-					background-color: rgb(33, 103, 255);
-					position: absolute;
-					top: -9px;
-				}
-			}
-		}
-
-		.active2 {
-			color: #2167ff;
-		}
-
-		.van-switch {
-			background: #999;
-			height: 1em;
-			width: 27px;
-			position: relative;
-			display: inline-block;
-			box-sizing: content-box;
-			font-size: 30px;
-			border: 1px solid rgba(0, 0, 0, 0.1);
-			border-radius: 1em;
-			margin-left: 0px;
-			margin-top: 10px;
-		}
-
-		.van-switch--on {
-			background-color: #1989fa;
-		}
-	}
-
-	.popup2 {
-		.van-icon {
-			position: absolute;
-			left: 10px;
-			top: 12px;
-		}
-	}
-
 	.button1 {
 		background: rgb(97, 161, 240);
 	}
@@ -2272,13 +2117,81 @@
 		border-bottom: 1px solid #ebedf0;
 		line-height: 35px;
 		input{
-			width: 50px;
+			width: 37%;
 			text-align: center;
 		}
 	}
-	.body-i {
+	.note-t {
 		display: flex;
-		padding: 10px 20px;
-		justify-content: space-around;
+		margin: 4px 0px 0;
+		background-color: #fff;
+		border-bottom: 2.5px solid #f5f6fa;
+		.item{
+			display: flex;
+			font-size: 13px;
+			color: rgb(130,130,130);
+			justify-content: space-around;
+			flex: 1;
+			line-height: 28px;
+			input{
+				width: 40px;
+				border: 1px solid #eee;
+				height: 17px;
+				border-radius: 3px;
+				text-align: center;
+			}
+		}
+		.div2 {
+			display: flex;
+			flex: 1;
+			justify-content: space-around;
+			margin-top: 5px;
+			margin-bottom: 5px;
+			flex-flow: row wrap;
+			div {
+				width: 37%;
+				border: 1px solid #eee;
+				text-align: center;
+				font-size: 12px;
+				color: rgb(130,130,130);
+				border-radius: 4px;
+				line-height: 20px;
+				span{
+					color: #000;
+				}
+			}
+			
+			.avtive {
+				span{
+					color: #fff;
+				}
+				color: #fff;
+				font-size: 12px;
+				background:#4389eb;
+				border: 1px solid #4389eb;
+			}
+			
+			
+		}
+		.div {
+			line-height: 28px;
+			width: 25%;
+			display: flex;
+	        text-align: center;
+			padding-left: 5%;
+			justify-content: space-between;
+			font-size: 13px;
+			div {
+				width: 2px;
+				height: 16px;
+				background-color: rgb(229,229,229);
+				margin-top: 6px;
+				// margin-left: -5px;
+				margin-right: 7px;
+			}
+		}
 	}
+	/deep/.van-checkbox__label{
+		margin-left: 1px;
+		}
 </style>

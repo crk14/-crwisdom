@@ -1,8 +1,8 @@
 <template>
-  <div class="my" style="background-color: #FFFFFF !important;">
+  <div class="my" style="background-color: #eee;">
     <p class="toptitle">我的</p>
 	<div class="my-header" >
-		<img  src="../assets/911.png" style="width: 100%;height: 3.4rem;"/>
+		<img  src="../assets/911.png" style="width: 100%;height: 2.85rem;"/>
 		<img   @click="$router.push('personmsg')" v-if="infouser.avatar"  :src="infouser.avatar" alt style="width: 59px;height: 59px;border-radius: 50%;
 		position: absolute;left: 16px;top: 58px;border: 4px solid #FFFFFF;"/>
 		<div style="position: absolute;left: 100px;top: 65px;color: #FFFFFF;font-size: 20px;">{{infouser.nick_name}}</div>
@@ -10,33 +10,36 @@
 	<div style="position: absolute;right: 30px;top: 81px;color: #FFFFFF;font-size: 16px;">{{infouser.is_need == 2?infouser.level_name:'注册会员'}}</div>
 	</div>
 	<div class="my-monery">
-		<div>
-			<div style="display: flex;">
+		<div class="div">
+			<div style="display: flex;margin: 0;">
 				USDT余额
-				<div @click="$router.push('carrymoney')" style="margin-left: 10px;font-size: 12px;width: 32px;line-height: 16px;border:1px solid #FFFF00;border-radius: 10px;text-align: center;transform: scale(0.9);">提现</div>
+				<div @click="$router.push('carrymoney')" style="margin-left: 2px;font-size: 12px;width: 32px;line-height: 16px;border:1px solid #FFFF00;border-radius: 10px;text-align: center;transform: scale(0.9);margin-top: 0;height: 16px;">提现</div>
 			</div>
-			
+			<div>
+				CRW余额 
+				<span style="margin-left: 20px;"></span>
+			</div>
+			<div>
+				点卡余额 
+				<span style="margin-left: 20px;"></span>
+			</div>
+		</div>
+		<div class="div1">
 			<p>{{infoamout.number?(infoamout.number*1).toFixed(2):0}}</p>
-		</div>
-		<div>
-			CRW余额 
-			<span style="margin-left: 20px;"></span>
 			<p>{{infoamout.safe_num?(infoamout.safe_num*1).toFixed(0):0}}</p>
-		</div>
-		<div>
-			点卡余额 
-			<span style="margin-left: 20px;"></span>
 			<p>{{infoamout.point_num?(infoamout.point_num*1).toFixed(2):0}}</p>
 		</div>
+		
+		
 	</div>
-	<div style="position: relative;">
+	<!-- <div style="position: relative;">
 		<img src="../assets/fuxingpng.png" style="position: absolute;top: 24px;width: 100.5%;"/>
-	</div>
-    <div class="labwarp" style="margin-top: 48px;background-color: #fff;margin-bottom: 50px;">
-      <div class="tablecon" style="">
+	</div> -->
+    <div class="labwarp" >
+      <div class="tablecon" >
         <!-- <router-link to="/intertranfor"> @click="stayopen"-->
 		<router-link to="/certification">
-		  <div :style="string">
+		  <div >
 		    <p>
 		      <img src="../assets/1201.png" alt style="width: .35rem;top: .02rem;" />
 		      <span>实名认证</span>
@@ -402,7 +405,7 @@ font-size: 0.3rem;
 .tablecon {
   // background: #fff;
   // width: 92%;
-  margin: 0.3rem auto 0;
+  margin: 0rem auto 0;
   border-radius: 3px;
   div {
     justify-content: space-between;
@@ -441,9 +444,6 @@ font-size: 0.3rem;
     margin-left: 0.08rem;
   }
 }
-.tablecon {
-  margin-top: 0.3rem;
-}
 .changebton {
   margin: 0.2rem auto;
   width: 92%;
@@ -461,24 +461,34 @@ font-size: 0.3rem;
   top: .1rem;
 }
 .my-monery{
-	// height: 2rem;
 	background-image: linear-gradient(rgb(96,141,249), rgb(48,101,239),rgb(49,87,246));
-	position: absolute;
-	width: 91%;
-	top: 157px;
-	background-color:wheat;
+	position: relative;
+	width: 100%;
 	border-radius:20px 20px 0 0;
-	padding: 24px 5% 0;
-	height: 68px;
-	display: flex;
-	justify-content: space-between;
-	div{
-		color: #FFFFFF;
-		font-size: 14px;
+	height: 100px;
+	text-align: center;
+	margin-top: -22px;
+	color: #FFFFFF;
+	font-size: 14px;
+	.div{
+		display: flex;
+		justify-content: space-around;
+		padding-top: 17px;
+		margin-bottom: 6px;
+	}
+	.div1{
+		display: flex;
+		justify-content: space-around;
 		p{
-			margin-top: 8px;
 			font-size: 20px;
 		}
 	}
+	}
+	.labwarp{
+		background-color: #fff;
+		    margin-bottom: 50px;
+		    margin-top: -16px;
+		    border-radius: 20px 20px 0 0;
+		    position: relative;
 	}
 </style>

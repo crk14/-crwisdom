@@ -36,19 +36,19 @@
 			<div class="two" style="text-indent:44px">
 				一次性充值
 				<span>7800</span>USDT购买配额库存
-					<span class="span">5</span>套CR量化机器人及<span>84000</span>CRW,
+					<span class="span">6</span>套CR量化机器人及<span>100800</span>CRW,
 					并获得城市代理资格
 				</div>
 			<div class="item1" style="margin-top: 15px;">
 				<div class="three">
-					配额库存<span class="span">5</span>套:
+					配额库存<span class="span">6</span>套:
 					<span>7800</span>USDT
 				</div>
-				<div class="four" @click="confirm(7800,5)">立即购买 》</div>
+				<div class="four" @click="confirm(7800,6)">立即购买 》</div>
 			</div>
 		</div>
-		<p class="hr" style="padding: 0;background-color: rgb(230,231,235);"></p>
-	<div class="item2" :class="{'item3':level>3}">
+		<!-- <p class="hr" style="padding: 0;background-color: rgb(230,231,235);"></p> -->
+	<!-- <div class="item2" :class="{'item3':level>3}">
 		<div class="item1">
 			<div class="one">高级代理</div>
 		</div>
@@ -65,7 +65,7 @@
 			</div>
 			<div class="four" @click="confirm(13000,10)">立即购买 》</div>
 		</div>
-	</div>
+	</div> -->
 	<p class="hr" style="padding: 0;background-color: rgb(230,231,235);"></p>
 	<div class="item2" >
 		<div class="item1">
@@ -124,12 +124,12 @@
 						return
 					}
 				}
-				if (bool == 13000) {
-					str = '高级代理'
-					if (this.level > 3) {
-						return
-					}
-				}
+				// if (bool == 13000) {
+				// 	str = '高级代理'
+				// 	if (this.level > 3) {
+				// 		return
+				// 	}
+				// }
                 if (bool == 26000) {
 					str = '运营中心'
 					// if (this.level > 4) {

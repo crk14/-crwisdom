@@ -38,12 +38,12 @@
 				<div style="position: absolute;top: 10px;left: 20px;opacity: .4; width: 8px;height: 8px;background-color: rgb(237,206,180);border-radius: 50%;"></div>
 				<div style="position: absolute;top: 23px;left: 16px;opacity: .4; width: 12px;height: 7px;background-color: rgb(237,206,180);border-radius: 50%;"></div>
 			</li>
-			<router-link to="/gensui">
-				<li >
+			<!-- <router-link to="/gensui"> -->
+				<li @click="$toast.fail({message: `暂未开放`,duration: 1200})">
 					<img src="../assets/src_assets_image_exchange_trading_btn_zdjy@2x.png" alt />
 					<p>跟随交易</p>
 				</li>
-			</router-link>
+			<!-- </router-link> -->
 			<!-- <router-link to="/custody"> -->
 			<!-- <li style="position: relative;">
 				<img src="../assets/tuoguan.png" alt style="margin-top: 2.4px;" />
@@ -150,7 +150,9 @@
 			this.$axios
 				.post("/index/member/my_profit")
 				.then(res => {
-					this.lhsy = res.data.data
+					if(res.data.data){
+						this.lhsy = res.data.data
+					}
 				})
 			this.$axios
 				.get("/index/article/newsBannerArt")

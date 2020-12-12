@@ -29,21 +29,14 @@
 				<span>|</span>配置
 			</div>
 			<!-- <div style="font-size: .25rem;font-weight: 550;margin-left: .6rem;margin-top: .05rem;">点卡余额：{{pointnum}}</div> -->
-			<div style="font-size: .25rem;font-weight: 550;margin-left: 50%;margin-top: .05rem;">剩余有效天数：{{time}}天</div>
+			<div style="font-size: .25rem;font-weight: 550;margin-left: 48.5%;margin-top: .05rem;">剩余有效天数：{{time}}天</div>
 
 		</div>
 		<div class="strategy">
 			<div class="one_p" style="display: flex;">
 				<span class="dfirst" style="color: #999999;font-size: .24rem;">仓位监测</span>
 				<div style="font-size: .28rem;width: 2.9rem;text-align: center;">{{parseInt(Number(principals)*1000)/1000||0}}{{symbol}}</div>
-				<span style="color: #999999;font-size: .24rem;">策略类型</span>
-				<span class="dtwos" style="width: 1.7rem;margin-top: -2px;">
-					<!-- <span v-show="isshow2" @click="isshow2=false" style="font-size: 12px;color: rgb(34, 132, 253);padding-left: 36px;">去选择 <span style="margin-left: 3px;">></span></span> -->
-					<select v-show="!isshow2" v-model="shuju" style="font-size: 12px;margin-left: 20px;">
-						<!-- <option  :value="1" selected="selected">智能策略</option> -->
-						<option :value="2" selected="selected">专业设置版</option>
-					</select>
-				</span>
+				
 			</div>
 			<p style="margin-top:.2rem;margin-right: .7rem;">
 				<span>计价币</span>
@@ -481,7 +474,6 @@
 				pointnum: '',
 				ljsyl: '',
 				list3: [],
-				shuju: 2,
 				show3: false,
 				show5: false,
 				show6: true,
@@ -571,14 +563,6 @@
 							}
 			},
 			fn2() {
-				if (this.isshow2) {
-					Dialog.confirm({
-						title: '提醒',
-						message: '请选择策略类型',
-					})
-					return
-				}
-				console.log(this.selsym)
 				if (this.selsym.length == 0) {
 					Dialog.confirm({
 						title: '提醒',
@@ -586,20 +570,7 @@
 					})
 					return
 				}
-				if (this.shuju) {
-					console.log(this.Symbol)
-					// return
-					if (this.shuju == 1) {
-						this.show2 = true
-					} else {
 						this.show3 = true
-					}
-				} else {
-					Dialog.confirm({
-						title: '提醒',
-						message: '请选择策略类型',
-					})
-				}
 				if (!this.bool2) {
 					this.backinfo = {}
 					this.backinfo = {
@@ -1996,7 +1967,7 @@
 		border-bottom: 1px solid #ebedf0;
 		line-height: 35px;
 		input{
-			width: 50px;
+			width: 37%;
 			text-align: center;
 		}
 	}
