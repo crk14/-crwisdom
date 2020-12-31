@@ -28,7 +28,7 @@
 			<div class="item" @click="$router.push('xqbabel?id=4')">
 				<img src="../assets/sc002.png" />
 				<div>
-					<p>现货量化机器人(智能版)</p>
+					<p>现货量化机器人(智能趋势版)</p>
 					<p style="margin: 8px 0 6px 0;color: rgb(126,127,129);font-size: 13px;">点卡: 16800点</p>
 					<p>价格(￥): <span>16800</span> CRW</p>
 					<p style="font-size: 12px;color: rgb(126,127,129);">16800CRW等价于2600USDT</p>
@@ -38,7 +38,7 @@
 			<div class="item" @click="$router.push('xqbabel?id=1')">
 				<img src="../assets/sc002.png" />
 				<div>
-					<p>现货量化机器人(专业版)</p>
+					<p>现货量化机器人(专业设置版)</p>
 					<p style="margin: 8px 0 6px 0;color: rgb(126,127,129);font-size: 13px;">有效时长: 365天</p>
 					<p>价格(￥): <span>16800</span> CRW</p>
 					<p style="font-size: 12px;color: rgb(126,127,129);">16800CRW等价于2600USDT</p>
@@ -48,7 +48,7 @@
 			<div class="item" @click="$router.push('xqbabel?id=3')">
 				<img src="../assets/sc004.png" />
 				<div>
-					<p>合约量化机器人(智能版)</p>
+					<p>合约量化机器人(智能趋势版)</p>
 					<p style="margin: 8px 0 6px 0;color: rgb(126,127,129);font-size: 13px;">点卡: 16800点</p>
 					<p>价格(￥): <span>16800</span> CRW</p>
 					<p style="font-size: 12px;color: rgb(126,127,129);">16800CRW等价于2600USDT</p>
@@ -58,14 +58,23 @@
 			<div class="item" @click="$router.push('xqbabel?id=2')">
 				<img src="../assets/sc003.png" />
 				<div>
-					<p>合约量化机器人(专业版)</p>
+					<p>合约量化机器人(专业设置版)</p>
 					<p style="margin: 8px 0 6px 0;color: rgb(126,127,129);font-size: 13px;">有效时长: 365天</p>
 					<p>价格(￥): <span> 16800</span> CRW</p>
 					<p style="font-size: 12px;color: rgb(126,127,129);">16800CRW等价于2600USDT</p>
 				</div>
 				<button >进入详情</button>
 			</div>
-			
+			<!-- <div class="item" @click="$router.push('xqbabel?id=5')">
+				<img src="../assets/sc003.png" />
+				<div>
+					<p>策略跟随机器人(合约版)</p>
+					<p style="margin: 8px 0 6px 0;color: rgb(126,127,129);font-size: 13px;">有效时长: 365天</p>
+					<p>价格(￥): <span> 16800</span> CRW</p>
+					<p style="font-size: 12px;color: rgb(126,127,129);">16800CRW等价于2600USDT</p>
+				</div>
+				<button >进入详情</button>
+			</div> -->
 		</div>
 	</div>
 </template>

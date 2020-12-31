@@ -7,10 +7,11 @@
     line-height: .8rem;
     margin-top: -.4rem;"
 			 onclick="window.history.go(-1)" />
-			<p>CR现货量化机器人(专业版)
+			<p>CR现货量化机器人(设置版)
 			</p>
 		</div>
-		<img style="position: absolute;top: 44px;left: 47%;width: 30px;height: 40px;" src="../assets/auto.png"/>
+		<img v-show="!type_status" class="statusimg"  src="../assets/auto.png"/>
+		<img v-show="type_status" class="statusimg"  src="../assets/crliang.gif"/>
 		<div class="topsel" style="position: relative;">
 			<p class="left" @click="bounce(1)">
 				<img v-if="bourse==1" src="../assets/src_resource_image_page_huobi_logo@2x.png" alt />
@@ -484,7 +485,8 @@
 				},
 				bool2: false,
 				bool3: false,
-				huobi: true
+				huobi: true,
+				type_status:false,
 			};
 		},
 		created() {
@@ -746,7 +748,7 @@
 						this.$router.push({
 							path: 'noticedateil',
 							query: {
-								id: res.data.info[1].article_id
+								id: res.data.info[0].article_id
 							}
 						})
 					});
@@ -920,16 +922,16 @@
 						types: this.types
 					})
 					.then(res => {
-						res.data.list.forEach((item, index) => {
-							item.close1 = ''
-						})
 						this.strategy_list = res.data.list;
 						let that = this
 						if (this.strategy_list.length > 0) {
 							this.strategy_list.forEach((item, index) => {
+								item.close1 = ''
+								if(item.status == 1){
+									that.type_status = true
+								}
 								this.$axios.get(`/index/rank/get_market?symbol_pair=${item.symbol_deal + item.symbol}`).then(res1 => {
 									let datas = res1.data
-									console.log(datas)
 									item.close1 = datas.data.close
 								})
 								this.$set(this.strategy_list, index, item)
@@ -1187,8 +1189,10 @@
 										res.data.list.forEach((item, index) => {
 
 											this.$set(this.strategy_list, index, item)
+											if(item.status == 1){
+												this.type_status = true
+											}
 										})
-										console.log(this.strategy_list, res.data.list)
 									});
 
 								this.closedeal = false;
@@ -1973,5 +1977,12 @@
 	}
 	.heyue-body1{
 		border-bottom: 1.5px solid #ebedf0;
+		}
+		.statusimg{
+			position: absolute;
+			top: 44px;
+			left: 47%;
+			width: 30px;
+			height: 40px;
 		}
 </style>

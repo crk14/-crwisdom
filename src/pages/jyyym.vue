@@ -19,11 +19,12 @@
 						<van-icon @click.stop="bool1=!bool1" v-show="bool1" name="arrow-up" color="rgb(211,211,211)" size="15" />
 						<div class="right">
 							<div>₮11330.7</div>
-							<div class="one" @click="$router.push('test')">
+							<!-- <div class="one" @click="$router.push('test')">
 								<img src="../assets/quxian.png"  />
-							</div>
+							</div> -->
 						</div>
 					</div>
+					<test></test>
 					<div class="body">
 						<div class="left" style="margin-right: 10px;">
 							<div class="one">
@@ -110,29 +111,29 @@
 								<div class="ri"><input v-model="beishu" type="number" />X</div>
 
 							</div>
-							<div class="three" v-show="weituo2 =='限价委托'" :class="{'backgs':parces=='价格 '}">
+							<div style="margin-bottom: 6px;" class="three" v-show="weituo2 =='限价委托'" :class="{'backgs':parces=='价格 '}">
 								<div :class="{'colors':parces!='价格'}">{{parces}}</div>
 								<div><input v-model="parse" type="number" @focus="parces='价格 '" @blur="parces='价格'" /> ₮</div>
 							</div>
 							<div class="four" v-show="weituo2 =='市价委托'">
 								<div>以当前市场最优价格下单</div>
 							</div>
-							<div class="four" v-show="weituo2 =='限价委托'">
+							<!-- <div class="four" v-show="weituo2 =='限价委托'">
 								<div :class="{'backgs2':parces=='对手价'}" @click="parces='对手价'">对手价</div>
 								<div :class="{'backgs2':parces=='买一价'}" @click="parces='买一价'" style="margin: 0 4px;">买一价</div>
 								<div :class="{'backgs2':parces=='卖一价'}" @click="parces='卖一价'">卖一价</div>
-							</div>
-							<div class="three" :class="{'backgs':bool3==true}" @click="bool3=true;number2=''">
+							</div> -->
+							<div  class="three" :class="{'backgs':bool3==true}" @click="bool3=true;number2=''">
 								<div>{{number2?number2:'数量'}}</div>
 								<div><input v-show="!number2" v-model="number" type="number" @focus="bool3=true;number2=''" @blur="bool3=false" />
 									张 <span v-show="!number2">≈ ₮0.00</span> </div>
 							</div>
-							<div class="four">
+							<!-- <div class="four">
 								<div :class="{'backgs2':number2=='10%'}" @click="bool3 = true;number2='10%'">10%</div>
 								<div :class="{'backgs2':number2=='20%'}" @click="bool3 = true;number2='20%'" style="margin: 0 4px;">20%</div>
 								<div :class="{'backgs2':number2=='50%'}" @click="bool3 = true;number2='50%'" style="margin-right: 4px;">50%</div>
 								<div :class="{'backgs2':number2=='100%'}" @click="bool3 = true;number2='100%'">100%</div>
-							</div>
+							</div> -->
 							<div class="six">
 								<div>可用(USDT) <span>0.00</span></div>
 								<div class="flex">
@@ -174,13 +175,13 @@
 
 					</div>
 					<p class="hr" style="margin-top: 4px"></p>
-					<div class="buttom">
+					<!-- <div class="buttom">
 						<div class="one">
 							<div @click="active2 =1" :class="{'backgs3':active2 ==1 }">限价委托</div>
 							<div @click="active2 =2" :class="{'backgs3':active2 ==2}">止盈止损</div>
 						</div>
 						<p class="p">本合约暂无委托</p>
-					</div>
+					</div> -->
 				</div>
 			</van-tab>
 			<van-tab title="平仓">
@@ -207,6 +208,7 @@
 							</div>
 						</div>
 					</div>
+					<test></test>
 					<div class="body">
 						<div class="left" style="margin-right: 10px;">
 							<div class="one">
@@ -326,13 +328,14 @@
 
 					</div>
 					<p class="hr" style="margin-top: 4px"></p>
-					<div class="buttom">
+					<!-- <test></test> -->
+					<!-- <div class="buttom">
 						<div class="one">
 							<div @click="active2 =1" :class="{'backgs3':active2 ==1 }">限价委托</div>
 							<div @click="active2 =2" :class="{'backgs3':active2 ==2}">止盈止损</div>
 						</div>
 						<p class="p">本合约暂无委托</p>
-					</div>
+					</div> -->
 				</div>
 			</van-tab>
 			<van-tab title="持仓">
@@ -392,9 +395,11 @@
 		Checkbox
 	} from "vant";
 	Vue.use(Checkbox);
+	import test from "../components/test.vue"
 	export default {
 		components: {
-			Checkbox
+			Checkbox,
+			test
 		},
 		data() {
 			return {

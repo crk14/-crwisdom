@@ -1,6 +1,6 @@
 <template>
   <div>
-	  <div class="tophader" @click="$router.back()">
+	<!--  <div class="tophader" @click="$router.back()">
 	    <van-icon name="arrow-left" />
 	    <p >BTCUSDT永续</p>
 	  </div>
@@ -26,7 +26,7 @@
 				  <p>7629.894</p>
 			  </div>
 			</div>
-	  </div>
+	  </div> -->
 	  <div class="body">
 		  <div :class="{'active':isshow =='1分钟'}" @click="isshow = '1分钟'">1分钟</div>
 		  <div :class="{'active':isshow =='15分钟'}" @click="isshow = '15分钟'">15分钟</div>
@@ -41,11 +41,15 @@
 		<span style="color: rgb(145,88,158);">MA20: 12878.8</span>
 		<span style="color: rgb(105,120,164);">MA60: 12878.8</span>
 	</div>
-    <div id="echartContainer" ref="echartContainer" style="width:100%; height:440px"></div>
+    <div id="echartContainer" ref="echartContainer" style="width:100%; height:240px"></div>
+<!-- 	<div class="button" style="bottom: 38px;">
+		<button class="but-2" @click="$router.push('jyyym')">卖出平多</button>
+		<button class="but-1" @click="$router.push('jyyym')">买入平空</button>
+	</div>
 	<div class="button">
 		<button class="but-1" @click="$router.push('jyyym')">买入开多</button>
-		<button class="but-2" @click="$router.push('jyyym')">卖出开多</button>
-	</div>
+		<button class="but-2" @click="$router.push('jyyym')">卖出开空</button>
+	</div> -->
 	
   </div>
 </template>

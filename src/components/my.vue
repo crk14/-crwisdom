@@ -3,17 +3,17 @@
     <p class="toptitle">我的</p>
 	<div class="my-header" >
 		<img  src="../assets/911.png" style="width: 100%;height: 2.85rem;"/>
-		<img   @click="$router.push('personmsg')" v-if="infouser.avatar"  :src="infouser.avatar" alt style="width: 59px;height: 59px;border-radius: 50%;
-		position: absolute;left: 16px;top: 58px;border: 4px solid #FFFFFF;"/>
-		<div style="position: absolute;left: 100px;top: 65px;color: #FFFFFF;font-size: 20px;">{{infouser.nick_name}}</div>
-		<div style="position: absolute;left: 100px;top: 95px;color: #FFFFFF;font-size: 16px;">UID:{{infouser.id}}</div>
-	<div style="position: absolute;right: 30px;top: 81px;color: #FFFFFF;font-size: 16px;">{{infouser.is_need == 2?infouser.level_name:'注册会员'}}</div>
+		<img   @click="$router.push('personmsg')" v-if="infouser.avatar"  :src="infouser.avatar" alt style="width: 1.2rem;height: 1.2rem;border-radius: 50%;
+		position: absolute;left: .38rem;top: 1.2rem;border: 4px solid #FFFFFF;"/>
+		<div @click="$router.push('personmsg')" style="position: absolute;left: 2rem;top: 1.3rem;color: #FFFFFF;font-size: 20px;">{{infouser.nick_name}}</div>
+		<div style="position: absolute;left: 2rem;top: 2rem;color: #FFFFFF;font-size: 16px;">UID:{{infouser.id}}</div>
+	<div style="position: absolute;right: .5rem;top: 1.6rem;color: #FFFFFF;font-size: 16px;">{{infouser.is_need == 2?infouser.level_name:'注册会员'}}</div>
 	</div>
 	<div class="my-monery">
 		<div class="div">
 			<div style="display: flex;margin: 0;">
 				USDT余额
-				<div @click="$router.push('carrymoney')" style="margin-left: 2px;font-size: 12px;width: 32px;line-height: 16px;border:1px solid #FFFF00;border-radius: 10px;text-align: center;transform: scale(0.9);margin-top: 0;height: 16px;">提现</div>
+				<!-- <div @click="$router.push('carrymoney')" style="margin-left: 2px;font-size: 12px;width: 32px;line-height: 16px;border:1px solid #FFFF00;border-radius: 10px;text-align: center;transform: scale(0.9);margin-top: 0;height: 16px;">提现</div> -->
 			</div>
 			<div>
 				CRW余额 

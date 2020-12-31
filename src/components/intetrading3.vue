@@ -868,7 +868,7 @@
 						this.$router.push({
 							path: 'noticedateil',
 							query: {
-								id: res.data.info[1].article_id
+								id: res.data.info[0].article_id
 							}
 						})
 					});

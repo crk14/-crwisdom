@@ -15,7 +15,7 @@
 				</p>
 				<div >
 					<div class="div">
-						<p class="p2" >现货量化机器人(智能版)</p>
+						<p class="p2" >现货量化机器人(智能趋势版)</p>
 					<!-- 	<p class="p1">剩余点卡(智能版): <span style="color: rgb(255,147,31);margin-left: 16px; font-size: 23px;font-weight: bold;">{{Number(point_num).toFixed(0)}}</span><span style="color: rgb(103,103,103);font-size: 14px;"></span>点 <span v-show="list3 &&list3.probation">(试用期可进入系统)</span></p>
 					<p class="p1">激活时间: {{list3 &&list3.active_time?list3.active_time:'未激活'}}</p> -->
 						<p class="p1">剩余点卡(智能版): <span style="color: rgb(255,147,31);margin-left: 16px; font-size: 23px;font-weight: bold;">0</span><span style="color: rgb(103,103,103);font-size: 14px;"></span>点 </p>
@@ -38,12 +38,13 @@
 			</div>
 			<div class="item">
 				<p>
-					<img class="img" src="../assets/sc002.png" />
+					<img v-show="!isshow" class="img" src="../assets/sc002.png" />
+					<img v-show="isshow" class="img img1" src="../assets/crliang.gif" />
 					<img src="../assets/crwindow.png" />
 				</p>
 				<div >
 					<div class="div">
-						<p class="p2" >现货量化机器人(专业版)</p>
+						<p class="p2" >现货量化机器人(专业设置版)</p>
 						<p class="p1">剩余时长: <span style="color: rgb(255,147,31);margin-left: 16px; font-size: 23px;font-weight: bold;">{{list1?list1.remain_day:'0'}}</span><span style="color: rgb(103,103,103);font-size: 14px;">天</span> <span v-show="list1 && list1.probation"></span> </p>
 						<p class="p1">激活时间: {{list1 &&list1.active_time?list1.active_time:'未激活'}}</p>
 					</div>
@@ -56,17 +57,18 @@
 				</div>
 				<div v-show="list1 && list1.active " class="i-t">已激活</div>
 				<div v-show="list1 && list1.active == 0 && list1.remain_day &&!list1.probation" class="i-t active">待激活</div>
-				<div v-show="!list1  || !list1.remain_day || list1.probation" class="i-t active2">未购买</div>
+				<div v-show="!list1  || !list1.remain_day " class="i-t active2">未购买</div>
 				<!-- <div v-show="list1 &&list1.remain_day &&list1.probation " class="i-t active3">试用期</div> -->
 			</div>
 			<div class="item">
 				<p>
-					<img class="img" src="../assets/sc004.png" />
+					<img v-show="!isshow1" class="img" src="../assets/sc004.png" />
+					<img v-show="isshow1" class="img img1" src="../assets/crliang.gif" />
 					<img src="../assets/crwindow.png" />
 				</p>
 				<div >
 					<div class="div">
-						<p class="p2" >合约量化机器人(智能版)</p>
+						<p class="p2" >合约量化机器人(智能趋势版)</p>
 						<p class="p1">剩余点卡(智能版): <span style="color: rgb(255,147,31);margin-left: 16px; font-size: 23px;font-weight: bold;">{{Number(point_num).toFixed(0)}}</span><span style="color: rgb(103,103,103);font-size: 14px;"></span>点 <span v-show="list3 &&list3.probation"></span></p>
 					<p class="p1">激活时间: {{list3 &&list3.active_time?list3.active_time:'未激活'}}</p>
 						</div>
@@ -79,19 +81,19 @@
 					</div>
 					<div v-show="list3 && list3.active " class="i-t">已激活</div>
 					<div v-show="list3 && list3.active == 0 && list3.remain_day &&!list3.probation" class="i-t active">待激活</div>
-					<div v-show="!list3  || !list3.remain_day || list3.probation" class="i-t active2">未购买</div>
+					<div v-show="!list3  || !list3.remain_day " class="i-t active2">未购买</div>
 					<!-- <div v-show="list3 &&list3.remain_day &&list3.probation " class="i-t active3">试用期</div> -->
 					
 			</div>
 			<div class="item">
 				<p>
-					<!-- <img class="img" src="../assets/sc003.png" /> -->
-					<img class="img img1" src="../assets/crliang.gif" />
+					<img v-show="!isshow2" class="img" src="../assets/sc003.png" />
+					<img v-show="isshow2" class="img img1" src="../assets/crliang.gif" />
 					<img src="../assets/crwindow.png" />
 				</p>
 				<div >
 					<div class="div">
-						<p class="p2" >合约量化机器人(专业版)</p>
+						<p class="p2" >合约量化机器人(专业设置版)</p>
 						<p class="p1">剩余时长: <span style="color: rgb(255,147,31);margin-left: 16px; font-size: 23px;font-weight: bold;">{{list2?list2.remain_day:'0'}}</span><span style="color: rgb(103,103,103);font-size: 14px;">天</span> <span v-show="list2 &&list2.probation"></span></p>
 								<p class="p1">激活时间: {{list2 &&list2.active_time?list2.active_time:'未激活'}}</p>
 							</div>
@@ -104,11 +106,32 @@
 						</div>
 						<div v-show="list2 && list2.active " class="i-t">已激活</div>
 						<div v-show="list2 && list2.active == 0 && list2.remain_day &&!list2.probation" class="i-t active">待激活</div>
-						<div v-show="list2.probation|| !list2 || !list2.remain_day " class="i-t active2">未购买</div>
+						<div v-show=" !list2 || !list2.remain_day " class="i-t active2">未购买</div>
 						<!-- <div v-show="list2 &&list2.remain_day &&list2.probation " class="i-t active3">试用期</div> -->
 						
 			</div>
-	
+	<!-- 		<div class="item">
+				<p>
+					<img v-show="!isshow1" class="img" src="../assets/sc004.png" />
+					<img v-show="isshow1" class="img img1" src="../assets/crliang.gif" />
+					<img src="../assets/crwindow.png" />
+				</p>
+				<div >
+					<div class="div">
+						<p class="p2" >策略跟随机器人(合约版)</p>
+						<p class="p1">剩余点卡(智能版): <span style="color: rgb(255,147,31);margin-left: 16px; font-size: 23px;font-weight: bold;">{{Number(point_num).toFixed(0)}}</span><span style="color: rgb(103,103,103);font-size: 14px;"></span>点 <span v-show="list3 &&list3.probation"></span></p>
+					<p class="p1">激活时间: {{list3 &&list3.active_time?list3.active_time:'未激活'}}</p>
+						</div>
+						
+						<div class="button">
+							<button  @click="fn(3,list3)" :class="{'active1':list3 && list3.active}" >激活</button>
+							<button @click="list3&& list3.active|| list3.probation?$router.push('/heyue4'):fn2(true)">进入系统</button>
+						</div>
+					</div>
+					<div v-show="list3 && list3.active " class="i-t">已激活</div>
+					<div v-show="list3 && list3.active == 0 && list3.remain_day &&!list3.probation" class="i-t active">待激活</div>
+					<div v-show="!list3  || !list3.remain_day " class="i-t active2">未购买</div>
+			</div> -->
 		</div>
 		<van-dialog v-model="bool" title="续费须知" show-cancel-button :before-close="beforeClose">
 			<div class="p">续费名称: {{id==1?'现货量化机器人(专业版)的时长':id==2?'合约量化机器人(专业版)的时长':'合约量化机器人(智能版)的点卡'}}</div>
@@ -138,13 +161,58 @@ import { Dialog } from "vant";
 			list1:[],
 			list2:[],
 			list3:[],
-			point_num:0
+			point_num:0,
+			isshow:false,
+			isshow1:false,
+			isshow2:false,
 	    };
 	  },
 	  created() {
 			this.getlist()
+			this.getthreelist()
 	  },
 	   methods:{
+		   getthreelist(){
+			   this.$axios
+			   	.post("/index/spotstrategy/get_strategy_list", {
+			   		symbol:"USDT",
+			   		bourse: '1',
+			   		types: 1
+			   	})
+			   	.then(res => {
+			   		res.data.list.forEach(item => {
+						if(item.status == 1){
+							this.isshow = true
+						}
+			   		})
+			   	});
+				this.$axios
+					.post("/index/swapstrategy/get_strategy_list", {
+						symbol:"USDT",
+						bourse: '4',
+						type: 3
+					})
+					.then(res => {
+						res.data.list.forEach(item => {
+										if(item.status == 1){
+											this.isshow2 = true
+										}
+						})
+					});
+					this.$axios
+						.post("/index/swapstrategy/get_trend_strategy_list", {
+							symbol:"USDT",
+							bourse: '4',
+							type: 2
+						})
+						.then(res => {
+							res.data.list.forEach(item => {
+											if(item.status == 1){
+												this.isshow1 = true
+											}
+							})
+						});
+		   },
 		   getlist(){
 			   this.$axios
 			   	.post("/index/robot/robot_list",)
@@ -268,8 +336,8 @@ import { Dialog } from "vant";
 			margin-bottom: 11px;
 		}
 		.img1{
-			width: 60px;
-			margin-left: 17px;
+			width: 52px;
+			margin-left: 23px;
 		}
 		img{
 			width: 98px;

@@ -39,7 +39,7 @@
 				<div style="position: absolute;top: 23px;left: 16px;opacity: .4; width: 12px;height: 7px;background-color: rgb(237,206,180);border-radius: 50%;"></div>
 			</li>
 			<!-- <router-link to="/gensui"> -->
-				<li @click="$toast.fail({message: `暂未开放`,duration: 1200})">
+				<li @click="$toast.fail({message: `暂未开放`,duration: 1200});">
 					<img src="../assets/src_assets_image_exchange_trading_btn_zdjy@2x.png" alt />
 					<p>跟随交易</p>
 				</li>

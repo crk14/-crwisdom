@@ -7,10 +7,11 @@
     line-height: .8rem;
     margin-top: -.4rem;"
 			 onclick="window.history.go(-1)" />
-			<p>{{typeid==2?'CR合约量化机器人(专业版)':'CR合约量化机器人(智能版)'}}</p>
+			<p>{{typeid==2?'CR合约量化机器人(网格版)':'CR合约量化机器人(趋势版)'}}</p>
 			<p></p>
 		</div>
-		<img style="position: absolute;top: 44px;left: 47%;width: 30px;height: 40px;" src="../assets/auto.png"/>
+		<img v-show="!type_status" class="statusimg" src="../assets/auto.png" />
+		<img v-show="type_status" class="statusimg" src="../assets/crliang.gif" />
 		<div class="topsel" style="position: relative;">
 			<p class="left" @click="bounce(1)">
 				<img v-if="bourse==1" src="../assets/src_resource_image_page_huobi_logo@2x.png" alt />
@@ -28,10 +29,8 @@
 			<div>
 				<span>|</span>配置
 			</div>
-			<div v-show="typeid ==3" style="font-size: .25rem;font-weight: 550;margin-left: 45%;margin-top: .05rem;">点卡余额：{{pointnum}}</div>
-			<div v-show="typeid ==2"
-        style="font-size: .25rem;font-weight: 550;flex: 1;margin-left: 48.5%; margin-top: .05rem;"
-      >剩余有效天数：{{time4}}天</div>
+			<div v-show="typeid ==3" style="font-size: .25rem;font-weight: 550;margin-left: 48%;margin-top: .05rem;">点卡余额：{{pointnum}}</div>
+			<div v-show="typeid ==2" style="font-size: .25rem;font-weight: 550;flex: 1;margin-left: 48.5%; margin-top: .05rem;">剩余有效天数：{{time4}}天</div>
 		</div>
 		<div class="strategy" v-show="typeid!=3">
 			<div class="onep" style="display: flex;margin: 4px 0;">
@@ -40,7 +39,7 @@
 					<van-icon name="arrow-down" @click="jiaoyi = !jiaoyi" />
 				</div>
 			</div>
-			<p style="margin-right: .7rem;"  >
+			<p style="margin-right: .7rem;">
 				<span>计价方式</span>
 
 				<span :class="{'active6':symbol2=='USDT'}" style="text-align: center;" @click="symbol2='USDT'">USDT保证金合约</span>
@@ -55,44 +54,46 @@
 		</p>
 		<div v-show="typeid==3" class="note-t">
 			<div class="div">
-				 计 价 方 式
-				 <div></div>
+				计 价 方 式
+				<div></div>
 			</div>
 			<div class="div2">
-				<div class="avtive" style="width: 45%;margin-left: -7px;" >USDT保证金合约</div>
+				<div class="avtive" style="width: 45%;margin-left: -7px;">USDT保证金合约</div>
 			</div>
 		</div>
 		<div v-show="typeid==3" class="note-t">
 			<div class="div">
-				 选择交易对
-				 <div></div>
+				选择交易对
+				<div></div>
 			</div>
 			<div class="div2">
-				<div :class="{'avtive':symbol3.search('BTC') != -1}" @click="symbol3='BTC'"><span>BTC</span>/USDT</div>
+				<div :class="$toast.fail({message: `暂未开放`,duration: 1200})" @click="symbol3='BTC'"><span>BTC</span>/USDT</div>
 				<div :class="{'avtive':symbol3.search('ETH') != -1}" @click="symbol3='ETH'"><span>ETH</span>/USDT</div>
 			</div>
 		</div>
 		<div class="note-t" v-show="typeid==3">
-			<div class="div" >
-				 选 择 仓 位
-				 <div ></div>
+			<div class="div">
+				选 择 仓 位
+				<div></div>
 			</div>
 			<div class="div2 ">
-				<div   :class="{'avtive':monery==5000}" @click="monery=5000">5000 USDT</div>
-				<div  :class="{'avtive':monery==10000}" @click="$toast.fail({message: '暂未开放',duration: 2000})">10000 USDT</div>
+				<div :class="{'avtive':monery==5000}" @click="monery=5000">5000 USDT</div>
+				<div :class="{'avtive':monery==10000}" @click="$toast.fail({message: '暂未开放',duration: 2000})">10000 USDT</div>
 			</div>
-		
+
 		</div>
 		<div class="note-t" v-show="typeid==3">
-			<div class="div" >
-				 开 仓 设 置
-				 <div ></div>
+			<div class="div">
+				开 仓 设 置
+				<div></div>
 			</div>
 			<div class="item">
-				<div>开仓张数: <input type="number" v-model="number5"/></div>
-				<div>杠杆倍率: <input type="number" v-model="number4"/></div>
+				<div class="div1">开仓张数: <div><input type="number" v-model="number5" /></div>
+				</div>
+				<div class="div1">杠杆倍率: <div><input type="number" v-model="number4" /></div>
+				</div>
 			</div>
-		
+
 		</div>
 		<p class="headtitle">
 			<span>|</span>实时监控
@@ -107,38 +108,37 @@
 					<p class="box1">{{count}}单</p>
 				</div>
 			</div>
-			<div class="cent" >
+			<div class="cent">
 				<div class="box">
 					<p style="color: #C0C5CB;">完成利润</p>
 					<p class="box1">{{profit}} {{symbol}}</p>
 				</div>
 			</div>
-			<div class="cent" >
+			<div class="cent">
 				<div class="box">
 					<p style="color: #C0C5CB;">收益率</p>
 					<p class="box1">{{ljsyl?ljsyl:0}}%</p>
 				</div>
 			</div>
-			
+
 		</div>
 		<div class="headtitle" v-if="typeid== 3" style="justify-content: space-between;font-size: 13px;">
-					<p >总交易笔数: {{count}}笔</p>
-		
-					<p >总结算收益$: {{profit}}</p>
-			
-			
+			<p>总交易笔数: {{count}}笔</p>
+
+			<p>总结算收益$: {{profit}}</p>
+
+
 		</div>
 		<div class="runy">
 			<p class="headtitle">
 				<span>|</span>运行状态
 			</p>
 			<p class="headtitle" @click="toshowdetail(true)">
-				<span>|</span>持仓详情  <img src="../assets/1008.png"/>
+				<span>|</span>持仓详情 <img src="../assets/1008.png" />
 			</p>
 			<p class="headtitle" @click="toshowdetail()">
-				<span>|</span>交易记录  <img src="../assets/1008.png"/>
+				<span>|</span>交易记录 <img src="../assets/1008.png" />
 			</p>
-			<!-- <p @click="$router.push('showdetail?type=0')">点卡明细</p> -->
 		</div>
 
 		<div class="comereult">
@@ -146,7 +146,7 @@
 				<li v-for="(item,i) in strategy_list" :key="i" style="position: relative;">
 					<p class="cometop">
 						<span style="font-size: 13px;line-height: 20px;font-weight: 550;">{{item.symbol_deal}}/<span style="color: #828282;font-weight: 540;">USDT永续</span></span>
-						<span style="font-size: 13px;display: flex;margin-left: 2%;" v-show="shuju==2">
+						<span style="font-size: 13px;display: flex;margin-left: 2%;line-height: 18px;" v-show="shuju==2">
 							<span class="item-span1" style="font-size: .2rem;padding: 0 2.5px;transform: scale(0.9);margin-top: 2.7px;">多</span>
 							<span class="item-span" style="font-size: .2rem;padding: 0 2.5px;transform: scale(0.9);margin-top: 2.7px;">空</span>
 							<span style="font-size: .2rem;padding: 1px 2.5px 0;transform: scale(0.85);margin-top: 1.7px;background-color: #f5a623;color: #FFFFFF;">{{item.leverage}}x</span>
@@ -155,7 +155,7 @@
 							<span class="item-span" :class="{'item-span1':item.up_down == 1}" style="font-size: .2rem;padding: 0 2.5px;transform: scale(0.9);margin-top: 1.7px;">{{item.up_down == 0?'空':'多'}}-{{item.leverage}}x</span>
 
 						</span>
-			
+
 						<span style="position: absolute;right: 17px;" v-if="shuju ==5">
 							<button style="background:rgb(97,161,240);margin-left: 0;" @click="fn5(item.id,item.stop_type)">删除策略</button>
 							<button style="background:rgb(97,161,240);" @click="fn6(item)">设置预算</button>
@@ -198,7 +198,7 @@
 						</div>
 						<div>
 							<p>持仓均价({{item.bidui?item.bidui.split('/')[1]:'USDT'}})</p>
-							<p><span > {{item.up_down == 0?'空:':'多:'}}</span> {{item.buy_count_average}}</p>
+							<p><span> {{item.up_down == 0?'空:':'多:'}}</span> {{item.buy_count_average}}</p>
 						</div>
 						<div>
 							<p>尾仓均价({{item.bidui?item.bidui.split('/')[1]:'USDT'}})</p>
@@ -216,23 +216,21 @@
 						</div>
 					</div>
 					<div class="tabul1" v-if="shuju==2">
-						<div class="two two2" >
+						<div class="two two2">
 							<div style="text-align: left;width: 26%;">
-								<!-- <p class="p1" style=""><span class="span2"> </span> 建 仓 单 数</p> -->
 								<p class="p1"><span class="span2"> </span> 建 仓 数 量</p>
-								<P ><span class="span2"> </span> 持 仓 均 价</P>
-								<P class="p"  ><span class="span2"> </span> 交 易 笔 数</P>
+								<P><span class="span2"> </span> 持 仓 均 价</P>
+								<P class="p"><span class="span2"> </span> 交 易 笔 数</P>
 								<p style="width: 75%;padding-left: 25%;">{{item.sell_count}}</p>
 							</div>
 							<div class="div" style="text-align: center;">
-								<!-- <p class="p1"><span class="span"></span> 多: {{item.up_count?item.up_count:0}}<span style="margin-left: 2px;">单</span><span class="span1"></span> </p> -->
 								<p class="p1"><span class="span"></span>多: {{item.up_filled_qty?item.up_filled_qty:0}} 张<span class="span1"></span></p>
 								<p><span class="span"></span>多: {{(item.up_price_avg*1).toFixed(2)}}<span class="span1"></span></p>
 								<P class="p"><span class="span span3"></span>结 算 收 益<span class="span1 span3"></span></P>
-								<p><span class="span"></span>{{(item.profit_cash*1).toFixed(2)}}<span style="margin-left: 2px;">USDT</span><span class="span1"></span></p>
+								<p><span class="span"></span>{{(item.profit_cash*1).toFixed(2)}}<span style="margin-left: 2px;">USDT</span><span
+									 class="span1"></span></p>
 							</div>
-							<div class="div" >
-								<!-- <p class="p1">空: {{item.down_count?item.down_count:0}}<span style="margin-left: 2px;">单</span></p> -->
+							<div class="div">
 								<p class="p1">空: {{item.down_filled_qty?item.down_filled_qty:0}} 张</p>
 								<p>空: {{(item.down_price_avg*1).toFixed(2)}}</p>
 								<p class="p">收 益 率</p>
@@ -243,12 +241,12 @@
 					<div class="tabul1" v-if="shuju==2">
 						<div class="button" style="padding-top: 7px;">
 							<button @click="fn5(item.id,item.stop_type)">删除策略</button>
-							<button :class="{'active':item.status == 1}" @click="check=2;clearance2(item.id,true)">一键平多</button>
-							<button :class="{'active':item.status == 1}" @click="check=2;clearance2(item.id,false)">一键平空</button>
+							<button :class="{'active':item.up_filled_qty}" @click="check=2;clearance2(item.id,true)">一键平多</button>
+							<button :class="{'active':item.down_filled_qty}" @click="check=2;clearance2(item.id,false)">一键平空</button>
 							<button :class="{'active':item.status == 1}" @click="check=0;close_now3(item.id)">临时停止</button>
-							<button :class="{'active':item.status == 0}"  @click="open_strategy(item.id,'1',item.up_down)">启动交易</button>
+							<button :class="{'active':item.status == 0}" @click="open_strategy(item.id,'1',item.up_down)">启动交易</button>
 						</div>
-						</div>
+					</div>
 				</li>
 			</ul>
 		</div>
@@ -273,7 +271,7 @@
 				<li>
 					<img src="../assets/src_resource_icon_user_exchange_binance@2x.png" alt />币安
 				</li>
-			
+
 			</ul>
 			<p class="proxys" style="    display: none;">
 				<!-- 县级 -->
@@ -349,53 +347,53 @@
 		</div>
 		<van-dialog v-model="show2" title="预算设置" show-cancel-button :before-close="beforeClose">
 			<p style="height: 15px;"></p>
-			<div style="display: flex;padding-bottom: 15px;" >
+			<div style="display: flex;padding-bottom: 8px;">
 				<span style="margin-left: 16px;font-size: 14px;">开单方向：</span>
 				<van-checkbox shape="square" v-model="checked2" style="font-size: 14px;" icon-size="16">开多</van-checkbox>
 				<van-checkbox shape="square" v-model="checked3" style="font-size: 14px;" icon-size="16">开空</van-checkbox>
 			</div>
-			<div style="display: flex;padding-bottom: 10px;" >
+			<div style="display: flex;padding-bottom: 10px;">
 				<span style="margin-left: 16px;font-size: 14px;">开单类型：</span>
 				<van-checkbox shape="square" v-model="checked5" style="font-size: 13px;margin-left: 0;" icon-size="14">首仓平投</van-checkbox>
 				<van-checkbox shape="square" v-model="checked6" style="font-size: 13px;margin-left: 0;" icon-size="14">首仓倍投</van-checkbox>
-			<van-checkbox shape="square" v-model="checked7" style="font-size: 13px;margin-left: 0;" icon-size="14">尾仓倍投</van-checkbox>
+				<van-checkbox shape="square" v-model="checked7" style="font-size: 13px;margin-left: 0;" icon-size="14">尾仓倍投</van-checkbox>
 			</div>
-		
+
 			<div style="display: flex;flex-flow:row wrap;">
-				<div v-show="checked2 && shuju==5" class="heyue-body" >
+				<div v-show="checked2 && shuju==5" class="heyue-body">
 					<span>开多张数:</span>
-					<input v-model="number2" type="number"/>
+					<input v-model="number2" type="number" />
 					<span>张</span>
 				</div>
-				<div v-show="checked3 && shuju==5" class="heyue-body" >
+				<div v-show="checked3 && shuju==5" class="heyue-body">
 					<span>开空张数:</span>
-					<input v-model="number3" type="number"/>
+					<input v-model="number3" type="number" />
 					<span>张</span>
 				</div>
-				<div v-show="shuju==2" class="heyue-body" >
+				<div v-show="shuju==2" class="heyue-body">
 					<span>开仓张数:</span>
-					<input v-model="number5" type="number"/>
+					<input v-model="number5" type="number" />
 					<span>张</span>
 				</div>
-				<div  class="heyue-body" >
+				<div class="heyue-body">
 					<span>杠杆倍数:</span>
-					<input v-model="number4" type="number"/>
+					<input v-model="number4" type="number" />
 					<span>倍</span>
 				</div>
-				
-				<div v-show="shuju==5" class="heyue-body" >
+
+				<div v-show="shuju==5" class="heyue-body">
 					<span>最大补仓:</span>
-					<input v-model="ordernum" type="number"/>
+					<input v-model="ordernum" type="number" />
 					<span>单</span>
 				</div>
-				<div v-show="shuju==5" class="heyue-body" >
+				<div v-show="shuju==5" class="heyue-body">
 					<span>补仓间隔:</span>
-					<input v-model="interval2" type="number"/>
+					<input v-model="interval2" type="number" />
 					<span>%</span>
 				</div>
-				<div v-show="shuju==5" class="heyue-body" >
+				<div v-show="shuju==5" class="heyue-body">
 					<span>止盈比例:</span>
-					<input v-model="profitratio" type="number"/>
+					<input v-model="profitratio" type="number" />
 					<span>%</span>
 				</div>
 			</div>
@@ -408,46 +406,46 @@
 		</van-dialog>
 		<van-dialog v-model="show3" title="设置预算" show-cancel-button :before-close="beforeClose">
 			<p style="height: 15px;"></p>
-			<div style="display: flex;padding-bottom: 10px;" >
+			<div style="display: flex;padding-bottom: 10px;">
 				<span style="margin-left: 16px;font-size: 14px;">开单类型：</span>
 				<van-checkbox shape="square" v-model="checked5" style="font-size: 13px;margin-left: 0;" icon-size="14">首仓平投</van-checkbox>
 				<van-checkbox shape="square" v-model="checked6" style="font-size: 13px;margin-left: 0;" icon-size="14">首仓倍投</van-checkbox>
-			<van-checkbox shape="square" v-model="checked7" style="font-size: 13px;margin-left: 0;" icon-size="14">尾仓倍投</van-checkbox>
+				<van-checkbox shape="square" v-model="checked7" style="font-size: 13px;margin-left: 0;" icon-size="14">尾仓倍投</van-checkbox>
 			</div>
 			<div style="display: flex;flex-flow:row wrap">
-				<div v-show="bool4 == 1 " class="heyue-body" >
+				<div v-show="bool4 == 1 " class="heyue-body">
 					<span>开多张数:</span>
-					<input v-model="number2" type="number"/>
+					<input v-model="number2" type="number" />
 					<span>张</span>
 				</div>
-				<div v-show="bool4 == 0" class="heyue-body" >
+				<div v-show="bool4 == 0" class="heyue-body">
 					<span>开空张数:</span>
-					<input v-model="number3" type="number"/>
+					<input v-model="number3" type="number" />
 					<span>张</span>
 				</div>
-				<div  class="heyue-body" >
+				<div class="heyue-body">
 					<span>杠杆倍数:</span>
-					<input v-model="number4" type="number"/>
+					<input v-model="number4" type="number" />
 					<span>倍</span>
 				</div>
-				
-				<div  class="heyue-body" >
-					<span>补仓间隔:</span>
-					<input v-model="interval2" type="number"/>
-					<span>%</span>
-				</div>
-				<div  class="heyue-body" >
+				<div class="heyue-body">
 					<span>最大补仓:</span>
-					<input v-model="ordernum" type="number"/>
+					<input v-model="ordernum" type="number" />
 					<span>单</span>
 				</div>
-				<div  class="heyue-body" >
+				<div class="heyue-body">
+					<span>补仓间隔:</span>
+					<input v-model="interval2" type="number" />
+					<span>%</span>
+				</div>
+				
+				<div class="heyue-body">
 					<span>止盈比例:</span>
-					<input v-model="profitratio" type="number"/>
+					<input v-model="profitratio" type="number" />
 					<span>%</span>
 				</div>
 			</div>
-			<div style="display: flex;padding-top: 8px;" >
+			<div style="display: flex;padding-top: 8px;">
 				<span style="margin-left: 16px;font-size: 14px;">止盈方式：</span>
 				<van-checkbox icon-size="16" shape="square" v-model="checked8" style="font-size: 14px;">尾仓止盈</van-checkbox>
 				<van-checkbox icon-size="16" shape="square" v-model="checked9" style="font-size: 14px;">整体止盈</van-checkbox>
@@ -488,7 +486,8 @@
 		},
 		data() {
 			return {
-				monery:5000,
+				type_status: false,
+				monery: 5000,
 				checked2: true,
 				checked3: true,
 				checked5: true,
@@ -498,8 +497,8 @@
 				checked9: false,
 				checked10: true,
 				checked11: true,
-				show7:false,
-				id3:'',
+				show7: false,
+				id3: '',
 				value: 3,
 				number: "",
 				number2: "",
@@ -546,7 +545,7 @@
 				types: 3,
 				selsym: [],
 				symbol: "USDT",
-				symbol3:'BTC',
+				symbol3: 'ETH',
 				jysymbol: 0,
 				istxt: -1,
 				principal: "",
@@ -579,36 +578,41 @@
 				jiaoyi: false,
 				idbool: false,
 				textsel: 'ETH',
-				typeid:'3',
-				columns:[],
-				time4:365,
+				typeid: '3',
+				columns: [],
+				time4: 365,
+				etharr: [],
+				btcarr: []
 			};
 		},
 		created() {
 			this.typeid = this.$route.query.type
 			this.$axios
 				.post("/index/robot/robot_systerm", {
-					robot_type:this.typeid,
+					robot_type: this.typeid,
 				})
 				.then((res) => {
 					if (res.data.code == 0) {
-						if(res.data.state != 1){
+						if (res.data.state != 1) {
 							this.$router.push('/shangchen')
 						}
-					} 
+					}
 				});
-				this.time4 = this.$route.query.time
-				if (this.$route.query.id == 1) {
-					this.idbool = true
-				}
-			if(this.typeid == 3){
-				this.types = 2
-				this.shuju = 2
-				this.number5 = 50
-				this.number4 = 100
-			}
+			this.time4 = this.$route.query.time
+			// if (this.$route.query.id == 1) {
+			// 	this.idbool = true
+			// }
+			
 			if (localStorage.getItem("bourse1")) {
 				this.bourse = localStorage.getItem("bourse1");
+			}
+			if (this.typeid == 3) {
+				this.types = 2
+				this.shuju = 2
+				this.number5 = 100
+				this.number4 = 100
+			}else{
+				this.tostring()
 			}
 			this.$axios
 				.get("/index/mywallet/mywalletInfo", {
@@ -617,13 +621,10 @@
 				})
 				.then((res) => {
 					let info = res.data.info;
-					this.pointnum = info.point_num;
+					this.pointnum = info.robot_point;
 				});
 			if (this.bourse == 4) {
 				this.selectsymbol[3].a = "OKB";
-			}
-			if(this.shuju == 2){
-				return
 			}
 			this.start()
 			this.$axios
@@ -642,31 +643,31 @@
 				});
 		},
 		watch: {
-			checked5(newValue, oldValue){
-				if(newValue==true){
+			checked5(newValue, oldValue) {
+				if (newValue == true) {
 					this.checked6 = false
 					this.checked7 = false
 				}
 			},
-			checked6(newValue, oldValue){
-				if(newValue==true){
+			checked6(newValue, oldValue) {
+				if (newValue == true) {
 					this.checked5 = false
 					this.checked7 = false
 				}
 			},
-			checked7(newValue, oldValue){
-				if(newValue==true){
+			checked7(newValue, oldValue) {
+				if (newValue == true) {
 					this.checked5 = false
 					this.checked6 = false
 				}
 			},
-			checked8(newValue, oldValue){
-				if(newValue==true){
+			checked8(newValue, oldValue) {
+				if (newValue == true) {
 					this.checked9 = false
 				}
 			},
-			checked9(newValue, oldValue){
-				if(newValue==true){
+			checked9(newValue, oldValue) {
+				if (newValue == true) {
 					this.checked8 = false
 				}
 			},
@@ -676,36 +677,30 @@
 				this.start1(true);
 			},
 			symbol2(newValue, oldValue) {
-					this.strategy_list = [];
-					this.start(newValue);
-					this.start1(true);
-				
+				this.strategy_list = [];
+				this.start(newValue);
+				this.start1(true);
+
 			},
 			symbol3(newValue, oldValue) {
-					if(newValue == 'BTC'){
-						this.number5 = 50
+				if (newValue == 'BTC') {
+					if (this.btcarr.length) {
+						this.number4 = this.btcarr[1]
+						this.number5 = this.btcarr[0]
+					} else {
+						this.number5 = 100
 						this.number4 = 100
-					}else if(newValue == 'ETH'){
+					}
+				} else if (newValue == 'ETH') {
+					if (this.etharr.length) {
+						this.number4 = this.etharr[1]
+						this.number5 = this.etharr[0]
+					} else {
 						this.number4 = 50
 						this.number5 = 100
 					}
-			},
-			shuju(newValue, oldValue) {
-				
-				if (newValue == 2) {
-					this.types = 2;
-					this.index = 1;
+
 				}
-				
-				if (newValue == 4) {
-					this.types = 5;
-					this.index = 3;
-				}
-				if (newValue == 5) {
-					this.types = 1;
-					this.index = 4;
-				}
-				this.start();
 			},
 		},
 		methods: {
@@ -731,7 +726,7 @@
 					return;
 				}
 				if (this.shuju) {
-				
+
 					this.show2 = true
 				} else {
 					Dialog.confirm({
@@ -751,13 +746,13 @@
 
 			fn5(id, type) {
 				console.log(id, type);
-				if (type == 2) {
-					this.$toast.fail({
-						message: "止盈停止后才可删除",
-						duration: 2000
-					});
-					return;
-				}
+				// if (type == 2 ) {
+				// 	this.$toast.fail({
+				// 		message: "止盈停止后才可删除",
+				// 		duration: 2000
+				// 	});
+				// 	return;
+				// }
 				Dialog.confirm({
 					title: "提醒",
 					message: "是否删除策略？",
@@ -782,35 +777,35 @@
 						});
 				});
 			},
-			confim(){
-				let obj ={}
+			confim() {
+				let obj = {}
 				obj.symbol = 'USDT'
 				obj.symbol_deal = this.symbol3
 				obj.amount = this.monery
 				obj.type = 2
 				obj.bourse = 4
-				if(this.symbol3 == 'BTC'){
-					if(this.number5>300){
+				if (this.symbol3 == 'BTC') {
+					if (this.number5 > 300) {
 						this.$toast.fail({
 							message: '开仓张数不能大于300张',
 							duration: 1200
 						})
 						return
 					}
-				}else{
-					if(this.number5>500){
+				} else {
+					if (this.number5 > 300) {
 						this.$toast.fail({
-							message: '开仓张数不能大于500张',
+							message: '开仓张数不能大于300张',
 							duration: 1200
 						})
 						return
 					}
 				}
-				
+
 				obj.first_amount = this.number5;
-				obj.leverage= this.number4;
-					obj.up_down = '1,0';
-				
+				obj.leverage = this.number4;
+				obj.up_down = '1,0';
+
 				this.$axios.post(`/index/swapstrategy/set_strategy_all`, obj).then((res) => {
 					if (res.data.code == 0) {
 						localStorage.setItem("bourse1", this.bourse);
@@ -835,7 +830,7 @@
 				})
 			},
 			fn6(item) {
-				if(this.shuju == 2){
+				if (this.shuju == 2) {
 					this.number5 = item.first_amount;
 				}
 				this.number2 = item.first_amount;
@@ -850,28 +845,28 @@
 					this.profitratio = item.profit
 					if (this.shuju == 5) {
 						this.interval2 = item.interval
-						if(item.profit_case){
+						if (item.profit_case) {
 							this.checked8 = false
 							this.checked9 = true
-						}else{
+						} else {
 							console.log(668)
 							this.checked8 = true
 							this.checked9 = false
 						}
-						if(item.amount_scale == 1){
+						if (item.amount_scale == 1) {
 							this.checked5 = false
 							this.checked6 = true
 							this.checked7 = false
-						}else if(item.amount_scale == 2){
+						} else if (item.amount_scale == 2) {
 							this.checked5 = false
 							this.checked6 = false
 							this.checked7 = true
-						}else{
+						} else {
 							this.checked5 = true
 							this.checked6 = false
 							this.checked7 = false
 						}
-						
+
 					} else {
 						this.interval = item.interval
 					}
@@ -884,27 +879,27 @@
 					obj.leverage = this.number4;
 					let str = "";
 					let amount_scale = ''
-					obj.profit = this.profitratio
+						obj.profit = this.profitratio
 						obj.interval = this.interval2
-						if(this.checked8){
-							obj.profit_case = 0
-						}else{
-							obj.profit_case = 1
-						}
-						if(this.checked5){
-							obj.amount_scale = 0
-						}
-						if(this.checked6){
-							obj.amount_scale = 1
-						}
-						if(this.checked7){
-							obj.amount_scale = 2
-						}
-					if (this.bool4 == 0 || this.bool4 == 1 || this.bool4 == 2 ) {
+					if (this.checked8) {
+						obj.profit_case = 0
+					} else {
+						obj.profit_case = 1
+					}
+					if (this.checked5) {
+						obj.amount_scale = 0
+					}
+					if (this.checked6) {
+						obj.amount_scale = 1
+					}
+					if (this.checked7) {
+						obj.amount_scale = 2
+					}
+					if (this.bool4 == 0 || this.bool4 == 1 || this.bool4 == 2) {
 						obj.id = this.id2;
 						obj.up_down = this.bool4;
 						obj.order_num = this.ordernum
-
+						
 						str = "set_strategy";
 						console.log(this.bool4)
 						if (this.bool4 == 0) {
@@ -917,7 +912,7 @@
 								done();
 								return;
 							}
-						} else if(this.bool4 == 1) {
+						} else if (this.bool4 == 1) {
 							obj.first_amount = this.number2;
 							if (!this.number2 || !this.number4) {
 								this.$toast.fail({
@@ -949,7 +944,7 @@
 									return;
 								}
 							}
-						} 
+						}
 						obj.down_buy_num = this.number3;
 						obj.up_buy_num = this.number2;
 						obj.type = this.types;
@@ -967,11 +962,9 @@
 						if (this.checked3 && this.checked2) {
 							obj.up_down = arr.join(",");
 						}
-						if(this.shuju == 5){
-							obj.profit = this.profitratio
-							obj.interval = this.interval2
+						if (this.shuju == 5) {
 							obj.order_num = this.ordernum
-							
+
 						}
 						str = "set_strategy_all";
 						this.jysymbol = 0;
@@ -1002,6 +995,7 @@
 							});
 						}
 					});
+					
 					this.selsym = []
 					done(); // 关闭提示框
 				} else if (action === "cancel") {
@@ -1024,7 +1018,7 @@
 					this.strategy_list.forEach(item => {
 						abc.push(item.symbol_deal)
 					})
-					console.log(abc,this.strategy_list)
+					console.log(abc, this.strategy_list)
 					abc = [...new Set(abc)].join(',')
 					console.log(abc)
 					this.$router.push({
@@ -1036,13 +1030,18 @@
 						}
 					})
 				} else {
-					let str='';
-					if(this.typeid == 2){
+					let str = '';
+					if (this.typeid == 2) {
 						str = '&poni=1'
+						this.$router.push(
+							"showdetail2?type=2"
+						);
+					} else {
+						this.$router.push(
+							"showdetail2"
+						);
 					}
-					this.$router.push(
-						"showdetail?bourse=" + this.bourse + "&type=1" + "&heyeu=1" + str
-					);
+
 				}
 			},
 			clileft(s, num) {
@@ -1075,9 +1074,9 @@
 					this.symbol = localStorage.getItem("symbol");
 				}
 				let str;
-				if(this.shuju == 2){
+				if (this.shuju == 2) {
 					str = 'get_trend_monitoring_total'
-				}else{
+				} else {
 					str = 'get_monitoring_total'
 				}
 				//取利润
@@ -1098,13 +1097,13 @@
 					});
 			},
 			tostring() {
-				if(this.shuju == 2){
+				if (this.shuju == 2) {
 					return
 				}
 				this.$axios
 					.post("/index/swapstrategy/get_balance", {
 						symbol: this.symbol2,
-						bourse: this.bourse,
+						bourse: 4,
 						symbol_deal: this.textsel,
 					})
 					.then((res) => {
@@ -1121,16 +1120,13 @@
 					this.start1();
 				}
 				let str;
-				console.log(this.types)
 				this.strategy_list = []
-				if (this.shuju == 4) {
-					str = 'get_lock_strategy_list'
-				} else if(this.shuju == 2){
+				if (this.typeid == 3) {
 					str = 'get_trend_strategy_list'
-				}
-				else {
+				} else {
 					str = 'get_strategy_list'
 				}
+				let that = this
 				this.$axios
 					.post(`/index/swapstrategy/${str}`, {
 						symbol: this.symbol2,
@@ -1139,14 +1135,24 @@
 					})
 					.then((res) => {
 						this.strategy_list = res.data.list;
-						if(this.typeid == 3){
-							let arr = []
-							res.data.list.forEach(item=>{
-								arr.push(item.symbol_deal)
-							})
-							let symbole = arr.join('')
-							this.symbol3 = symbole
-						}
+						if (that.typeid == 3) {
+							that.symbol3 = res.data.list[0].symbol_deal
+							}
+						res.data.list.forEach(item => {
+							if (that.typeid == 3) {
+								if (item.symbol_deal == 'ETH') {
+									that.etharr.push(item.first_amount)
+									that.etharr.push(item.leverage)
+								} else {
+									that.btcarr.push(item.first_amount)
+									that.btcarr.push(item.leverage)
+								}
+							}
+							if (item.status == 1) {
+								that.type_status = true
+							}
+						})
+
 					});
 
 			},
@@ -1184,8 +1190,6 @@
 					obj.bool = true;
 				}
 				this.$set(this.list3, index, obj);
-				// this.bidui = false;
-				// this.selsym = [];
 				this.selsym.push(this.list3[index].symbol_deal);
 				this.selsym = [...new Set(this.selsym)]
 				console.log(this.selsym, this.list3);
@@ -1222,7 +1226,7 @@
 					this.closeid = i;
 				} else if (s == 1) {
 					this.show = true;
-				}  else if (s == 3) {
+				} else if (s == 3) {
 					this.matterplay = true;
 				} else if (s == 4) {
 
@@ -1266,7 +1270,7 @@
 			firmcolse(s) {
 				this.check = s;
 			},
-			
+
 			open_strategy(s, i, b) {
 				this.$axios
 					.post("/index/swap/start_strategy", {
@@ -1280,7 +1284,6 @@
 								duration: 2000
 							});
 							this.start();
-							// this.strategy_list[i].status = 1
 						} else {
 							this.$toast.fail({
 								message: res.data.msg,
@@ -1299,7 +1302,7 @@
 						this.$router.push({
 							path: "noticedateil",
 							query: {
-								id: res.data.info[0].article_id
+								id: res.data.info[1].article_id
 							},
 						});
 					});
@@ -1333,43 +1336,39 @@
 						}
 					});
 			},
-			close_now3(id,bool) {
+			close_now3(id, bool) {
 				Dialog.confirm({
-				  title: `确定停止`,
-				  message:
-				    `是否要临时停止?`,
-				})
-				  .then(() => {
-					this.close_now(id)
-				  })
-				  .catch(() => {
-				  });
+						title: `确定停止`,
+						message: `是否要临时停止?`,
+					})
+					.then(() => {
+						this.close_now(id)
+					})
+					.catch(() => {});
 			},
-			clearance2(id,bool){
+			clearance2(id, bool) {
 				let obj = {};
 				obj.id = id
 				let str = ''
-				if(bool){
+				if (bool) {
 					obj.up_down = 1
 					str = '多'
-				}else{
+				} else {
 					obj.up_down = 0
 					str = '空'
 				}
 				Dialog.confirm({
-				  title: "确定平仓",
-				  message:
-				    `是否要一键平${str}？`,
-				})
-				  .then(() => {
-					this.close_now(1,obj)
-				  })
-				  .catch(() => {
-				  });
+						title: "确定平仓",
+						message: `是否要一键平${str}？`,
+					})
+					.then(() => {
+						this.close_now(1, obj)
+					})
+					.catch(() => {});
 			},
-			close_now(id,obj) {
+			close_now(id, obj) {
 				this.closeid
-				let id2 = this.closeid?this.closeid:id
+				let id2 = this.closeid ? this.closeid : id
 				if (this.check == 0) {
 					this.$axios
 						.post("/index/swap/pause_strategy", {
@@ -1382,9 +1381,10 @@
 									duration: 2000
 								});
 								let string = 'get_strategy_list'
-								if(this.typeid == 3){
+								if (this.typeid == 3) {
 									string = 'get_trend_strategy_list'
 								}
+								let that = this
 								this.$axios
 									.post(`/index/swapstrategy/${string}`, {
 										symbol: this.symbol,
@@ -1392,18 +1392,24 @@
 										type: this.types,
 									})
 									.then((res) => {
-										// this.strategy_list = res.data.list;
+										if (that.typeid == 3) {
+											that.symbol3 = res.data.list[0].symbol_deal
+											}
 										res.data.list.forEach((item, index) => {
 											this.$set(this.strategy_list, index, item);
+											if (that.typeid == 3) {
+												if (item.symbol_deal == 'ETH') {
+													that.etharr.push(item.first_amount)
+													that.etharr.push(item.leverage)
+												} else {
+													that.btcarr.push(item.first_amount)
+													that.btcarr.push(item.leverage)
+												}
+											}
+											if (item.status == 1) {
+												that.type_status = true
+											}
 										});
-										if(this.typeid == 3){
-											let arr = []
-											res.data.list.forEach(item=>{
-												arr.push(item.symbol_deal)
-											})
-											let symbole = arr.join('')
-											this.symbol3 = symbole
-										}
 									});
 
 								this.closedeal = false;
@@ -1439,13 +1445,13 @@
 				} else {
 					// var id = s;
 					let str;
-					let object={};
-					if(this.typeid == 3){
+					let object = {};
+					if (this.typeid == 3) {
 						str = 'trend_clearance'
 						object = obj
-					}else{
+					} else {
 						str = 'clearance'
-						object.id =id2
+						object.id = id2
 					}
 					this.$axios
 						.post(`/index/swap/${str}`, object).then((res) => {
@@ -1567,6 +1573,7 @@
 			}
 		}
 	}
+
 	.matter {
 		top: 42%;
 		width: 90%;
@@ -1613,16 +1620,14 @@
 			border: none;
 			display: flex;
 
-			// line-height: 28px;
 			span {
 				display: block;
 				margin-top: -1px;
 				color: #2185ff;
 				margin-right: 0.1rem;
 				line-height: 19px;
-				// margin-top: -0.2rem;
 			}
-			
+
 		}
 	}
 
@@ -1641,20 +1646,21 @@
 			color: #2185ff;
 			margin-right: 0.1rem;
 		}
-		p{
-			    border: 1px solid #2284fd;
-				width: 48%;
-				border-radius: 6px;
-				padding: 9px 0;
-				text-align: center;
-				margin: 4px 0;
+
+		p {
+			border: 1px solid #2284fd;
+			width: 48%;
+			border-radius: 6px;
+			padding: 9px 0;
+			text-align: center;
+			margin: 4px 0;
 		}
-		img{
-			    width: 11px;
-			    height: 11px;
-			    // display: block;
-			    margin-top: 5px;
-			    margin-left: 2px;
+
+		img {
+			width: 11px;
+			height: 11px;
+			margin-top: 5px;
+			margin-left: 2px;
 		}
 	}
 
@@ -1803,7 +1809,7 @@
 			padding-top: 0.3rem;
 			flex-flow: wrap;
 			font-size: 0.24rem;
-			
+
 			div {
 				width: 33.3%;
 				margin-bottom: 0.3rem;
@@ -1826,28 +1832,34 @@
 			div:nth-of-type(6) {
 				text-align: right;
 			}
-	
+
 		}
 	}
-.tabul1{
-	position:relative;
-	min-height:33px;
-	.two {
-		width: 100%;
-		display: flex;
-		margin: 6px 0;
-		.div{
-			flex: 1;
-		}
-		div {
-			text-align: center;
-			p{
-				line-height: 36px;
-				font-size: 13px;
-				border-bottom: 2.5px solid #f5f6fa;
-				color: #000;
-				position: relative;
-				.span{
+
+	.tabul1 {
+		position: relative;
+		min-height: 33px;
+
+		.two {
+			width: 100%;
+			display: flex;
+			margin: 6px 0;
+
+			.div {
+				flex: 1;
+			}
+
+			div {
+				text-align: center;
+
+				p {
+					line-height: 36px;
+					font-size: 13px;
+					border-bottom: 2.5px solid #f5f6fa;
+					color: #000;
+					position: relative;
+
+					.span {
 						position: absolute;
 						width: 2px;
 						height: 16px;
@@ -1855,69 +1867,68 @@
 						top: 7px;
 						left: 0;
 					}
-					.span1{
-							position: absolute;
-							width: 2px;
-							height: 16px;
-							background-color: #e5e5e5;
-							top: 7px;
-							right: 0;
-						}
-					.span2{
+
+					.span1 {
+						position: absolute;
+						width: 2px;
+						height: 16px;
+						background-color: #e5e5e5;
+						top: 7px;
+						right: 0;
+					}
+
+					.span2 {
 						margin-right: 5px;
 					}
-					.span3{
+					.span3 {
 						height: 25px;
 					}
+				}
+				.p {
+					border: 0;
+					line-height: 16px;
+					height: 16px;
+					padding-top: 7px;
+				}
+				.p1 {
+					margin-top: 4px;
+					border-top: 2.5px solid #f5f6fa;
+				}
+
 			}
-			.p{
-				border: 0;
-				line-height: 16px;
-				height: 16px;
-				padding-top: 7px;
+		}
+
+		.button {
+			width: 104%;
+			position: absolute;
+			left: -2%;
+			margin-bottom: 8px;
+			font-size: 0.2rem;
+			display: flex;
+			justify-content: space-around;
+			top: -4px;
+
+			button {
+				line-height: 20px;
+				color: rgb(199, 199, 199);
+				border: 1px solid rgb(188, 187, 193);
+				border-radius: 4px;
+				background-color: #FFFFFF;
 			}
-			.p1{
-				margin-top: 4px;
-				border-top: 2.5px solid #f5f6fa;
+			.active {
+				background-color: #4389eb;
+				color: #FFFFFF;
+				border: 1px solid #4389eb;
 			}
-			
 		}
 	}
-	
-	.button {
-		width: 104%;
-		// text-align: right;
-		position:absolute;
-		left:-2%;
-		margin-bottom: 8px;
-	    font-size: 0.2rem;
-		display:flex;
-		justify-content:space-around;
-		top:-4px;
-		button {
-			// width: 62px;
-			line-height: 20px;
-			color: rgb(199, 199, 199);
-			border: 1px solid rgb(188, 187, 193);
-			border-radius: 4px;
-			background-color: #FFFFFF;
-			// margin-right: 4px;
-			// margin:0 1%;
-		}
-		.active{
-			background-color: #4389eb;
-			color: #FFFFFF;
-			border: 1px solid #4389eb;
-		}
-	}
-}
+
 	.closedeal {
 		padding: 0.5rem 0.3rem 0.3rem;
 		background: url("../assets/closeback.png") no-repeat;
 		background-size: 100%;
 		border-radius: 5px;
 		width: 65%;
-
 		.title {
 			font-size: 0.36rem;
 			color: #000000;
@@ -1927,13 +1938,11 @@
 		.plesway {
 			text-align: center;
 		}
-
 		.plesway {
 			color: #808080;
 			font-size: 0.24rem;
 			margin: 0.2rem 0 0.4rem;
 		}
-
 		li {
 			font-size: 0.28rem;
 			color: #000000;
@@ -1952,6 +1961,7 @@
 			width: 100%;
 		}
 	}
+
 	.gundong {
 		width: 64.5%;
 		background: url(../assets/gundong7.gif) no-repeat;
@@ -1967,7 +1977,6 @@
 		background: rgba(0, 0, 0, 0.6);
 		z-index: 122;
 
-		// display:none;
 		img {
 			width: 100%;
 			position: absolute;
@@ -2105,7 +2114,8 @@
 		top: 152px;
 		width: 100%;
 	}
-	.heyue-body{
+
+	.heyue-body {
 		width: 42%;
 		display: flex;
 		margin-left: 16px;
@@ -2116,31 +2126,49 @@
 		background-color: #fff;
 		border-bottom: 1px solid #ebedf0;
 		line-height: 35px;
-		input{
+
+		input {
 			width: 37%;
 			text-align: center;
 		}
 	}
+
 	.note-t {
 		display: flex;
 		margin: 4px 0px 0;
 		background-color: #fff;
 		border-bottom: 2.5px solid #f5f6fa;
-		.item{
+
+		.item {
 			display: flex;
 			font-size: 13px;
-			color: rgb(130,130,130);
+			color: rgb(130, 130, 130);
 			justify-content: space-around;
 			flex: 1;
 			line-height: 28px;
-			input{
-				width: 40px;
-				border: 1px solid #eee;
-				height: 17px;
-				border-radius: 3px;
-				text-align: center;
+
+			.div1 {
+				display: flex;
+
+				div {
+					border: 1px solid #eee;
+					width: 40px;
+					height: 22px;
+					line-height: 22px;
+					margin-left: 2px;
+
+					input {
+						width: 40px;
+						border-radius: 3px;
+						text-align: center;
+						display: block;
+					}
+				}
+
 			}
+
 		}
+
 		.div2 {
 			display: flex;
 			flex: 1;
@@ -2148,50 +2176,63 @@
 			margin-top: 5px;
 			margin-bottom: 5px;
 			flex-flow: row wrap;
+
 			div {
 				width: 37%;
 				border: 1px solid #eee;
 				text-align: center;
 				font-size: 12px;
-				color: rgb(130,130,130);
+				color: rgb(130, 130, 130);
 				border-radius: 4px;
 				line-height: 20px;
-				span{
+
+				span {
 					color: #000;
 				}
 			}
-			
+
 			.avtive {
-				span{
+				span {
 					color: #fff;
 				}
+
 				color: #fff;
 				font-size: 12px;
 				background:#4389eb;
 				border: 1px solid #4389eb;
 			}
-			
-			
+
+
 		}
+
 		.div {
 			line-height: 28px;
 			width: 25%;
 			display: flex;
-	        text-align: center;
+			text-align: center;
 			padding-left: 5%;
 			justify-content: space-between;
 			font-size: 13px;
+
 			div {
 				width: 2px;
 				height: 16px;
-				background-color: rgb(229,229,229);
+				background-color: rgb(229, 229, 229);
 				margin-top: 6px;
-				// margin-left: -5px;
 				margin-right: 7px;
 			}
 		}
 	}
-	/deep/.van-checkbox__label{
+
+	/deep/.van-checkbox__label {
 		margin-left: 1px;
-		}
+	}
+
+	.statusimg {
+		position: absolute;
+		top: 44px;
+		left: 47%;
+		width: 30px;
+		height: 40px;
+	}
 </style>

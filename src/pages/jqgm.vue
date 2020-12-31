@@ -7,7 +7,7 @@
 		<div class="item" v-for="(item,index) in list" :key="index">
 			<img src="../assets/sc002.png" />
 			<div >
-				<p style="margin-bottom: 7px;">{{item.robot_type==1?'现货量化机器人(专业版)':item.robot_type==2?'合约量化机器人(专业版)':'合约量化机器人(智能版)'}}</p>
+				<p style="margin-bottom: 7px;">{{item.robot_type==1?'现货量化机器人(专业设置版)':item.robot_type==2?'合约量化机器人(专业设置版)':'合约量化机器人(智能趋势版)'}}</p>
 				<p class="p1">数量: 1个</p>
 				<p class="p1">有效时长: {{item.probation==1?'7':'365'}} 天</p>
 				<p class="p1">购买时间: {{item.create_time}}</p>
@@ -82,7 +82,7 @@
 			margin-left: 12px;
 			flex: 1;
 			p{
-				font-size: 16px;
+				font-size: 14px;
 				line-height: 16px;
 			}
 			.p1{

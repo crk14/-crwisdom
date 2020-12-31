@@ -1,18 +1,8 @@
 <template>
 	<div style="position: relative;width: 100%;height: 100%;overflow:initial;">
-		<!-- <p class="nobank" @click="$router.push('sign')">注册</p> -->
-		<!-- <img class="login-img" src="../assets/login2.png"/> -->
 		<img src="../assets/1311.png" style="width: 100%;height: 4rem;" />
-		<img src="../assets/1313.png" style="position: absolute;left: 10px;top: 7px;width: 30px;height: 30px;" />
-		<!-- <img src="../assets/911.png" style="width: 100%;height: 6rem;"/> -->
-		<!-- <div class="login-img"> -->
-		<!-- <img src="../assets/logo1.png" style="position: absolute;left: 0px;top: 0px;width: 120px;height: 100px;"/> -->
-		<!-- </div> -->
+		<img src="../assets/1313.png" style="position: absolute;left: 0.3rem;top: 0.15rem;width: .9rem;height: .9rem;" />
 		<div class="login-body">
-			<!-- <div class="headtop" style="margin: 0.7rem 0 .94rem 0.3rem;">
-		  <p class="headtext">Hi~</p>
-		  <p class="headtext" >欢迎登录CR Wisdom</p>
-		</div> -->
 			<div class="one">
 				<span @click="$router.push('sign')">注册</span>
 				<span class="left">
@@ -22,20 +12,16 @@
 			<div class="togleulbox" style="margin: 0 .2rem;">
 				<div class="loginul">
 					<div style="margin-top: 0rem;">
-						<!-- <img src="../assets/shouji1.png"/> -->
-						<!-- <p>手机号</p> -->
 						<input type="text" autocomplete="off" name="userName" v-model="logmobile" placeholder="请输入手机号或邮箱" />
 						<p class="hr"></p>
 					</div>
 					<div style="margin-top: 0.2rem;">
-						<!-- <p>登录密码</p> -->
-						<!-- <img src="../assets/mima1.png"/> -->
 						<input type="password" autocomplete="new-password" name="password" v-model="logpassword" placeholder="请输入密码" />
 						<p class="hr"></p>
 					</div>
 					<div class="pass">
-						<label style="height: 0px;">
-							<input type="checkbox" v-model="ispass" style="margin: 0;height: 10px;">
+						<label >
+							<input type="checkbox" v-model="ispass" style="margin: 0;height: .3rem;">
 							<span class="box">
 								<van-icon :style="{opacity:ispass?1:0}" name="success" color="#306ce8" /></span> <span class="text">记住密码</span>
 						</label>
@@ -44,14 +30,14 @@
 						</router-link>
 					</div>
 					<div class="pass" style="margin: 0;position: absolute;">
-						<label style="width: 0px;">
-							<input type="checkbox" v-model="ispass2" style="margin: 0;width: 20px;height: 20px;">
+						<label style="width: 0;">
+							<input type="checkbox" v-model="ispass2" style="margin: 0;width: .6rem;height: .6rem;">
 						</label>
 						<span class="box">
 							<van-icon :style="{opacity:ispass2?1:0}" name="success" color="#306ce8" /></span> <span style="font-size: 12px;color: #000000;margin-top: -3px;margin-left: 3px;">我已阅读并完全同意接受<span
 							 @click="bool = true" style="color:rgb(64,115,231)">《用户协议》</span><span @click="bool2 = true" style="color:rgb(64,115,231)">《风险提示书》</span></span>
 					</div>
-					<button type="button" class="changebton" @click="login" style="margin: 1.45rem auto .35rem;background: rgb(48,108,232);border-radius: 25px;width: 100%;">登录</button>
+					<button type="button" class="changebton" @click="login" style="margin: 1.45rem auto .35rem;background: rgb(48,108,232);border-radius: .7rem;width: 100%;">登录</button>
 					<!-- <button type="button" class="changebton"  @click="$router.push('sign')" style="margin: .35rem auto .65rem;border: 1px solid #009afd;background: #FFFFFF;color:rgb(13,125,254) ;border-radius: 2px;width: 100%;">注册</button> -->
 					<a class="linka" href="https://sapp.dierna.com/EVfu" style="padding-top: .36rem;">
 						<div></div>
@@ -63,7 +49,7 @@
 		</div>
 		<van-popup v-model="bool" position="right" class="poup" :style="{ height: '100%' ,width:'100%'}">
 			<h2> CR Wisdom量化平台用户协议</h2>
-			<span @click="bool = false" style="position: absolute;right: 5px;top: 10px;">
+			<span @click="bool = false" style="position: absolute;right: .1rem;top: .3rem;">
 				<van-icon name="cross" color="#8a9097" size="26px" /></span>
 			<h4>【最新修订】： 2020年3月21日</h4>
 			<div class="p">
@@ -332,8 +318,8 @@
 		</van-popup>
 		<van-popup v-model="bool2" position="right" class="poup" :style="{ height: '100%' ,width:'100%'}">
 			<h2> 风险披露声明</h2>
-			<span @click="bool2 = false" style="position: absolute;right: 5px;top: 10px;">
-				<van-icon name="cross" color="#8a9097" size="26px" /></span>
+			<span @click="bool2 = false" style="position: absolute;right: .1rempx;top: .3rem;">
+				<van-icon name="cross" color="#8a9097" size="30px" /></span>
 			<div class="p">
 				本交易风险披露和免责声明应与CR Wisdom平台
 				<span @click="bool = true" style="color:#306ce8;">
@@ -626,7 +612,7 @@
 
 		.text {
 			position: relative;
-			font-size: 0.29rem;
+			// font-size: 0.29rem;
 			top: -0.08rem;
 			left: 0.1rem;
 		}

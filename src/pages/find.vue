@@ -3,7 +3,7 @@
 	<div >
 		<div class="tophader">
 		  <van-icon name="arrow-left"  onclick="window.history.go(-1)"/>
-		  <p style="text-align: left;margin-left: 32px;font-size: .31rem;">CR Wisdom量化生态平台</p>
+		  <p style="text-align: left;margin-left: .9rem;font-size: .31rem;">CR Wisdom量化生态平台</p>
 		</div>
 		<div style="min-height: 14rem; background-color: #EEEEEE">
 			<div class="div" v-for="(item,index) in list" :key="index">

@@ -122,26 +122,6 @@
 				<li class="plunow">{{plunow}}</li>
 
 			</ul>
-
-			<!-- <ul class="contentul" v-show="type==1">
-      <li v-for="(item,i) in list" :key2="i">
-        <span class="one">{{item.symbol1.toUpperCase()}}_{{symbol.toUpperCase()}}</span>
-        <span class="two">{{item.time}}</span>
-        <span class="san">{{item.cjsl}}</span>
-        <span class="four">{{item.cjsy}}</span>
-        <span class="six">{{item.syl}}</span>
-      </li>
-      <li class="plunow">{{plunow}}</li> 
-
-     <li v-for="(item,i) in 3" :key3="i" style="opacity:0">
-        <span class="one">EOS/USDT</span>
-        <span class="two">2019-12-05 15:15:15</span>
-        <span class="san">0</span>
-        <span class="four">0</span>
-        <span class="six">0%</span>
-      </li>
-     </ul> -->
-
 			<ul class="page-ui" v-if="!heyue">
 				<li v-for="(item,i) in list" :key="i">
 					<div class="title">
@@ -182,7 +162,7 @@
 						<div style="text-align: right;">平仓均价({{symbol.toUpperCase()}})<span style="right: 0;">{{item.price_avg}}</span></div>
 					</div>
 					<div class="body" style="margin-top: .15rem;">
-						<div>手续费(点卡) <span>{{poni?0:item.point_num?item.point_num:item.point_num==0?0:item.point>0&&item.cjsy>0?(item.point * 0.3*7).toFixed(4):item.point<0?0:item.cjsy>0?(item.cjsy * 0.3*7).toFixed(4):0}}</span></div>
+						<div>手续费(点卡) <span>{{item.point_num?item.point_num:item.point_num==0?0:item.point>0&&item.cjsy>0?(item.point * 0.3*7).toFixed(4):item.point<0?0:item.cjsy>0?(item.cjsy * 0.3*7).toFixed(4):0}}</span></div>
 						<div>成交利润({{symbol.toUpperCase()}}) <span>{{Number(item.cjsy).toFixed(4) }}</span></div>
 						<div style="text-align: right;">利润率(%)<span style="right: 0;">{{item.syl}}</span></div>
 					</div>
@@ -220,12 +200,12 @@
 <script>
 	import VeLine from 'v-charts/lib/line'
 	import Vue from 'vue'
-	import { PullRefresh } from 'vant'
-	Vue.use(PullRefresh)
+	// import { PullRefresh } from 'vant'
+	// Vue.use(PullRefresh)
 	export default {
 		components: {
 			VeLine,
-			PullRefresh
+			// PullRefresh
 		},
 		data() {
 			this.chartSettings = {
@@ -248,9 +228,9 @@
 				// xAxisType: 'time'
 			}
 			return {
-				poni:'',
 				isLoading: false,
 				type: this.$route.query.type,
+				poni:this.$route.query.poni,
 				info: {},
 				list: [],
 				list1: [],
@@ -306,15 +286,10 @@
 			}
 		},
 		created() {
-			// if(this.type == 1){
-			//   this.jiesuan();
-			// }else{
-			//   this.start()
-			// }
+			
 			if (this.$route.query.heyeu == 1) {
 				this.heyue = true
 			}
-			this.poni = this.$route.query.poni
 			if (this.isshow == 0) {
 				let date = new Date()
 				let Y = date.getFullYear() + '-';
@@ -506,17 +481,10 @@
 				let trant='';
 				if (this.heyue) {
 					str = 'swapstrategy'
-					if(this.poni){
-						trant = ''
-					}else{
-						trant ='trend_'
-					}
 				} else {
 					str = 'spotstrategy'
 				}
-				 
-				
-				this.$axios.post(`/index/${str}/${trant}transaction_list`, {
+				this.$axios.post(`/index/${str}/transaction_list`, {
 					symbol: this.symbol,
 					bourse: this.bourse,
 					starttime: this.starttime,
