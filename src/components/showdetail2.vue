@@ -39,6 +39,10 @@
 			<van-datetime-picker v-model="currentDate" @confirm="confirm(1)" @cancel="cancel(1)" type="date" />
 		</div>
 		<p class="hr"></p>
+		<div v-if="type == 'fol'" class="show-fol">
+			<div :class="{'active':folshow}" @click="folshow=true">交易明细</div>
+			<div :class="{'active':!folshow}" @click="folshow=false">划转明细</div>
+		</div>
 		<div>
 			<div v-show="!type" style="display: flex;width: 90%;margin: 2% 5%;color: #99A1A7;border: 1px solid #f6f7f9;font-size: 0.28rem;">
 				<div :class="{'active':bool1==0}" @click="bool1=0" style="flex:1;text-align: center;padding: 0.05rem 0;">成交明细</div>
@@ -50,7 +54,7 @@
 				总收益: {{ profit==0?profit:Number(profit).toFixed(2)}}
 				</span>
 				</span> </div>
-			<ul class="page-ui" v-show="bool1==0">
+			<ul class="page-ui" v-show="bool1==0 && folshow">
 				<li v-for="(item,i) in list" :key="i">
 					<div class="title">
 						<div class="left">
@@ -72,7 +76,7 @@
 					</div>
 				</li>
 			</ul>
-			<ul class="page-ui" v-show="bool1==1">
+			<ul class="page-ui" v-show="bool1==1 && folshow">
 				<li v-for="(item,i) in list1" :key="i">
 					<!-- <span class="one">{{item.money_type.toUpperCase()}}</span> -->
 					<div class="title">
@@ -87,11 +91,25 @@
 						<div>结算收益(USDT): <span>{{(item.num*1).toFixed(3)}}</span></div>
 						<div style="text-align: right;">点卡扣费: <span>{{(item.point*1).toFixed(3)}}</span></div>
 					</div>
-					
-				<!-- 	<span class="two">{{item.create_time}}</span>
-					<span class="san">{{item.num}}</span>
-					<span class="four" :style="{color:item.status==1?'#B1333F':'#38B133'}">{{item.status==1?'买入':'卖出'}}</span>
-					<span class="six">{{item.point}}</span> -->
+				</li>
+				<li class="plunow">{{plunow}}</li>
+			
+			</ul>
+			<ul class="page-ui" v-show="!folshow">
+				<li v-for="(item,i) in list" :key="i">
+					<!-- <span class="one">{{item.money_type.toUpperCase()}}</span> -->
+					<div class="title">
+						<div class="left">
+							<!-- <span class="act" style="background-color: rgb(239,101,98);font-size: 12px;" v-if="item.status==2">卖出</span> -->
+							<span class="act" style="background-color: rgb(83,181,112);font-size: 12px;" >平仓结算</span>
+							<span style="font-weight: bold;"> {{item.money_type}}永续</span>
+						</div>
+						<div class="right" style="color: rgb(201,201,202);">{{item.create_time}} 完全成交</div>
+					</div>
+					<div class="body">
+						<div>结算收益(USDT): <span>{{(item.num*1).toFixed(3)}}</span></div>
+						<div style="text-align: right;">点卡扣费: <span>{{(item.point*1).toFixed(3)}}</span></div>
+					</div>
 				</li>
 				<li class="plunow">{{plunow}}</li>
 			
@@ -111,6 +129,7 @@
 		// },
 		data() {
 			return {
+				folshow:true,
 				isLoading: false,
 				info: {},
 				list: [],
@@ -337,12 +356,17 @@
 			jiesuan() {
 				this.state = false;
 				let trant=''
+				let img = 'swapstrategy'
 				if(this.type==2){
 				trant = ''
 				}else{
 					trant ='trend_'
 				}
-				this.$axios.post(`/index/swapstrategy/${trant}transaction_list`, {
+				if(this.type=='fol'){
+					trant =''
+					img= 'follow'
+					}
+				this.$axios.post(`/index/${img}/${trant}transaction_list`, {
 					symbol: this.symbol,
 					bourse: 4,
 					starttime: this.starttime,
@@ -586,4 +610,18 @@
 		text-align: center;
 		display: block;
 	}
+	.show-fol{
+		display: flex;
+		margin: 3px 15%;
+		div{
+			line-height: 25px;
+			border: 1px solid #eee;
+			flex: 1;
+			text-align: center;
+		}
+		.active{
+			color: #2284fd;
+			border:1px solid #2284fd !important;
+		}
+		}
 </style>

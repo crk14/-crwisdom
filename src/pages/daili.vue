@@ -9,42 +9,38 @@
 			<img src="../assets/11112.png" class="body-img" />
 		</div>
 		<p class="hr" style="padding: 0;background-color: rgb(230,231,235);"></p>
-		<div class="item2" :class="{'item3':level>1}">
+		<div class="item2" :class="{'item3':level>=1}">
 			<div class="item1">
 				<div class="one">社区代理</div>
 			</div>
 			<div class="two" style="text-indent:44px">
 				一次性充值
-				<span>3600</span>USDT购买配额库存
-				<span class="span">2</span>套CR量化机器人及<span>33600</span>CRW,
-				并获得社区代理资格
+				<span>5000</span>USDT购买<span>35000</span>购物券,并获得社区代理资格,
+				享受社区代理相关权益
 			</div>
 			<!-- <p class="two">(CR量化机器人可用于自已使用或者库存,或网体正式用户购买)</p> -->
 			<div class="item1" style="margin-top: 15px;">
 				<div class="three">
-					配额库存<span class="span">2</span>套:
-					<span>3600</span>USDT
+					价格：<span>5000</span>USDT
 				</div>
-				<div class="four" @click="confirm(3600,2)">立即购买 》</div>
+				<div class="four" @click="confirm(5000,35000)">立即购买 》</div>
 			</div>
 		</div>
 		<p class="hr" style="padding: 0;background-color: rgb(230,231,235);"></p>
-		<div class="item2" :class="{'item3':level>2}">
+		<div class="item2" :class="{'item3':level>=2}">
 			<div class="item1">
-				<div class="one">城市代理</div>
+				<div class="one">CR合伙人</div>
 			</div>
 			<div class="two" style="text-indent:44px">
 				一次性充值
-				<span>7800</span>USDT购买配额库存
-					<span class="span">6</span>套CR量化机器人及<span>100800</span>CRW,
-					并获得城市代理资格
+				<span>10000</span>USDT购买<span>70000</span>购物券,
+				并获得CR合伙人资格,享受CR合伙人相关权益
 				</div>
 			<div class="item1" style="margin-top: 15px;">
 				<div class="three">
-					配额库存<span class="span">6</span>套:
-					<span>7800</span>USDT
+				价格：<span>10000</span>USDT
 				</div>
-				<div class="four" @click="confirm(7800,6)">立即购买 》</div>
+				<div class="four" @click="confirm(10000,70000)">立即购买 》</div>
 			</div>
 		</div>
 		<!-- <p class="hr" style="padding: 0;background-color: rgb(230,231,235);"></p> -->
@@ -67,7 +63,7 @@
 		</div>
 	</div> -->
 	<p class="hr" style="padding: 0;background-color: rgb(230,231,235);"></p>
-	<div class="item2" >
+	<!-- <div class="item2" >
 		<div class="item1">
 			<div class="one">运营中心</div>
 		</div>
@@ -85,7 +81,7 @@
 			<div class="four" @click="confirm(26000,25)">立即购买 》</div>
 		</div>
 	</div>
-	<p class="hr" style="padding: 0;background-color: rgb(230,231,235);"></p>
+	<p class="hr" style="padding: 0;background-color: rgb(230,231,235);"></p> -->
 	</div>
 </template>
 
@@ -112,30 +108,17 @@
 		methods: {
 			confirm(bool, zsong) {
 				let str = ''
-				if (bool == 3600) {
-					str = '社区代理'
+				if (bool == 5000) {
 					if (this.level > 1) {
 						return
 					}
 				}
-				if (bool == 7800) {
-					str = '城市代理'
+				if (bool == 10000) {
 					if (this.level > 2) {
 						return
 					}
 				}
-				// if (bool == 13000) {
-				// 	str = '高级代理'
-				// 	if (this.level > 3) {
-				// 		return
-				// 	}
-				// }
-                if (bool == 26000) {
-					str = '运营中心'
-					// if (this.level > 4) {
-					// 	return
-					// }
-				}
+				
 				this.num = bool;
 				this.types = 1;
 				let gift = zsong

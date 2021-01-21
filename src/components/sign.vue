@@ -44,18 +44,15 @@
           <input type="password" v-model="trad_passwordc" placeholder="请再次输入您的交易密码" />
           <p class="hr"></p>
         </div>
-        <div>
-          <!-- <p>邀请码</p> -->
+       <div>
           <input type="text" v-model="invite_code" placeholder="请输入您的邀请码" />
-          <!-- <span class="opotional">（选填）</span> -->
           <p class="hr"></p>
         </div>
-        <div>
-          <!-- <p>验证码</p> -->
+       <!-- <div>
           <input type="text" v-model="code" placeholder="请输入验证码" />
           <button class="sendcode" @click="setcode" style="background: #FFFFFF">获取验证码</button>
           <p class="hr"></p>
-        </div>
+        </div> -->
 		<div class="pass" style="position: absolute;">
 			<label style="width: 0px;">
 			  <input type="checkbox" v-model="ispass" style="margin: 0;width: 20px;height: 20px;">
@@ -547,7 +544,7 @@ export default {
         !this.password ||
         !this.trad_password ||
         !this.trad_passwordc ||
-        !this.code ||
+        // !this.code ||
         !this.nick_name ||
         !this.passwordc ||
         !this.invite_code
@@ -575,6 +572,14 @@ export default {
 			});
 			return
 		}
+		let email = this.mobile;
+				let reg = /^([a-zA-Z]|[0-9])(\w|\-)+@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$/;
+				if(reg.test(email)){
+					// alert("邮箱格式正确");
+					this.type = 2
+				}else{
+					this.type = 1
+				}
       this.$axios
         .post("/index/Publics/doRegister", {
           mobile: this.mobile,

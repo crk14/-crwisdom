@@ -39,10 +39,12 @@
 				<div style="position: absolute;top: 23px;left: 16px;opacity: .4; width: 12px;height: 7px;background-color: rgb(237,206,180);border-radius: 50%;"></div>
 			</li>
 			<!-- <router-link to="/gensui"> -->
-				<li @click="$toast.fail({message: `暂未开放`,duration: 1200});">
-					<img src="../assets/src_assets_image_exchange_trading_btn_zdjy@2x.png" alt />
-					<p>跟随交易</p>
-				</li>
+			<!-- <router-link to="/heyue4"> -->
+				<!-- <li @click="fn6()"> -->
+				<!-- <li  @click="$toast.fail({message: '暂未开放',duration: 2000})"> -->
+					<!-- <img src="../assets/src_assets_image_exchange_trading_btn_zdjy@2x.png" alt /> -->
+					<!-- <p>跟随交易</p> -->
+				<!-- </li> -->
 			<!-- </router-link> -->
 			<!-- <router-link to="/custody"> -->
 			<!-- <li style="position: relative;">
@@ -141,7 +143,8 @@
 				bool: false,
 				bool2: true,
 				radio:'2',
-				lhsy:0
+				lhsy:0,
+				// monbool:false,
 			};
 		},
 		created() {
@@ -169,30 +172,30 @@
 				});
 
 
-			this.$axios
-				.get("/index/mywallet/mywalletInfo", {
-					page: 1,
-					limit: 1
-				})
-				.then(res => {
-					if (res.data.info) {
-						this.info = res.data.info;
-						var timestamp = Date.parse(new Date()) / 1000;
-						if (this.info.start_time) {
-							let time = parseInt((timestamp - this.info.start_time) / 60 / 60 / 24)
-							this.time = 150 - time
-						} else {
-							console.log(this.info.start_time, this.info.point_num)
-							if (this.info.point_num > 0) {
-								let time = parseInt((timestamp - this.info.start_time) / 60 / 60 / 24)
-								this.time = 150 - time
-							} else {
-								this.time = 0
-							}
-						}
-					}
+			// this.$axios
+			// 	.get("/index/mywallet/mywalletInfo", {
+			// 		page: 1,
+			// 		limit: 1
+			// 	})
+			// 	.then(res => {
+			// 		if (res.data.info) {
+			// 			this.info = res.data.info;
+			// 			var timestamp = Date.parse(new Date()) / 1000;
+			// 			if (this.info.start_time) {
+			// 				let time = parseInt((timestamp - this.info.start_time) / 60 / 60 / 24)
+			// 				this.time = 150 - time
+			// 			} else {
+			// 				console.log(this.info.start_time, this.info.point_num)
+			// 				if (this.info.point_num > 0) {
+			// 					let time = parseInt((timestamp - this.info.start_time) / 60 / 60 / 24)
+			// 					this.time = 150 - time
+			// 				} else {
+			// 					this.time = 0
+			// 				}
+			// 			}
+			// 		}
 
-				});
+			// 	});
 			// this.$axios
 			// .get("/index/spotstrategy/decide")
 			// .then(res => {
@@ -200,9 +203,14 @@
 			// 	 this.isshow = true
 			//  }
 			// });
+			
+			
 		},
 
 		methods: {
+			fn6(){
+				this.$router.push(`/heyue4`)
+			},
 			tolink() {
 				if (this.bool2) {
 					this.$router.push('/heyue2')

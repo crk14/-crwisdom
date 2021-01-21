@@ -206,7 +206,8 @@
 				<span @click="changright" style="position: fixed;right: 18px;top: 0px;color: rgb(34, 132, 253);font-size: 17px;">完成</span>
 			</div>
 			<div class="poup-title">
-				<div>搜索</div>
+				<div >搜索</div>
+				<input v-model="sym_val"  placeholder="输入币" style="width: 50px;padding: 1px 0; font-size: 14px; border: 1px solid #eee;margin-left: 6px;"/>
 				<div class="item" @click="getxingqing()" :class="{'xiahuaxian':huobi}">官方推荐</div>
 				<div class="item" @click="getzhuliu()" :class="{'xiahuaxian':!huobi}">所有货币对</div>
 				<div class="about"></div>
@@ -507,6 +508,7 @@
 		},
 		data() {
 			return {
+				sym_val:'',
 				value: '',
 				number: '',
 				number2: '',
@@ -567,6 +569,7 @@
 				pointnum: '',
 				ljsyl: '',
 				list3: [],
+				list4:[],
 				shuju: 2,
 				show3: false,
 				show5: false,
@@ -652,6 +655,21 @@
 					this.selsym = []
 				}
 			},
+			sym_val(newValue, oldValue) {
+				if (newValue) {
+						let str = this.sym_val.toLowerCase()
+						this.list3=[]
+							this.list4.forEach(item=>{
+								if(	item.symbol1.indexOf(str) !=-1){
+									this.list3.push(item)
+								}
+							})
+				}else{
+					
+					this.list3 = this.list4
+				}
+			},
+			
 		},
 		beforeDestroy() {
 			// console.log(this.time1, 99999999999)
@@ -662,6 +680,7 @@
 			// console.log(9999999999999)
 		},
 		methods: {
+			
 			fn2() {
 				if (this.isshow2) {
 					Dialog.confirm({
@@ -1221,6 +1240,7 @@
 						} else {
 							this.list3 = res.data.sug_list
 						};
+						this.list4 = this.list3
 					})
 			},
 			getzhuliu() {
@@ -1253,7 +1273,9 @@
 						} else {
 							this.list3 = res.data.symbol
 						};
+						this.list4 = this.list3
 					})
+					
 			},
 			firmcolse(s) {
 				this.check = s;

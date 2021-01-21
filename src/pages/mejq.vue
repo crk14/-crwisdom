@@ -8,7 +8,7 @@
 	
 		<div class="itme1">
 			<img style="width: 100%;height: 125px;" src="../assets/mejq.png"/>
-			<div class="item">
+		<!-- 	<div class="item">
 				<p>
 					<img class="img" src="../assets/sc002.png" />
 					<img src="../assets/crwindow.png" />
@@ -16,26 +16,21 @@
 				<div >
 					<div class="div">
 						<p class="p2" >现货量化机器人(智能趋势版)</p>
-					<!-- 	<p class="p1">剩余点卡(智能版): <span style="color: rgb(255,147,31);margin-left: 16px; font-size: 23px;font-weight: bold;">{{Number(point_num).toFixed(0)}}</span><span style="color: rgb(103,103,103);font-size: 14px;"></span>点 <span v-show="list3 &&list3.probation">(试用期可进入系统)</span></p>
-					<p class="p1">激活时间: {{list3 &&list3.active_time?list3.active_time:'未激活'}}</p> -->
 						<p class="p1">剩余点卡(智能版): <span style="color: rgb(255,147,31);margin-left: 16px; font-size: 23px;font-weight: bold;">0</span><span style="color: rgb(103,103,103);font-size: 14px;"></span>点 </p>
 						<p class="p1">激活时间: 未激活</p>
 						</div>
 						
 						<div class="button">
-							<!-- <button  v-show="!list3" @click="fn(3,list3,true)" >试用7天</button> -->
-							<!-- <button v-show="list3" @click="fn(3,list3)" :class="{'active1':list3 && list3.active}" >激活</button> -->
-							<!-- <button @click="list3&& list3.active|| list3.probation?$router.push('/heyue2?type=3'):fn2(true)">进入系统</button> -->
 						<button  @click="fn(3,2,true)"  >激活</button>
 						<button @click="fn(3,2,true)">进入系统</button>
 						</div>
-					</div>
+					</div> -->
 					<!-- <div v-show="list3 && list3.active " class="i-t">已激活</div>
 					<div v-show="list3 && list3.active == 0 && list3.remain_day &&!list3.probation" class="i-t active">待激活</div>
 					<div v-show="!list3 " class="i-t active2">未购买</div>
 					<div v-show="list3 &&list3.remain_day &&list3.probation " class="i-t active3">试用期</div> -->
-					<div  class="i-t active2">未购买</div>
-			</div>
+					<!-- <div  class="i-t active2">未购买</div> -->
+			<!-- </div> -->
 			<div class="item">
 				<p>
 					<img v-show="!isshow" class="img" src="../assets/sc002.png" />
@@ -60,7 +55,7 @@
 				<div v-show="!list1  || !list1.remain_day " class="i-t active2">未购买</div>
 				<!-- <div v-show="list1 &&list1.remain_day &&list1.probation " class="i-t active3">试用期</div> -->
 			</div>
-			<div class="item">
+	<!-- 		<div class="item">
 				<p>
 					<img v-show="!isshow1" class="img" src="../assets/sc004.png" />
 					<img v-show="isshow1" class="img img1" src="../assets/crliang.gif" />
@@ -74,7 +69,6 @@
 						</div>
 						
 						<div class="button">
-							<!-- <button  v-show="!list3" @click="fn(3,list3,true)" >试用7天</button> -->
 							<button  @click="fn(3,list3)" :class="{'active1':list3 && list3.active}" >激活</button>
 							<button @click="list3&& list3.active|| list3.probation?$router.push('/heyue2?type=3'):fn2(true)">进入系统</button>
 						</div>
@@ -82,9 +76,8 @@
 					<div v-show="list3 && list3.active " class="i-t">已激活</div>
 					<div v-show="list3 && list3.active == 0 && list3.remain_day &&!list3.probation" class="i-t active">待激活</div>
 					<div v-show="!list3  || !list3.remain_day " class="i-t active2">未购买</div>
-					<!-- <div v-show="list3 &&list3.remain_day &&list3.probation " class="i-t active3">试用期</div> -->
 					
-			</div>
+			</div> -->
 			<div class="item">
 				<p>
 					<img v-show="!isshow2" class="img" src="../assets/sc003.png" />
@@ -110,7 +103,7 @@
 						<!-- <div v-show="list2 &&list2.remain_day &&list2.probation " class="i-t active3">试用期</div> -->
 						
 			</div>
-	<!-- 		<div class="item">
+			<div class="item">
 				<p>
 					<img v-show="!isshow1" class="img" src="../assets/sc004.png" />
 					<img v-show="isshow1" class="img img1" src="../assets/crliang.gif" />
@@ -118,20 +111,21 @@
 				</p>
 				<div >
 					<div class="div">
-						<p class="p2" >策略跟随机器人(合约版)</p>
+						<p class="p2" >策略跟随机器人(现货/合约)</p>
 						<p class="p1">剩余点卡(智能版): <span style="color: rgb(255,147,31);margin-left: 16px; font-size: 23px;font-weight: bold;">{{Number(point_num).toFixed(0)}}</span><span style="color: rgb(103,103,103);font-size: 14px;"></span>点 <span v-show="list3 &&list3.probation"></span></p>
 					<p class="p1">激活时间: {{list3 &&list3.active_time?list3.active_time:'未激活'}}</p>
 						</div>
 						
 						<div class="button">
 							<button  @click="fn(3,list3)" :class="{'active1':list3 && list3.active}" >激活</button>
-							<button @click="list3&& list3.active|| list3.probation?$router.push('/heyue4'):fn2(true)">进入系统</button>
+							<!-- <button @click="list3&& list3.active|| list3.probation?togensui():fn2(true)">进入系统</button> -->
+							<button @click="togensui()">进入系统</button>
 						</div>
 					</div>
 					<div v-show="list3 && list3.active " class="i-t">已激活</div>
 					<div v-show="list3 && list3.active == 0 && list3.remain_day &&!list3.probation" class="i-t active">待激活</div>
 					<div v-show="!list3  || !list3.remain_day " class="i-t active2">未购买</div>
-			</div> -->
+			</div>
 		</div>
 		<van-dialog v-model="bool" title="续费须知" show-cancel-button :before-close="beforeClose">
 			<div class="p">续费名称: {{id==1?'现货量化机器人(专业版)的时长':id==2?'合约量化机器人(专业版)的时长':'合约量化机器人(智能版)的点卡'}}</div>
@@ -141,7 +135,13 @@
 				<span >续费金额：16800CRW</span>
 			</div>
 		</van-dialog>
-		
+		<van-dialog v-model="bool3" title="进入策略跟随" show-cancel-button :before-close="beforeClose1">
+			
+			<van-radio-group v-model="radio1" style="display: flex;justify-content: space-around;height: 40px;">
+			  <van-radio name="1">现货策略跟随</van-radio>
+			  <van-radio name="2">合约策略跟随</van-radio>
+			</van-radio-group>
+		</van-dialog>
 		
 	
 	</div>
@@ -149,10 +149,13 @@
 
 <script>
 	import Vue from "vue";
-import { Dialog } from "vant";
+import { Dialog,Radio,RadioGroup } from "vant";
 	Vue.use(Dialog);
+	Vue.use(Radio);
+	Vue.use(RadioGroup);
 	export default {
 		components: {
+			Radio,RadioGroup,Dialog
 		},
 	  data() {
 	    return {
@@ -165,6 +168,8 @@ import { Dialog } from "vant";
 			isshow:false,
 			isshow1:false,
 			isshow2:false,
+			radio1:'2',
+			bool3:false,
 	    };
 	  },
 	  created() {
@@ -172,6 +177,9 @@ import { Dialog } from "vant";
 			this.getthreelist()
 	  },
 	   methods:{
+		   togensui(){
+			   this.bool3 = true
+		   },
 		   getthreelist(){
 			   this.$axios
 			   	.post("/index/spotstrategy/get_strategy_list", {
@@ -287,6 +295,22 @@ import { Dialog } from "vant";
 					done(); // 关闭提示框
 				}
 	   },
+	   beforeClose1: function(action, done) {
+	   		  	if (action === "confirm") {
+					if(this.radio1 == 2){
+						this.$router.push('/heyue4')
+					}else{
+						// this.$router.push('/intetrading4')
+						this.$toast.fail({
+							message:'暂未开放'
+						})
+					}
+	   				done()
+	   			} else if (action === "cancel") {
+	   					// 取消
+	   					done(); // 关闭提示框
+	   				}
+	   },
 	   },
 	   }
 </script>
@@ -382,6 +406,13 @@ import { Dialog } from "vant";
 				color: #ccc;
 				border: 1.2px solid #ccc;
 			}
+		}
+	}
+	.van-radio-group{
+		display: flex;
+		margin: 20px;
+		div{
+			flex: 1;
 		}
 	}
 </style>

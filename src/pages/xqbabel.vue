@@ -15,8 +15,9 @@
 		<img class="img" v-show="id == 1" src="../assets/bananjq.png" />
 		<img class="img"  v-show="id == 2" src="../assets/bananjq2.png" />
 		<img class="img"  v-show="id == 3" src="../assets/bananjq3.png" />
+		<img class="img"  v-show="id == 5" src="../assets/1-7.png" />
 		<p v-show="id == 4" style="line-height: 40px;text-align: center;">敬请期待</p>
-		<p v-show="id == 5" style="line-height: 40px;text-align: center;">敬请期待</p>
+		<!-- <p v-show="id == 5" style="line-height: 40px;text-align: center;">敬请期待</p> -->
 		<van-tabs line-height="2px" v-model="active" color="rgb(11,120,241)"  title-active-color="rgb(11,120,241)">
 		  <van-tab title-style="font-weight:bold" title="系统说明">
 			  <div class="item">
@@ -34,7 +35,8 @@
 				  	CR现货量化机器人(智能趋势版)是一款全智能的趋势分析判断合约量化交易系统。用户只需根据仓位大小设置开张张数与杠杆倍数，一键应用即可启动交易。现货量化机器人(智能趋势版)通过识别实时行情技术指标、资讯等，智能分析判断未来趋势。系统没有固定的止盈比例，它是在深度分析计算出的止盈条件自动止盈获利。其属于中低频的交易策略，交易次数少，但因其追踪趋势的功能，一旦止盈收获斐然、效益更直观。CR现货量化机器人(智能趋势版)因趋势而显著，更适合懂趋势策略的用户。
 				  </div>
 				  <div v-show="id==5">
-				  					  CR策略跟随机器人(合约版)是一款全智能的趋势分析判断合约量化交易系统。用户只需根据仓位大小设置开张张数与杠杆倍数，一键应用即可启动交易。合约量化机器人(智能趋势版)通过识别实时行情技术指标、资讯等，智能分析判断未来趋势。系统没有固定的止盈比例，它是在深度分析计算出的止盈条件自动止盈获利。其属于中低频的交易策略，交易次数少，但因其追踪趋势的功能，一旦止盈收获斐然、效益更直观。CR合约量化机器人(智能趋势版)因趋势而显著，更适合懂趋势策略的用户。
+					  CR智慧量化跟随交易是为数字货币投资爱好者打造的跟随交易机器人，运用革新技术实现了普通投资者也可以跟随专业的交易员进行交易，从而实现了降低投资风险，提高投资收益。CR智慧量化跟随交易包括了交易员与跟随者。系统层层筛选，严格审核，只有具有专业知识水平和操作经验的人员才能成为交易员。跟随者可以自主选择交易员，跟随交易机器人检测交易员的交易行为，自动将其交易策略以及交易信号精准同步到跟随者，从而实现让更多不懂专业交易的用户获得更高的收益。
+				  					 
 				  </div>
 			  </div>
 		  </van-tab>
@@ -82,71 +84,166 @@
 			</div>
 		  </van-tab>
 		</van-tabs>
+		
 		<div class="button">
 			<!-- <button @click="fn()">USDT购买</button> -->
 			<button @click="fn()">立即购买</button>
 		</div>
+		<van-dialog v-model="show" title="选择购买时长" show-cancel-button :before-close="beforeClose">
+		<div class="bel-dia">
+			<div style="display: flex;margin: 2px 0;">	<span style="flex: 1;text-align: left;">时长: {{id!=5?'90天':'4200'}}</span>   <span style="flex: 1;text-align: left">价格: 5600CRW</span> 
+			<van-checkbox shape="square" v-model="checked1" style="font-size: 13px;margin-left: 10px;" icon-size="14"></van-checkbox></div>
+			<div style="display: flex;margin: 2px 0;">	<span style="flex: 1;text-align: left;">时长: {{id!=5?'180天':'8400'}}</span>   <span style="flex: 1;text-align: left">价格: 9600CRW</span>
+			<van-checkbox shape="square" v-model="checked2" style="font-size: 13px;margin-left: 10px;" icon-size="14"></van-checkbox></div>
+			<div style="display: flex;margin: 2px 0;">	<span style="flex: 1;text-align: left;">时长: {{id!=5?'360天':'16800'}}</span>   <span style="flex: 1;text-align: left">价格: 16800CRW</span>
+			<van-checkbox shape="square" v-model="checked3" style="font-size: 13px;margin-left: 10px;" icon-size="14"></van-checkbox></div>
+		</div>
+		<div class="bel-dia" style="display: flex;justify-content: space-between;">
+			<span >支付方式: </span>
+			<div style="display: flex;">
+				CRW支付 <van-checkbox icon-size="16" shape="square" v-model="checked4" style="font-size: 14px;"></van-checkbox>
+			</div>
+			<div style="display: flex;">
+				购物券支付 <van-checkbox icon-size="16" shape="square" v-model="checked5" style="font-size: 14px;"></van-checkbox>
+				</div>
+		</div>
+		<p style="margin: 10px 16px;font-size: 14px;">您是否了解清楚CR量化产品功能和用户须知?如无疑问和异议,点击'确定'即购买成功,一经购买,不支持任何退换</p>
+			</van-dialog>
 	</div>
 </template>
 
 <script>
 	import Vue from "vue";
-	import { Dialog } from "vant";
+	import { Dialog,Checkbox } from "vant";
 	Vue.use(Dialog);
+	Vue.use(Checkbox);
 	export default {
+		comments:{Checkbox},
 	  data() {
 	    return {
 			id:'',
 			active:0,
+			checked1:true,
+			checked2:false,
+			checked3:false,
+			checked4:true,
+			checked5:false,
+			show:false
 	    };
 	  },
 	  created() {
 		this.id = this.$route.query.id
 	  },
+	  watch:{
+		 checked1(newValue, oldValue) {
+		 	if (newValue == true) {
+		 		this.checked2 = false
+				this.checked3 = false
+		 	}
+		 },
+		 checked2(newValue, oldValue) {
+		 	if (newValue == true) {
+		 		this.checked1 = false
+				this.checked3 = false
+		 	}
+		 },
+		 checked3(newValue, oldValue) {
+		 	if (newValue == true) {
+		 		this.checked2 = false
+				this.checked1 = false
+		 	}
+		 },
+		 checked4(newValue, oldValue) {
+		 	if (newValue == true) {
+		 		this.checked5 = false
+		 	}
+		 },
+		 checked5(newValue, oldValue) {
+		 	if (newValue == true) {
+		 		this.checked4 = false
+		 	}
+		 },
+	  },
 	   methods:{
 		  fn(){
-			  if(this.id==4){
+			  if(this.id==4 || this.id==5){
 				  this.$toast.fail({
 				  	message: `暂未开放`,
 				  	duration: 1200
 				  });
 				  return
 			  }
-			  Dialog.confirm({
-			    title: "提示",
-			    message:
-			      "您是否了解清楚CR量化产品功能和用户须知?如无疑问和异议,点击'确定'即购买成功,一经购买,不支持任何退换。",
-			  })
-			    .then(() => {
-			      // on confirm
-			      this.$axios
-			      	.post("/index/robot/purchase_robot", {
-			      		num: 16800,
-			      		type: 2,
-			      		robot_type:this.id,
-			      	})
-			      	.then((res) => {
-			      		if (res.data.code == 0) {
-			      			this.$toast.success({
-			      				message: res.data.msg,
-			      				duration: 1600
-			      			});
-			      			setTimeout(() => {
-			      				this.$router.back();
-			      			}, 1600);
-			      		} else {
-			      			this.$toast.fail({
-			      				message: res.data.msg,
-			      				duration: 1200
-			      			});
-			      		}
-			      	});
-			    })
-			    .catch(() => {
-			      // on cancel
-			    });
-		  }
+			  this.show = true
+			  // Dialog.confirm({
+			  //   title: "提示",
+			  //   message:
+			  //     `您是否了解清楚CR量化产品功能和用户须知?如无疑问和异议,点击'确定'即购买成功,一经购买,不支持任何退换。
+				 //  `,
+			  // })
+			  //   .then(() => {
+					// this.show = true
+			  //     // on confirm
+			    
+			  //   })
+			  //   .catch(() => {
+			  //     // on cancel
+			  //   });
+		  },
+		  beforeClose: function(action, done) {
+		  	if (action === "confirm") {
+		  			let num;
+					let month;
+					let type;
+		  			if(this.checked1){
+		  				num = 5600
+						month = 3
+		  			}
+		  			if(this.checked2){
+		  				num = 9600
+						month = 6
+		  			}
+		  			if(this.checked3){
+		  				num = 16800
+						month = 12
+		  			}
+					if(this.checked4){
+						type = 2
+					}else{
+						type = 8
+					}
+		  			this.$axios
+		  				.post("/index/robot/purchase_robot", {
+		  					num,
+		  					type,
+							month,
+		  					robot_type:this.id,
+		  				})
+		  				.then((res) => {
+		  					if (res.data.code == 0) {
+		  						this.$toast.success({
+		  							message: res.data.msg,
+		  							duration: 1600
+		  						});
+		  						setTimeout(() => {
+		  							this.$router.back();
+		  						}, 1600);
+		  					} else {
+		  						this.$toast.fail({
+		  							message: res.data.msg,
+		  							duration: 1200
+		  						});
+		  					}
+		  				});
+		  		done(); // 关闭提示框
+		  	} else if (action === "cancel") {
+		  		// 取消
+		  		done(); // 关闭提示框
+		  	}
+		  	
+		  },
+		  
 	   },
+	   
 	   }
 </script>
 
@@ -225,5 +322,10 @@
 		color: #FFFFFF;
 		font-weight: bold;
 	}
+}
+.bel-dia{
+	padding: 6px 16px;
+	font-size: 14px;
+	
 }
 </style>
