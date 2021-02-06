@@ -964,6 +964,10 @@
 								})
 								return
 							}, 9000)
+							this.$once('hook:beforeDestroy',()=>{
+							       clearInterval(this.time1);
+							      this.time1 = null;
+							     })
 						}
 
 

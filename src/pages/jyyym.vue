@@ -4,8 +4,8 @@
 			<van-icon name="arrow-left" />
 			<p>永续合约</p>
 		</div>
-		<van-tabs v-model="active" color="rgb(78,183,114)" title-active-color="rgb(78,183,114)" line-width="32px">
-			<van-tab title="开仓">
+	<!-- 	<van-tabs v-model="active" color="rgb(78,183,114)" title-active-color="rgb(78,183,114)" line-width="32px">
+			<van-tab title="开仓"> -->
 				<div class="item-one" @click="bool1 = false;bool = false;bool2=false">
 					<div class="title">
 						<div class="left">
@@ -25,81 +25,65 @@
 						</div>
 					</div>
 					<test></test>
+					<div class="title-c">
+						<div></div>
+						当前持仓</div>
 					<div class="body">
-						<div class="left" style="margin-right: 10px;">
-							<div class="one">
-								<span @click.stop="bool=!bool">{{jindu}}</span>
-								<div class="kuang" v-show="bool">
-									<div @click="fn('0.1')">0.1</div>
-									<div @click="fn('1')">1</div>
-									<div @click="fn('10')">10</div>
-								</div>
-								<van-icon @click.stop="bool=!bool" v-show="!bool" name="arrow-down" color="rgb(211,211,211)" size="15" />
-								<van-icon @click.stop="bool=!bool" v-show="bool" name="arrow-up" color="rgb(211,211,211)" size="15" />
-							</div>
-							<div class="two">
-								<div class="left">
-									<div style="margin-bottom: 3px;color: rgb(149,149,149);">价格(₮)</div>
-									<div>11332.7</div>
-									<div>11332.7</div>
-									<div>11332.7</div>
-									<div>11332.7</div>
-									<div>11332.7</div>
-								</div>
-								<div class="right">
-									<div style="margin-bottom: 3px;color: rgb(149,149,149);">数量(张)</div>
-									<div>50</div>
-									<div>50</div>
-									<div>50</div>
-									<div>50</div>
-									<div>50</div>
-								</div>
-							</div>
-							<p></p>
-							<div class="two">
-								<div class="left left-1">
-									<div>11332.7</div>
-									<div>11332.7</div>
-									<div>11332.7</div>
-									<div>11332.7</div>
-									<div>11332.7</div>
-								</div>
-								<div class="right">
-									<div>50</div>
-									<div>50</div>
-									<div>50</div>
-									<div>50</div>
-									<div>50</div>
-								</div>
-							</div>
-							<p></p>
-							<div class="three">
-								<div class="left">
-									<div>标记价格</div>
-									<div>最新指数</div>
-									<div>资金费率</div>
-									<div v-show="bool5">距费用结算</div>
-									<div v-show="bool5">当期资金费率</div>
-									<div v-show="bool5">预测资金费率</div>
-								</div>
-								<div class="right1">
-									<div>₮11330.7</div>
-									<div>₮11330.7</div>
-									<div style="color: #5784c6;" @click="bool5=!bool5">{{bool5?'收起':'详情'}}</div>
-									<div v-show="bool5">00:56:50</div>
-									<div v-show="bool5">0.005%</div>
-									<div v-show="bool5">-0.024%</div>
-								</div>
+					<div class="right ">
+						<div class="left2">
+							<div style="display: flex;"><span style="color: #2ead65;">ETHUSDT永续</span>
+							<div class="ri"><span style="color: #2ead65;">多</span><input  v-model="beishu" type="number" />X</div></div>
+						</div>
+						<div class="left2">
+							<div><div>持仓(张)</div> <span>50</span></div>
+							<div>
+							 <div>收益</div> <span>-24.85</span></div>
+						</div>
+						<!-- <div class="left2 left3">
+						<div>保证金<span>110.68</span></div>
+						<div>收益率<span>-24.85%</span></div>
+						</div> -->
+						<div class="left2">
+						<div>开仓均价<span>1665.24</span></div>
+						<div>预估强平价 <span>3071.68</span></div>
+						</div>
+					</div>
+					<div class="right">
+						<div class="left2">
+							<div style="display: flex;" ><span style="color:#e35e5e;">ETHUSDT永续</span>
+							<div class="ri"><span style="color:#e35e5e;">空</span><input  v-model="beishu" type="number" />X</div>
 							</div>
 						</div>
+						<div class="left2">
+							<div>
+							<div>持仓(张)</div>
+							<span>50</span></div>
+							<div>
+								<div>收益</div> <span>-24.85</span></div>
+						</div>
+						<!-- <div class="left2">
+						<div>保证金<span>110.68</span></div>
+						<div>收益率<span>-24.85%</span></div>
+						</div> -->
+						<div class="left2">
+						<div>开仓均价<span>1665.24</span></div>
+						<div>预估强平价<span>3071.68</span></div>
+						</div>
+					</div>
+					</div>
+					<div class="title-c" style="margin-top: 5px;">
+						<div></div>
+						闪电交易(市价)</div>
+					<div class="body" >
+						
 						<div class="right">
 							<div class="one">
-								<div class="left" :class="{'left1':bool4}" @click="bool4=true">开多</div>
-								<div class="right" :class="{'right1':!bool4}" @click="bool4=false">开空</div>
+								<div class="left" :class="{'left1':bool4}" @click="bool4=true">多</div>
+								<div class="right" :class="{'right1':!bool4}" @click="bool4=false">空</div>
 							</div>
 							<div class="about"></div>
 							<div class="two">
-								<div class="le">
+							<!-- 	<div class="le">
 									<div class="kuang" v-show="bool2" style="height: 53px">
 										<div @click="fn2('限价委托',true)">限价委托</div>
 										<div @click="fn2('市价委托',true)">市价委托</div>
@@ -107,34 +91,34 @@
 									<span @click.stop="bool2=!bool2">{{weituo2}}</span>
 									<van-icon v-show="!bool2" @click.stop="bool2=!bool2" name="arrow-down" color="rgb(211,211,211)" size="15" />
 									<van-icon v-show="bool2" @click.stop="bool2=!bool2" name="arrow-up" color="rgb(211,211,211)" size="15" />
+								</div> -->
+								<div class="ri">杠杆<input v-model="beishu" type="number" />倍</div>
+								<div  class="three" :class="{'backgs':bool3==true}" @click="bool3=true;number2=''">
+									<div>{{number2?number2:'数量'}}</div>
+									<div><input v-show="!number2" v-model="number" type="number" @focus="bool3=true;number2=''" @blur="bool3=false" />
+										张 <span v-show="!number2">≈ ₮0.00</span> </div>
 								</div>
-								<div class="ri"><input v-model="beishu" type="number" />X</div>
-
 							</div>
-							<div style="margin-bottom: 6px;" class="three" v-show="weituo2 =='限价委托'" :class="{'backgs':parces=='价格 '}">
+							<!-- <div style="margin-bottom: 6px;" class="three" v-show="weituo2 =='限价委托'" :class="{'backgs':parces=='价格 '}">
 								<div :class="{'colors':parces!='价格'}">{{parces}}</div>
 								<div><input v-model="parse" type="number" @focus="parces='价格 '" @blur="parces='价格'" /> ₮</div>
-							</div>
-							<div class="four" v-show="weituo2 =='市价委托'">
+							</div> -->
+							<!-- <div class="four" v-show="weituo2 =='市价委托'">
 								<div>以当前市场最优价格下单</div>
-							</div>
+							</div> -->
 							<!-- <div class="four" v-show="weituo2 =='限价委托'">
 								<div :class="{'backgs2':parces=='对手价'}" @click="parces='对手价'">对手价</div>
 								<div :class="{'backgs2':parces=='买一价'}" @click="parces='买一价'" style="margin: 0 4px;">买一价</div>
 								<div :class="{'backgs2':parces=='卖一价'}" @click="parces='卖一价'">卖一价</div>
 							</div> -->
-							<div  class="three" :class="{'backgs':bool3==true}" @click="bool3=true;number2=''">
-								<div>{{number2?number2:'数量'}}</div>
-								<div><input v-show="!number2" v-model="number" type="number" @focus="bool3=true;number2=''" @blur="bool3=false" />
-									张 <span v-show="!number2">≈ ₮0.00</span> </div>
-							</div>
+							
 							<!-- <div class="four">
 								<div :class="{'backgs2':number2=='10%'}" @click="bool3 = true;number2='10%'">10%</div>
 								<div :class="{'backgs2':number2=='20%'}" @click="bool3 = true;number2='20%'" style="margin: 0 4px;">20%</div>
 								<div :class="{'backgs2':number2=='50%'}" @click="bool3 = true;number2='50%'" style="margin-right: 4px;">50%</div>
 								<div :class="{'backgs2':number2=='100%'}" @click="bool3 = true;number2='100%'">100%</div>
 							</div> -->
-							<div class="six">
+						<!-- 	<div class="six">
 								<div>可用(USDT) <span>0.00</span></div>
 								<div class="flex">
 									<div>可开{{bool4?'多':'空'}}(张) <span>0.00</span> </div>
@@ -143,13 +127,13 @@
 										<div class="div" :class="{'backgs2':parces1=='限价'}" @click="parces1='限价'" style="margin-left: 7px;">限价</div>
 									</div>
 								</div>
-							</div>
-							<div class="seven">
+							</div> -->
+						<!-- 	<div class="seven">
 								<van-checkbox v-model="checked" icon-size="14px">设置止盈</van-checkbox>
 								<van-checkbox v-model="checked1" icon-size="14px">设置止损</van-checkbox>
 
-							</div>
-							<div class="three" v-show="checked" :class="{'backgs':parces3}" style="font-size: 13px;margin-bottom: 7px;">
+							</div> -->
+						<!-- 	<div class="three" v-show="checked" :class="{'backgs':parces3}" style="font-size: 13px;margin-bottom: 7px;">
 								<div>止盈触发价格</div>
 								<div><input v-model="parse2" type="number" @focus="parces3=true" @blur="parces3=false" /> ₮</div>
 							</div>
@@ -168,10 +152,11 @@
 							<div class="three" :class="{'backgs':isshow2==true}" v-show="checked || checked1" style="font-size: 13px;">
 								<div>数量</div>
 								<div><input v-model="number3" type="number" @focus="isshow2=true" @blur="isshow2=false" /> 张</div>
-							</div>
+							</div> -->
 
-							<div class="button">{{bool4?'买入开多(看涨)':'卖出开空(看跌)'}}</div>
-						</div>
+							<div class="button" :class="{'active-b':!bool4}">{{bool4?'买入开多':'卖出开空'}}</div>
+						  <div class="button" :class="{'active-b':!bool4}">{{bool4?'卖出平多':'买入平空'}}</div>
+					</div>
 
 					</div>
 					<p class="hr" style="margin-top: 4px"></p>
@@ -183,17 +168,12 @@
 						<p class="p">本合约暂无委托</p>
 					</div> -->
 				</div>
-			</van-tab>
-			<van-tab title="平仓">
+			<!-- </van-tab> -->
+			<!-- <van-tab title="平仓">
 				<div class="item-one" @click="bool1 = false;bool = false;bool2=false">
 					<div class="title">
 						<div class="left">
 							<span @click.stop="bool1=!bool1">{{shuju}}</span>
-							<!-- <select  v-model="shuju" style="" >
-						
-									<option  :value="1" selected="selected" >BTCUSDT永续</option>
-									<option  :value="2" >ETHUSDT永续</option>
-						</select> -->
 							<div class="kuang" v-show="bool1" style="height: 74px;">
 								<div @click="fn1('BTCUSDT永续')">BTCUSDT永续</div>
 								<div @click="fn1('ETHUSDT永续')">ETHUSDT永续</div>
@@ -328,17 +308,9 @@
 
 					</div>
 					<p class="hr" style="margin-top: 4px"></p>
-					<!-- <test></test> -->
-					<!-- <div class="buttom">
-						<div class="one">
-							<div @click="active2 =1" :class="{'backgs3':active2 ==1 }">限价委托</div>
-							<div @click="active2 =2" :class="{'backgs3':active2 ==2}">止盈止损</div>
-						</div>
-						<p class="p">本合约暂无委托</p>
-					</div> -->
 				</div>
-			</van-tab>
-			<van-tab title="持仓">
+			</van-tab> -->
+			<!-- <van-tab title="持仓">
 				<div class="body">
 					<div v-for="(item1,index1) in list" :key="index1">
 						<p v-if="item1.account>0 && index1 %2 ==0" style="padding: .2rem;font-size: 18px;border-top: 5px solid rgb(247,248,250);">{{item1.symbol_deal}}{{symbol}}
@@ -382,9 +354,9 @@
 						</div>
 					</div>
 				</div>
-			</van-tab>
-		</van-tabs>
-
+			</van-tab> -->
+		<!-- </van-tabs> -->
+		
 	</div>
 </template>
 
@@ -453,7 +425,11 @@
 			let jspCode = 'a'
 			var websocket;
 			let th = this
-			createWebSocket();
+			let beishu = localStorage.getItem('beishu')
+			if(beishu){
+				this.beishu = beishu
+				}
+			// createWebSocket();
 			// 初始化 ws 对象
 			
 			
@@ -552,13 +528,13 @@
 					ts.websocket1 = websocket
 				}, 4000);
 			}
-		this.time1 = setInterval(() => {
-				console.log(25000)
-				websocket.send("ping");
-				if(ts.websocket1.readyState==3){
-					reconnect()
-				}
-			}, 20000)
+		// this.time1 = setInterval(() => {
+		// 		console.log(25000)
+		// 		websocket.send("ping");
+		// 		if(ts.websocket1.readyState==3){
+		// 			reconnect()
+		// 		}
+		// 	}, 20000)
 			/**
 			 * websocket心跳检测
 			 */
@@ -595,6 +571,9 @@
 				if (newvalue == 2) {
 					this.fn3()
 				}
+			},
+			beishu(newvalue, oldvalue) {
+				localStorage.setItem('beishu',newvalue)
 			}
 		},
 		methods: {
@@ -830,7 +809,7 @@
 
 				.about {
 					position: absolute;
-					width: 7px;
+					width: 11px;
 					height: 38px;
 					top: 1px;
 					left: 48%;
@@ -870,13 +849,14 @@
 						border-radius: 3px;
 						padding: 0 4px;
 						margin-left: 5px;
-						color: #C0C5CB;
+						color: #686868;
 						border: 1px solid #C0C5CB;
 						display: flex;
 
 						input {
 							height: 25px;
-							width: 37px;
+							width: 75px;
+							color: #C0C5CB;
 						}
 					}
 				}
@@ -904,7 +884,7 @@
 
 						input {
 							height: 28px;
-							width: 62px;
+							width: 56px;
 							text-align: right;
 							margin-right: 2px;
 						}
@@ -965,7 +945,7 @@
 				}
 
 				.button {
-					background-color: #C0C5CB;
+					background-color: #4eb772;
 					color: #ffffff;
 					border-radius: 3px;
 					text-align: center;
@@ -973,6 +953,9 @@
 					line-height: 32px;
 					margin-top: 8px;
 					font-size: 14px;
+				}
+				.active-b{
+					background-color: #de6e6d;
 				}
 
 			}
@@ -1094,6 +1077,36 @@
 			}
 
 		}
-
+		.left2{
+			display: flex;
+			justify-content: space-between;
+			font-size: 13px;
+			color: #ccc;
+			flex: 1;
+			div{
+				flex: 1;
+				justify-content: space-between;
+				span{
+					color: #686868;
+				}
+			}
+			.ri{
+				color: rgb(195,135,45);
+				input{
+					width: 41%;
+				}
+			}
+		}
+		
+	}
+	.title-c{
+		margin-top: -16px;border-top: 3px solid #eee;
+		display: flex;
+		div{
+			width: 2px;
+			height: 15px;
+			    margin: 4px 5px 0 2px;
+			background: #0b78f1;
+		}
 	}
 </style>

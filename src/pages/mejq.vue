@@ -46,7 +46,8 @@
 					
 					<div class="button">
 						<!-- <button  v-show="!list1" @click="fn(1,list1)" >试用7天</button> -->
-						<button  @click="fn(1,list1)" :class="{'active1':list1 && list1.active}" >激活</button>
+						<button  @click="fn(1,list1,false,true)"  v-if="list1 && list1.active"  >续费</button>
+						<button @click="fn(1,list1)" v-else  >激活</button>
 						<button @click="list1&& list1.active || list1.probation?$router.push(`/intetrading2?time=${list1.remain_day}`):fn2(true)">进入系统</button>
 					</div>
 				</div>
@@ -93,7 +94,8 @@
 							
 							<div class="button">
 								<!-- <button  v-show="!list2" @click="fn(2,list2)" >试用7天</button> -->
-								<button  @click="fn(2,list2)" :class="{'active1':list2 && list2.active}" >激活</button>
+								<button @click="fn(2,list2,false,true)"  v-if="list2 && list2.active"  >续费</button>
+								<button @click="fn(2,list2)"  v-else  >激活</button>
 								<button @click="list2&& list2.active|| list2.probation?$router.push(`/heyue2?type=2&time=${list2.remain_day}`):fn2(true)">进入系统</button>
 							</div>
 						</div>
@@ -112,12 +114,13 @@
 				<div >
 					<div class="div">
 						<p class="p2" >策略跟随机器人(现货/合约)</p>
-						<p class="p1">剩余点卡(智能版): <span style="color: rgb(255,147,31);margin-left: 16px; font-size: 23px;font-weight: bold;">{{Number(point_num).toFixed(0)}}</span><span style="color: rgb(103,103,103);font-size: 14px;"></span>点 <span v-show="list3 &&list3.probation"></span></p>
+						<p class="p1">剩余点卡: <span style="color: rgb(255,147,31);margin-left: 16px; font-size: 23px;font-weight: bold;">{{Number(point_num).toFixed(0)}}</span><span style="color: rgb(103,103,103);font-size: 14px;"></span>点 <span v-show="list3 &&list3.probation"></span></p>
 					<p class="p1">激活时间: {{list3 &&list3.active_time?list3.active_time:'未激活'}}</p>
 						</div>
 						
 						<div class="button">
-							<button  @click="fn(3,list3)" :class="{'active1':list3 && list3.active}" >激活</button>
+							<button @click="fn(3,list3,false,true)"   v-if="list3 && list3.active" >续费</button>
+							<button  @click="fn(3,list3)" v-else  >激活</button>
 							<!-- <button @click="list3&& list3.active|| list3.probation?togensui():fn2(true)">进入系统</button> -->
 							<button @click="togensui()">进入系统</button>
 						</div>
@@ -128,12 +131,28 @@
 			</div>
 		</div>
 		<van-dialog v-model="bool" title="续费须知" show-cancel-button :before-close="beforeClose">
-			<div class="p">续费名称: {{id==1?'现货量化机器人(专业版)的时长':id==2?'合约量化机器人(专业版)的时长':'合约量化机器人(智能版)的点卡'}}</div>
-			<div class="p" v-show="id !=3">续费时长：365天</div>
-			<div class="p" v-show="id ==3">购买点卡：16800点</div>
-			<div style="display: flex;margin:6px 0px 15px 15px" class="p">
-				<span >续费金额：16800CRW</span>
+			
+			<div class="bel-dia">
+				<div v-if="id!=3" style="display: flex;margin: 2px 0;">	<span style="flex: 1;text-align: left;">时长: 90天</span>   <span style="flex: 1;text-align: left">价格: 5600CRW</span> 
+				<van-checkbox shape="square" v-model="checked1" style="font-size: 13px;margin-left: 10px;" icon-size="14"></van-checkbox></div>
+				<div v-if="id!=3" style="display: flex;margin: 2px 0;">	<span style="flex: 1;text-align: left;">时长: 180天</span>   <span style="flex: 1;text-align: left">价格: 9600CRW</span>
+				<van-checkbox shape="square" v-model="checked2" style="font-size: 13px;margin-left: 10px;" icon-size="14"></van-checkbox></div>
+				<div v-if="id!=3" style="display: flex;margin: 2px 0;">	<span style="flex: 1;text-align: left;">时长: 360天</span>   <span style="flex: 1;text-align: left">价格: 16800CRW</span>
+				<van-checkbox shape="square" v-model="checked3" style="font-size: 13px;margin-left: 10px;" icon-size="14"></van-checkbox></div>
+				<div v-if="id==3" style="display: flex;margin: 2px 0;">	<span style="flex: 1;text-align: left;">点卡: 3500</span>   <span style="flex: 1;text-align: left">价格: 3500CRW</span>
+				<van-checkbox shape="square" v-model="checked1" style="font-size: 13px;margin-left: 10px;" icon-size="14"></van-checkbox></div>
 			</div>
+			<div class="bel-dia" style="display: flex;justify-content: space-between;">
+				<span >支付方式: </span>
+				<div style="display: flex;">
+					CRW支付 <van-checkbox icon-size="16" shape="square" v-model="checked4" style="font-size: 14px;"></van-checkbox>
+				</div>
+				<div style="display: flex;">
+					购物券支付 <van-checkbox icon-size="16" shape="square" v-model="checked5" style="font-size: 14px;"></van-checkbox>
+					</div>
+			</div>
+			<p style="margin: 10px 16px;font-size: 14px;">您是否了解清楚CR量化产品功能和用户须知?如无疑问和异议,点击'确定'即购买成功,一经购买,不支持任何退换</p>
+				
 		</van-dialog>
 		<van-dialog v-model="bool3" title="进入策略跟随" show-cancel-button :before-close="beforeClose1">
 			
@@ -149,13 +168,14 @@
 
 <script>
 	import Vue from "vue";
-import { Dialog,Radio,RadioGroup } from "vant";
+import { Dialog,Radio,RadioGroup,Checkbox } from "vant";
 	Vue.use(Dialog);
 	Vue.use(Radio);
 	Vue.use(RadioGroup);
+	Vue.use(Checkbox);
 	export default {
 		components: {
-			Radio,RadioGroup,Dialog
+			Radio,RadioGroup,Dialog,Checkbox
 		},
 	  data() {
 	    return {
@@ -170,15 +190,57 @@ import { Dialog,Radio,RadioGroup } from "vant";
 			isshow2:false,
 			radio1:'2',
 			bool3:false,
+			checked1:true,
+			checked2:false,
+			checked3:false,
+			checked4:true,
+			checked5:false,
+			
 	    };
 	  },
 	  created() {
 			this.getlist()
 			this.getthreelist()
 	  },
+	  watch:{
+	  		 checked1(newValue, oldValue) {
+	  		 	if (newValue == true) {
+	  		 		this.checked2 = false
+	  				this.checked3 = false
+	  		 	}
+	  		 },
+	  		 checked2(newValue, oldValue) {
+	  		 	if (newValue == true) {
+	  		 		this.checked1 = false
+	  				this.checked3 = false
+	  		 	}
+	  		 },
+	  		 checked3(newValue, oldValue) {
+	  		 	if (newValue == true) {
+	  		 		this.checked2 = false
+	  				this.checked1 = false
+	  		 	}
+	  		 },
+	  		 checked4(newValue, oldValue) {
+	  		 	if (newValue == true) {
+	  		 		this.checked5 = false
+	  		 	}
+	  		 },
+	  		checked5(newValue, oldValue) {
+	  			if (newValue == true) {
+	  				this.checked4 = false
+	  			}
+	  		},
+	  },
 	   methods:{
 		   togensui(){
-			   this.bool3 = true
+			   // this.bool3 = true
+			   this.$router.push('/gensui')
+		   },
+		   fn3(id){
+			   console.log(this.id)
+			   this.id =id
+			   this.bool = true
 		   },
 		   getthreelist(){
 			   this.$axios
@@ -208,10 +270,10 @@ import { Dialog,Radio,RadioGroup } from "vant";
 						})
 					});
 					this.$axios
-						.post("/index/swapstrategy/get_trend_strategy_list", {
+						.post("/index/follow/get_strategy_list", {
 							symbol:"USDT",
 							bourse: '4',
-							type: 2
+							type: 6
 						})
 						.then(res => {
 							res.data.list.forEach(item => {
@@ -229,7 +291,7 @@ import { Dialog,Radio,RadioGroup } from "vant";
 			   			this.list1 = res.data.data.[1]
 						this.list2 = res.data.data.[2]
 						this.list3 = res.data.data.[3]
-						this.point_num =res.data.point_num
+						this.point_num =res.data.follow_point
 			   		} else {
 			   			this.$toast.fail({
 			   				message: res.data.msg,
@@ -246,7 +308,7 @@ import { Dialog,Radio,RadioGroup } from "vant";
 			   	duration: 1200
 			   });
 		   },
-		   fn(id,bool,show){
+		   fn(id,bool,show,bool2){
 			   if(show){
 				   this.$toast.fail({
 				   	message: `暂未开放`,
@@ -255,7 +317,12 @@ import { Dialog,Radio,RadioGroup } from "vant";
 				   return
 			   }
 			   let obj;
-			   let str = "确认激活"
+			   let str;
+			   if(bool2){
+				    str = "确认续费"
+			   }else{
+				   str = "确认激活"
+			   }
 				   obj={
 					   robot_type:id,
 				   }
@@ -289,6 +356,74 @@ import { Dialog,Radio,RadioGroup } from "vant";
 		   },
 		  beforeClose: function(action, done) {
 		  	if (action === "confirm") {
+				let num;
+				let month;
+				let type;
+				let id;
+				if(this.id !=3){
+					id = this.id
+					if(this.checked1){
+						num = 5600
+						month = 3
+					}
+					if(this.checked2){
+						num = 9600
+						month = 6
+					}
+					if(this.checked3){
+						num = 16800
+						month = 12
+					}
+					
+				}else{
+					id = 3
+					num = 3500
+				}
+				if(this.checked4){
+					type = 2
+				}else{
+					type = 8
+				}
+				
+				this.$axios
+					.post("/index/robot/purchase_robot", {
+						num,
+						type,
+						month,
+						robot_type:id,
+					})
+					.then((res) => {
+						if (res.data.code == 0) {
+							// this.$toast.success({
+							// 	message: res.data.msg,
+							// 	duration: 1600
+							// });
+							this.$axios
+								.post("/index/robot/robot_active", {robot_type:id,})
+								.then((res) => {
+									if (res.data.code == 0) {
+										this.$toast.success({
+											message: '续费成功',
+											duration: 2000
+										});
+														this.getlist()
+									} else {
+										this.$toast.fail({
+											message: res.data.msg,
+											duration: 2000
+										});
+									}
+								});
+							// setTimeout(() => {
+							// 	this.$router.back();
+							// }, 1600);
+						} else {
+							this.$toast.fail({
+								message: res.data.msg,
+								duration: 2000
+							});
+						}
+					});
 				done()
 			} else if (action === "cancel") {
 					// 取消
@@ -414,5 +549,10 @@ import { Dialog,Radio,RadioGroup } from "vant";
 		div{
 			flex: 1;
 		}
+	}
+	.bel-dia{
+		padding: 6px 16px;
+		font-size: 14px;
+		
 	}
 </style>

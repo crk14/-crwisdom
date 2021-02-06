@@ -74,7 +74,7 @@
           <div class="botdiv">
             <p>{{item.create_time}}</p>
             <p>
-              <span>{{item.money_types==1?'USDT':item.money_types==2?'CRW':'点卡'}}</span>
+              <span>{{item.money_types==1?'USDT':item.money_types==2?'CRW':item.money_types==8?'购物券':'点卡'}}</span>
             </p>
           </div>
         </li>

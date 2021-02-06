@@ -7,9 +7,9 @@
 		<div class="item" v-for="(item,index) in list" :key="index">
 			<img src="../assets/sc002.png" />
 			<div >
-				<p style="margin-bottom: 7px;">{{item.robot_type==1?'现货量化机器人(专业设置版)':item.robot_type==2?'合约量化机器人(专业设置版)':item.robot_type==3?'合约量化机器人(智能趋势版)':'合约跟随机器人(合约版)'}}</p>
+				<p style="margin-bottom: 7px;">{{item.robot_type==1?'现货量化机器人(专业设置版)':item.robot_type==2?'合约量化机器人(专业设置版)':item.robot_type==3?'策略跟随机器人(合约/现货)':''}}</p>
 				<p class="p1">数量: 1个</p>
-				<p class="p1">有效时长: {{item.enable_time*30}} 天</p>
+				<p class="p1" v-if="item.robot_type!=3">有效时长: {{item.enable_time*30}} 天</p>
 				<p class="p1">购买时间: {{item.create_time}}</p>
 				<p class="p1" v-show="item.active_time">{{item.probation==1?'试用':'激活'}}时间: {{item.active_time}}</p>
 				<p class="p1">支付金额: {{item.pay_money}} {{item.money_types==2?'CRW':'购物券'}}</p>

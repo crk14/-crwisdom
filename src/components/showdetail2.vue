@@ -58,8 +58,8 @@
 				<li v-for="(item,i) in list" :key="i">
 					<div class="title">
 						<div class="left">
-							<span class="act" style="background-color: rgb(239,101,98);font-size: 12px;" v-if="item.okex_type==3">卖出平多</span>
-							<span class="act" style="background-color: rgb(83,181,112);font-size: 12px;" v-if="item.okex_type==4">买入平空</span><span
+							<span class="act" style="background-color: rgb(83,181,112);font-size: 12px;" v-if="item.okex_type==3">卖出平多</span>
+							<span class="act" style="background-color:rgb(239,101,98) ;font-size: 12px;" v-if="item.okex_type==4">买入平空</span><span
 							 style="font-weight: bold;"> {{item.symbol_deal}}/{{symbol.toUpperCase()}}永续</span>
 						</div>
 						<div class="right" style="color: rgb(201,201,202);">{{item.time}} 完全成交</div>
@@ -95,12 +95,10 @@
 				<li class="plunow">{{plunow}}</li>
 			
 			</ul>
-			<ul class="page-ui" v-show="!folshow">
+			<!-- <ul class="page-ui" v-show="!folshow">
 				<li v-for="(item,i) in list" :key="i">
-					<!-- <span class="one">{{item.money_type.toUpperCase()}}</span> -->
 					<div class="title">
 						<div class="left">
-							<!-- <span class="act" style="background-color: rgb(239,101,98);font-size: 12px;" v-if="item.status==2">卖出</span> -->
 							<span class="act" style="background-color: rgb(83,181,112);font-size: 12px;" >平仓结算</span>
 							<span style="font-weight: bold;"> {{item.money_type}}永续</span>
 						</div>
@@ -108,12 +106,12 @@
 					</div>
 					<div class="body">
 						<div>结算收益(USDT): <span>{{(item.num*1).toFixed(3)}}</span></div>
-						<div style="text-align: right;">点卡扣费: <span>{{(item.point*1).toFixed(3)}}</span></div>
+						<div style="text-align: right;">点卡扣费: <span>{{(item.point*1).toFixed(3)}}</span>CRW扣费: <span>{{(item.point*1).toFixed(3)}}</span></div>
 					</div>
 				</li>
 				<li class="plunow">{{plunow}}</li>
 			
-			</ul>
+			</ul> -->
 		</div>
 		</van-pull-refresh>
 	</div>

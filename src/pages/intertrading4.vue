@@ -7,7 +7,7 @@
     line-height: .8rem;
     margin-top: -.4rem;"
 			 onclick="window.history.go(-1)" />
-			<p>跟随交易机器人(现货版)</p>
+			<p>策略跟随机器人(现货版)</p>
 		</div>
 		<img v-show="!type_status" class="statusimg" src="../assets/auto1.png" />
 		<img v-show="type_status" class="statusimg" src="../assets/crliang.gif" />
@@ -63,7 +63,7 @@
 		<p class="headtitle">
 			<span>|</span>{{vipshow?'实时监控':'跟随详情'}}
 			<button v-show="vipshow" @click="fn2()" style="margin-left: 38%;line-height: 22px; background: #4389eb;color: #fff;border-radius: 4px;font-size: 14px;width: 36%;">一键生成策略</button>
-			<button v-show="!vipshow " @click="fn2(true)" style="margin-left: 38%;line-height: 22px; background: #4389eb;color: #fff;border-radius: 4px;font-size: 14px;width: 36%;">选择跟随交易员</button>
+			<button v-show="!vipshow " @click="fn2(true)" style="margin-left: 38%;line-height: 22px; background: #4389eb;color: #fff;border-radius: 4px;font-size: 14px;width: 36%;">选择跟随策略</button>
 		</p>
 		<p class="headtitle" style="justify-content: center;">
 			<span v-show="!vipshow && strategy_list.length" style="line-height: 22px; border-radius: 4px;font-size: 14px;width: 36%;text-align: center;padding: 3px 6px;border: 1px solid #4389eb;">已跟随"{{tradert.nick_name}}"</span>
@@ -85,7 +85,7 @@
 			</div>
 			<div style="flex:1;text-align: left;">
 				<div style="border-bottom: 2.5px solid #f5f6fa;padding-left: 15%;display: flex;justify-content: space-between">
-					<p>开 仓 张 数
+					<p>首 仓 张 数
 						<div style="width: 2px;height: 16px;background: #E5E5E5;margin-top: 8px;"></div>
 						多 {{tradert.up_num}} 空 {{tradert.down_num}}</p>
 				</div>
@@ -242,7 +242,7 @@
 			<div class="tophader">
 
 				<van-icon name="arrow-left" @click="follow=false" />
-				<div style="text-align: center;">交易员列表</div>
+				<div style="text-align: center;">策略列表</div>
 			</div>
 			<div class="banan">
 				<div class="item" v-for="item in trader_list" :key="item.id">
@@ -250,17 +250,17 @@
 						<img :src="item.avatar" class="img1" />
 						<div class="center">
 							{{item.nick_name}}
-							<p>人数有限，只带粉丝</p>
+							<p>类型: 火币现货</p>
 						</div>
 						<!-- <img class="img2" src="../assets/13033.png" /> -->
 						<button class="right" @click="follow_trader(item.id,item.symbol_deal)">跟随</button>
 					</div>
 					<div class="two">
 						<div class="left">
-							<p>交易货币对: {{item.symbol_deal}}/USDT</p>
+							<p>交易币对: {{item.symbol_deal}}/USDT</p>
 						</div>
 						<div class="right">
-							<p>开仓张数:</p>
+							<p>首仓张数:</p>
 						</div>
 					</div>
 					<div class="two">
@@ -625,7 +625,7 @@
 				})
 				.then(res => {
 					let info = res.data.info;
-					this.pointnum = info.point_num
+					this.pointnum = (info.follow_point*1).toFixed(2)
 					
 				})
 			// this.start();

@@ -523,7 +523,7 @@
 					</div>
 					<p style="height: 15px;"></p>
 		</van-dialog>
-		<van-picker v-show="jiaoyi" show-toolbar title="选择仓位币对对金额" :columns="columns" @confirm="conwan" @cancel="jiaoyi=!jiaoyi" />
+		<van-picker v-show="jiaoyi" show-toolbar title="选择仓位币对金额" :columns="columns" @confirm="conwan" @cancel="jiaoyi=!jiaoyi" />
 	</div>
 </template>
 

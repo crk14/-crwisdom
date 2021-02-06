@@ -14,7 +14,7 @@
 				<div class="div" >记录</div>
 			</div>
 			<div class="div1" >
-				<div>代理购物券</div>
+				<div>购物券</div>
 				<p>{{robot_ticket}}</p>
 			</div>
 			<div @click="$router.push('mymoner')" class="div1" style="margin-right: 15px;">
@@ -52,6 +52,7 @@
 						<div>9600CRW</div>
 						<div>16800CRW</div>
 					</div>
+					<p style="font-size: 12px;color: rgb(126,127,129);">1CNY约等于1CRW</p>
 					<p style="font-size: 12px;color: rgb(126,127,129);">1USDT约等于6.5CRW</p>
 				</div>
 				<button >进入详情</button>
@@ -82,6 +83,7 @@
 					<div>9600CRW</div>
 					<div>16800CRW</div>
 				</div>
+				<p style="font-size: 12px;color: rgb(126,127,129);">1CNY约等于1CRW</p>
 					<p style="font-size: 12px;color: rgb(126,127,129);">1USDT约等于6.5CRW</p>
 				</div>
 				<button >进入详情</button>
@@ -92,13 +94,13 @@
 					<p>策略跟随机器人(现货/合约)</p>
 					<div class="item-body active" >
 					<div class="act">点卡:</div>
-					<div>3500点</div>
+					<div>2000点</div>
 					</div>
 					<div class="item-body">
 						<div class="act">价格:</div>
-						<div>3500CRW</div>
+						<div>2000CRW</div>
 					</div>
-					<p style="font-size: 12px;color: rgb(126,127,129);">1USDT约等于6.5CRW</p>
+					<p style="font-size: 12px;color: rgb(126,127,129);width: 185px;">备注: 策略跟随首次激活需购买2000点卡及预存1000CRW</p>
 				</div>
 				<button >进入详情</button>
 			</div>

@@ -1,254 +1,241 @@
-
 <template>
 	<div>
-		<div class="title">
-			
-			<van-icon name="arrow-left"  onclick="window.history.go(-1)"/>
-			<div class="right">
-				<img src="../assets/5c95d15bec485@2x.png" />
-				<div>1352****020
-				<p>杠杆10倍，最大跟随5~10单,爱仕达多</p>
-				<!-- <p>已入驻平台31天</p> -->
-				</div>
-			</div>
+		<div class="tophader">
+			<van-icon name="arrow-left" onclick="window.history.go(-1)" />
+			<p>跟随详情</p>
 		</div>
-	<div class="body">
-		
+		<div class="body">
 			<div class="left">
 				200
-				<p>累计跟随人数</p>
+				<p>总跟随人数</p>
 			</div>
-			
-			<div class="center">
-				23100.00
-				<p>跟单总收益(USDT)</p>
-			</div>
-			
-			<div class="right">
-				+100.00%
-				<p>近三周胜率</p>
-			</div>
-			<div class="left" style="margin-top: -7px;">
+
+
+			<div class="left">
 				135
 				<p>交易笔数</p>
 			</div>
-			
-			<div class="center" style="margin-top: -7px;">
+
+			<div class="center">
 				23100.00
 				<p>跟随者总收益(USDT)</p>
 			</div>
-			
-			<div class="right" style="margin-top: -7px;color: rgb(53,183,135);" >
-				+100.00%
-				<p style="color: #FFFFFF;">收益率</p>
+
+
+		</div>
+		<div class="item">
+			<div class="one">
+				跟随者
 			</div>
-	</div>
-	<div class="item">
-		<div class="one">
-			<div :class="{'active':bool}" style="text-align: right;margin-right: 20px;margin-left: 32%;" @click="bool=true">历史带单<p v-show="bool"></p></div>
-			<div @click="bool=false" :class="{'active':!bool}">跟随者<p v-show="!bool" style="margin-left: 37%;"></p></div>
-		</div>
-		<div class="two" v-show="bool">
-			<div class="left">
-				<div class="top">BTC/USDT <div>多仓·20X</div></div>
-				<div class="bottom">
-					<div>9103.00
-					<p>开仓价</p>
-					</div>
-					<div style="text-align: center;">9318.00
-					<p >平仓价</p>
-					</div>
-					<div style="text-align: right;color: rgb(53,183,135);">+45.21%
-					<p>收益率</p>
-					</div>
-				</div>
-			</div> 
-			<button class="button" v-show="id==1" >已满员</button>
-			<button class="button active"  v-show="id==2" @click.stop="$router.push('/gdset?id='+2)">跟随</button>
-		</div>
-		<div class="two" v-show="!bool">
-			<div class="left" style="display: flex;">
-				<img src="../assets/5c95d15bec485@2x.png"/>
+		
+		<div class="item1" v-for="(item,index) in list" :key="index">
+			<div class="one1">
+				<img :src="item.avatar" class="img1" />
 				<div class="center">
-					176****3078
-					<p>跟随总额 34107.586USDT</p>
+					{{item.nick_name}}
+					<p >
+						UID: {{item.trader_id}}
+						</p>
 				</div>
-				<div class="right">
-					+1718.8762
-					<p>跟随收益USDT</p>
+				<div class="center">
+					<p style="margin-top: 12px;margin-left: 15px;">
+						币对: <span style="color: #000;">{{item.symbol_deal}}/{{item.symbol}}</span>
+					</p>
+				</div>
+			</div>
+			<div class="two">
+				<div class="left">
+					{{item.up_size}}
+					<p>持仓张数(多)</p>
+					
+				</div>
+				<div class="center">
+					
+					{{item.up_avg_price}}USDT
+					<p>持仓均价(多)</p>
+				</div>
+				<div class="right active" >
+					4500USDT
+					<p>累计收益</p>
+				</div>
+			</div>
+			<div class="two">
+				<div class="left">
+					{{item.down_size}}
+					<p>持仓张数(空)</p>
+				</div>
+		
+				<div class="center">
+					
+					{{item.down_avg_price}}USDT
+					<p>持仓均价(空)</p>
+				</div>
+		
+				<div class="right active1" :class="{'active':item.state}" >
+					{{item.state?'运行':'停止'}}
+					<p>状态</p>
 				</div>
 			</div>
 		</div>
-	</div>
+		
+		</div>
 	</div>
 </template>
 
 <script>
-export default {
-  data() {
-    return {
-		bool:true,
-		id:''
-    };
-  },
-  created() {
-  	this.id=this.$route.query.id
-	console.log(this.id)
-  }
-  
-};
+	export default {
+		data() {
+			return {
+				bool: true,
+				list: []
+			};
+		},
+		created() {
+			this.$axios
+				.post(`/index/follow/follow_preview`, {
+					symbol_deal: 'ETH',
+					symbol: 'USDT',
+				})
+				.then((res) => {
+					console.log(res)
+					this.list = res.data.list.data
+				});
+		}
+
+	};
 </script>
 
 <style lang="less" scoped>
-	.title{
-		padding: 0 .28rem;
-		margin: .22rem 0;
-		font-size: .37rem;
-		position: relative;
-		font-weight: 550;
-		i{
-			position: absolute;
-			left: 9px;
-			top: 4px;
-		}
-		.right{
-			color: rgb(95,94,94);
-			padding-top: 10px;
-			display: flex;
-				flex: 1;
-				text-align: left;
-				margin-left: 30px;
-				img{
-					width: 50px;
-					height: 50px;
-					border-radius: 50%;
-					margin-right: 16px;
-				}
-				p{
-					font-size: .27rem;
-					font-weight: 540;
-					white-space:nowrap;
-					overflow:hidden;
-					text-overflow:ellipsis;
-					width: 210px;
-					margin-top: 2px;
-				}
-		}
-	}
-	.body{
-		// background-color: rgb(67,103,253);
+	.body {
 		background: url(../assets/11022.png) no-repeat;
-		height: 3.8rem;
+		height: 2.3rem;
 		display: flex;
 		color: #FFFFFF;
 		flex-wrap: wrap;
-		div{
-			// flex: .3;
+		div {
 			width: 33%;
 			text-align: center;
 			margin-top: 28px;
 			font-size: 17px;
-			p{
+			p {
 				margin-top: 10px;
 				font-size: 13px;
 			}
 		}
 	}
-	.item{
+
+	.item {
 		background-color: #FFFFFF;
 		border-radius: 15px 15px 0 0;
 		min-height: 5rem;
 		margin-top: -18px;
-		.one{
+
+		.one {
+			border-bottom: 1px solid #EEEEEE;
 			padding-top: 10px;
 			height: 30px;
 			line-height: 30px;
 			font-weight: 550;
-			color: rgb(163,169,179);
-			display: flex;
-			div{
-				text-align: left;
-				p{
-					height: 2px;
-					width: 20px;
-					background-color: rgb(84,114,210);
-					margin-left: 30%;
-				}
-			}
-			.active{
-				color: #000000;
-			}
+			text-align: center;
+			color: #000000;
 		}
-		.two{
-			width: 100%;
-			.button{
-				position: fixed;
-				bottom: 20px;
-				left: 33%;
-				width: 140px;
-				padding: 5px 6px;
-				color: rgb(230,107,75);
-				background-color: rgb(255,241,244);
-			}
-			.active{
-				color: rgb(18,184,122);
-				background-color: rgb(233,248,243);
-			}
-			.left{
-				border-top: 1px solid #EEEEEE;
-				padding: .28rem;
-				line-height: 24px;
-				img{
-					width: 50px;
-					height: 50px;
-					border-radius: 50%;
-					margin-right: 16px;
-					// margin-top: 5px;
-				}
-				.center{
-					font-size: 17px;
-					p{
-						font-size: 14px;
-						color: rgb(144,147,156);
-					}
-				}
-				.right{
-					font-size: 17px;
-					text-align: right;
-					flex: 1;
-					color: rgb(18,184,122);
-					p{
-						font-size: 14px;
-						color: rgb(144,147,156);
-					}
-				}
-				.top{
-					display: flex;
-					div{
-						color: rgb(18,184,122);
-						background-color: rgb(233,248,243);
-						padding: 2px;
-						margin-left: 6px;
-						font-size: 14px;
-						line-height: 20px;
-					}
-				}
-				.bottom{
-					margin-top: 12px;
-					display: flex;
-					justify-content: space-between;
-					div{
-						flex: 1;
-						font-size: 18px;
-						p{
-							font-size: 14px;
-							color: rgb(137,144,152);
-						}
-					}
-				}
-			}
-		}
-		
-	}
-</style>
 
+	
+			
+		}
+		.item1 {
+			padding: .1rem .14rem;
+			min-height: 3rem;
+			background-color: #FFFFFF;
+			border-bottom: 2px solid #EEEEEE;
+			.one1 {
+				display: flex;
+				background-color: rgb(247, 251, 254);
+				padding: .12rem 0 .1rem .1rem;
+				justify-content: space-between;
+				border-radius: 8px;
+		
+				.img1 {
+					width: 40px;
+					height: 40px;
+					border-radius: 50%;
+					margin-right: 11px;
+				}
+		
+				.img2 {
+					width: 47px;
+					height: 36px;
+					margin-top: -.2rem;
+				}
+		
+				.center {
+					font-size: 15px;
+					font-weight: 550;
+					flex: 1;
+		
+					p {
+						margin-top: 5px;
+						font-size: 12px;
+						font-weight: 500;
+						color: rgb(169, 173, 182);
+						white-space: nowrap;
+						overflow: hidden;
+						text-overflow: ellipsis;
+						// width: 193px;
+						width: 100%;
+					}
+				}
+		
+				.right {
+					background-color: rgb(30, 105, 250);
+					color: #FFFFFF;
+					line-height: 22px;
+					// width: 55px;
+					border-radius: 9px;
+					margin-top: 3%;
+					margin-right: 3%;
+					font-size: 13px;
+					height: 22px;
+				}
+			}
+		
+			.two {
+				display: flex;
+				justify-content: space-between;
+				margin-top: 7px;
+		
+				div {
+					color: #000000;
+					font-size: 15px;
+					// flex: 1;
+					text-align: center;
+				}
+		
+				p {
+					margin-top: 1px;
+					color: rgb(169, 173, 182);
+					font-size: 13px;
+				}
+		
+				.left {
+					width: 25%;
+					text-align: left;
+				}
+		
+				.right {
+					width: 32%;
+					text-align: right;
+				}
+		
+				.center {
+					flex: 1;
+				}
+				.active1{
+					color: #d74e5a;
+				}
+				.active{
+					color: rgb(53,183,135)
+				}
+			}
+		}
+</style>

@@ -12,6 +12,7 @@
         <!-- <input type="password" v-model="oldpass" placeholder="请输入旧的交易密码" /> -->
         <select v-model="valss">
           <option  selected="selected">CRW</option>
+		  <option  selected="selected">购物券</option>
         </select>
         <p class="hr"></p>
       </li>
@@ -100,9 +101,9 @@ export default {
 						}
 						else if(oldvalue=='CRW'){
 							that.valss2 = that.info.safe_num
-						}else{
-							that.valss2 = that.info.point_num
-					}
+				}else if(oldvalue=='购物券'){
+							that.valss2 = that.info.robot_ticket
+				}
   	  }
   },
   methods: {
@@ -143,6 +144,9 @@ export default {
 		}
 		else if(this.valss=='CRW'){
 			str = 2
+		}
+		else if(this.valss=='购物券'){
+			str = 8
 		}else{
 			str = 3
 		}

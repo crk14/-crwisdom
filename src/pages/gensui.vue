@@ -3,17 +3,18 @@
 		<div class="title">
 
 			<van-icon name="arrow-left" onclick="window.history.go(-1)" />
-			<div>跟随交易社区</div>
+			<div>策略跟随社区</div>
 		</div>
 		<div class="img">
-			<img src="../assets/1701.png" @click="$router.push('/wdgd')" />
-			<img v-show="bool" src="../assets/1702.png" />
-			<div v-show="!bool" @click="$router.push('jyyym')" style="margin-top: 12px;
+			<!-- <img src="../assets/1701.png" @click="$router.push('/intetrading4')" /> -->
+			<img src="../assets/1701.png" @click="$toast.fail({message: '暂未开放',duration: 2000})" />
+			<img v-show="bool" @click="$router.push('heyue4')" src="../assets/1702.png" />
+			<!-- <div v-show="!bool" @click="$router.push('heyue1')" style="margin-top: 12px;
     width: 48%;
-    height: 1.6rem;background-color: #4a79f5;border-radius: 5px;text-align: center;line-height: 1.6rem;color: #fff;">交易员入口</div>
+    height: 1.6rem;background-color: #4a79f5;border-radius: 5px;text-align: center;line-height: 1.6rem;color: #fff;">交易员入口</div> -->
 		</div>
 		<div class="title2">
-			<div class="one">交易员列表</div>
+			<div class="one">策略列表</div>
 			<div style="display: flex;">
 				<div class="two">
 					<input v-model="value" placeholder="搜索" @keyup.enter="onSearch()" />
@@ -22,95 +23,60 @@
 				<div class="two" style="margin-left: 8px;padding: 6px 0 6px 3px;width: 103px;">
 					<select name="public-choice" v-model="value2" @change="getvalue2" style="color: rgb(169, 173, 182)">
 						<option value="1">综合排名</option>
-						<option value="2">带单总收益</option>
+						<option value="2">累计总收益</option>
 						<option value="3">跟随者总收益</option>
 						<option value="4">累计收益率</option>
 						<option value="5">近30日收益率</option>
-						<option value="6">近3周收益率</option>
+						<option value="6">胜率</option>
 					</select>
 				</div>
 			</div>
 
 		</div>
-		<p class="p">数据每小时更新一次</p>
+		<p class="p">数据实时更新</p>
 		<div class="banan">
-			<div class="item" @click="$router.push('/jyxq?id='+1)">
+
+			<div class="item" v-for="(item,index) in list" :key="index">
 				<div class="one">
-					<img src="../assets/login2.png" class="img1" />
+					<img :src="item.avatar" class="img1" />
 					<div class="center">
-						区块链三杰
-						<p>人数有限，只带粉丝</p>
+						<div>
+							<strong>{{item.nick_name}}</strong>
+							<span >策略运行: {{item.update_time| time}}天</span>
+						</div>
+
+						<p><span style="margin-right: 20px;">类型: OKEX/永续合约</span> 币对: {{item.symbol_deal}}/{{item.symbol}}</p>
 					</div>
-					<img class="img2" src="../assets/13033.png" />
+					<div class="i-t1" :class="{'active':item.state==1,'active1':item.state==2}"></div>
+					<div class="i-t" :class="{'active':item.state==1,'active1':item.state==2}">{{item.state==1?'交易中':item.state==0?'已停止':'已满员'}}</div>
 				</div>
 				<div class="two">
 					<div class="left">
-						279
-						<p>累计跟随人数</p>
+						{{item.follow_num}}
+						<p>跟随人数</p>
 					</div>
 					<div class="center">
-						4778.74
-						<p>带单总收益(USDT)</p>
+						{{(item.all_profit*1).toFixed(2)}}
+						<p>累计总收益(USDT)</p>
 					</div>
 					<div class="right">
-						+100.00%
-						<p>近三周胜率</p>
+						{{item.trans_num?(item.win_num/item.trans_num*100).toFixed(2):0}}%
+						<p>胜率</p>
 					</div>
 				</div>
 				<div class="two">
 					<div class="left">
-						135
+						{{item.trans_num}}
 						<p>交易笔数</p>
 					</div>
 
 					<div class="center">
-						4778.74
-						<p>跟随者总收益(USDT)</p>
+						{{(item.profit*1).toFixed(2)}}
+						<p>跟随总收益(USDT)</p>
 					</div>
 
 					<div class="right" style="color: rgb(53,183,135);">
-						+1658.20%
-						<p>收益率</p>
-					</div>
-				</div>
-			</div>
-			<div class="item" @click="$router.push('/jyxq?id='+2)">
-				<div class="one">
-					<img src="../assets/login2.png" class="img1" />
-					<div class="center">
-						一线大咖
-						<p>人数有限，只带粉丝，</p>
-					</div>
-					<!-- <img class="img2" src="../assets/13033.png"/> -->
-					<button class="right" @click.stop="$router.push('/gdset?id='+2)">跟随</button>
-				</div>
-				<div class="two">
-					<div class="left">
-						301
-						<p>累计跟随人数</p>
-					</div>
-					<div class="center">
-						5421.74
-						<p>带单总收益(USDT)</p>
-					</div>
-					<div class="right">
-						+100.00%
-						<p>近三周胜率</p>
-					</div>
-				</div>
-				<div class="two">
-					<div class="left">
-						145
-						<p>交易笔数</p>
-					</div>
-
-					<div class="center">
-						4999.74
-						<p>跟随者总收益(USDT)</p>
-					</div>
-
-					<div class="right" style="color: rgb(53,183,135);">
-						+1699.20%
+						{{item.profit_rate?(item.profit_rate*100).toFixed(2):0}}%
 						<p>收益率</p>
 					</div>
 				</div>
@@ -125,11 +91,31 @@
 			return {
 				value: '',
 				value2: 1,
-				bool: true
+				bool: true,
+				list: []
 			};
 		},
 		created() {
-
+			this.$axios
+				.post(`/index/follow/trader_info`, )
+				.then((res) => {
+					this.list = res.data.trader_info
+					console.log(this.list)
+				});
+		},
+		filters:{
+			time(value){
+				if(value){
+					let timestamp = new Date().getTime()
+					let timestamp1 = new Date(value).getTime()
+					let num = (timestamp -timestamp1)/1000/3600/24
+					
+					return Math.ceil(num)
+				}else{
+					return 0
+				}
+				
+			}
 		},
 		methods: {
 			onSearch() {
@@ -223,12 +209,45 @@
 				min-height: 3rem;
 				background-color: #FFFFFF;
 
+				.i-t {
+					position: absolute;
+					font-size: 0.2rem;
+					width: 100px;
+					height: 22px;
+					line-height: 22px;
+					color: #fff;
+					text-align: center;
+					right: -33px;
+					-webkit-transform: rotate(50deg);
+					transform: rotate(50deg);
+					background-color: rgb(169, 173, 182);
+				}
+
+				.i-t1 {
+					position: absolute;
+					width: 20px;
+					height: 24px;
+					right: 0;
+					top: 0;
+					background-color: rgb(169, 173, 182);
+				}
+
 				.one {
+					position: relative;
 					display: flex;
 					background-color: rgb(247, 251, 254);
 					padding: .2rem 0 .15rem .15rem;
 					justify-content: space-between;
 					border-radius: 8px;
+					overflow: hidden;
+
+					.active {
+						background: #2ead65;
+					}
+
+					.active1 {
+						background: #e35e5e;
+					}
 
 					.img1 {
 						width: 40px;
@@ -244,10 +263,25 @@
 					}
 
 					.center {
-						font-size: 15px;
-						font-weight: 550;
+						
 						flex: 1;
-
+						div{
+							display: flex;justify-content: space-between;width: 82%;
+							strong{
+								font-size: 15px;
+								font-weight: 550;
+								white-space: nowrap;
+								overflow: hidden;
+								text-overflow: ellipsis;
+								width: 130px;
+							}
+						}
+						span{
+							font-size: 12px;
+							font-weight: 500;
+							white-space: nowrap;
+							color: rgb(169, 173, 182);
+						}
 						p {
 							margin-top: 5px;
 							font-size: 12px;
@@ -265,10 +299,10 @@
 						background-color: rgb(30, 105, 250);
 						color: #FFFFFF;
 						line-height: 22px;
-						width: 55px;
+						// width: 55px;
 						border-radius: 9px;
 						margin-top: 3%;
-						margin-right: 3%;
+						// margin-right: 3%;
 						font-size: 13px;
 						height: 22px;
 					}

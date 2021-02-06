@@ -197,6 +197,10 @@ export default {
 		  		  		this.list4 = res.data.data
 		  		  });
 		  },10000)
+		   this.$once('hook:beforeDestroy',()=>{
+		          clearInterval(this.time);
+		         this.time = null;
+		        })
 		  localStorage.setItem('time',JSON.stringify( this.time))
 	  },
 	  fn3(bool){
