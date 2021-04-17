@@ -1,4 +1,4 @@
-<template>
+tables<template>
 	<div class="intetrading">
 		<div class="tophader">
 			<van-icon name="arrow-left" style="    width: 1rem;
@@ -10,6 +10,11 @@
 			<p>现货量化交易
 			</p>
 		</div>
+		<van-pull-refresh
+		  v-model="isLoading"
+		  success-text="刷新成功"
+		  @refresh="onRefresh"
+		>
 		<div class="topsel" style="position: relative;">
 			<p class="left" @click="bounce(1)">
 				<img v-if="bourse==1" src="../assets/src_resource_image_page_huobi_logo@2x.png" alt />
@@ -56,7 +61,7 @@
 		<p style="display: flex;height: 35px;line-height: 35px;border-bottom: 4px solid #f5f6fa;font-size: .26rem;color: rgb(34, 132, 253);">
 			<span @click="bounce(4)" style="flex:1;text-align: center;">添加货币对{{jysymbol>0?'('+jysymbol+')':''}}</span>
 			<span style="color: #D0D0D0;">|</span>
-			<span style="flex:1;text-align: center;" @click="fn2()">一键设置应用</span>
+			<span style="flex:1;text-align: center;" @click="bool2=false;fn2()">一键设置应用</span>
 		</p>
 		<p class="headtitle">
 			<span>|</span>实时监控
@@ -73,7 +78,7 @@
 			<div class="cent">
 				<div class="box">
 					<p style="color: #bababa;">完成利润</p>
-					<p class="box1">{{profit}} {{symbol}}</p>
+					<p class="box1">{{(profit*1).toFixed(2)}} {{symbol}}</p>
 				</div>
 			</div>
 			<div class="cent">
@@ -121,41 +126,12 @@
 						<p v-if="item.stop_type==9" class="item1">仓位错误</p>
 						<p v-if="item.stop_type==6" class="item1">本金不足</p>
 					</div>
-					<div class="tabul">
-						<div>
-							<p>建仓单数(单)</p>
-
-							<p>{{item.buy_count}}</p>
-						</div>
-						<div>
-							<p>持仓数量({{item.bidui.split('/')[0]}})</p>
-							<p>{{item.buy_count_amount}}</p>
-						</div>
-						<div>
-							<p>持仓均价({{item.bidui.split('/')[1]}})</p>
-							<p>{{item.buy_count_average}}</p>
-
-							<!-- <p>{{item.profit_lv}}%</p> -->
-						</div>
-						<div>
-							<p>尾仓均价({{item.bidui.split('/')[1]}})</p>
-
-							<p>{{item.lastprice}}</p>
-						</div>
-						<div>
-							<p>平仓单数(单)</p>
-							<p>{{item.sell_count}}</p>
-						</div>
-						<div>
-							<p>实现利润({{item.bidui.split('/')[1]}})</p>
-
-							<p>{{item.profit}}</p>
-						</div>
-					</div>
+					<tables :item="item"></tables>
 				</li>
-
+				
 			</ul>
 		</div>
+		</van-pull-refresh>
 		<!-- 左侧弹框 -->
 		<van-popup v-model="show" position="left" @click="changleft" class="poup" :style="{ height: '100%' ,width:'50%'}">
 			<p class="jiay">选择交易所</p>
@@ -222,7 +198,6 @@
 				<li class="li-item" v-for="(item,i) in list3" :key="i">
 					<div style="padding-left: .7rem;font-size: 14px;width: 86px;">{{item.symbol1.toUpperCase()}}/<span style="color: #CCCCCC;">{{item.symbol.toUpperCase()}}</span>
 					</div>
-					<!-- <div style="padding-left: 1rem;width: 32px;" class="active" :class="{'active1':item.up_or_down==1}">{{item.close.toFixed(2)}}</div> -->
 					<div style="padding-left: 1rem;color: #2284fd;text-align: center" v-show="!item.bool" @click="selecli_symbolcli(item.symbol1.toUpperCase()+ '/' + item.symbol.toUpperCase(),i)">添加</div>
 					<div style="padding-left: 1.62rem;color: #C0C5CB;text-align: center" v-show="item.bool">已添加</div>
 				</li>
@@ -250,13 +225,8 @@
 		</van-popup>
 
 		<!-- 问题弹框 -->
-		<van-popup v-model="matterplay" class="matter">
-			<div class="top">CR智能交易注意事项</div>
-			<div class="bots">
-				<p>1、用户在交易所内生成的API不可绑定IP</p>
-				<p>2、在智能交易开启前，交易所中必须先有本金，系统才能执行交易</p>
-				<p>3、在智能交易开启后，如有出现手动介入的情况，系统将立即 停止交易。</p>
-			</div>
+		<van-popup v-model="matterplay"  style="width: 75%;">
+			<matter></matter>
 		</van-popup>
 
 		<!-- 智能交易弹框 -->
@@ -292,11 +262,11 @@
 					<img v-if="check==2" src="../assets/landian.png" alt />
 					<img v-else src="../assets/nocomr.png" alt />
 				</li>
-				<li @click="firmcolse(3)">
+				<!-- <li @click="firmcolse(3)">
 					强制暂停
 					<img v-if="check==3" src="../assets/landian.png" alt />
 					<img v-else src="../assets/nocomr.png" alt />
-				</li>
+				</li> -->
 			</ul>
 			<button class="changebton" @click="close_now()" style="background-color: rgb(34, 132, 253);">确定</button>
 		</van-popup>
@@ -493,6 +463,11 @@
 <script>
 	import Vue from 'vue';
 	import {
+		wss
+	} from '../api/ws.js'
+	import tables from '../modu/table.vue'
+	import matter from '../modu/matter.vue'
+	import {
 		Dialog,
 		Field,
 		Popup
@@ -504,10 +479,13 @@
 		components: {
 			Dialog,
 			Field,
-			Popup
+			Popup,
+			tables,
+			matter
 		},
 		data() {
 			return {
+				isLoading:false,
 				sym_val:'',
 				value: '',
 				number: '',
@@ -581,7 +559,8 @@
 				},
 				bool2: false,
 				bool3: false,
-				huobi: true
+				huobi: true,
+				websct:{}
 			};
 		},
 		created() {
@@ -590,29 +569,7 @@
 			if (localStorage.getItem("bourse") == 1) {
 				this.bourse = localStorage.getItem("bourse");
 			}
-			this.$axios
-				.get("/index/mywallet/mywalletInfo", {
-					page: 1,
-					limit: 1
-				})
-				.then(res => {
-
-					let info = res.data.info;
-					this.pointnum = info.point_num
-					var timestamp = Date.parse(new Date()) / 1000;
-					if (info.start_time) {
-						let time = parseInt((timestamp - info.start_time) / 60 / 60 / 24)
-						this.time = 150 - time
-					} else {
-						console.log(info.start_time, info.point_num)
-						if (info.point_num > 0) {
-							let time = parseInt((timestamp - info.start_time) / 60 / 60 / 24)
-							this.time = 150 - time
-						} else {
-							this.time = 0
-						}
-					}
-				})
+			this.mywalletInfo()
 			this.start();
 			if (this.bourse == 4) {
 				this.selectsymbol[3].a = "OKB";
@@ -673,14 +630,48 @@
 		},
 		beforeDestroy() {
 			// console.log(this.time1, 99999999999)
-			clearInterval(this.time1)
-			this.time1 = null;
+			if(this.websct.onclose){
+				this.websct.onclose()
+			}
+			// clearInterval(this.time1)
+			// this.time1 = null;
 		},
 		destroyed() {
 			// console.log(9999999999999)
 		},
 		methods: {
-			
+			onRefresh(){
+					  this.start()
+					  this.mywalletInfo()
+				  setTimeout(() => {
+				        this.isLoading = false;
+				      }, 1000);
+				},
+			mywalletInfo(){
+				this.$axios
+					.get("/index/mywallet/mywalletInfo", {
+						page: 1,
+						limit: 1
+					})
+					.then(res => {
+				
+						let info = res.data.info;
+						this.pointnum = info.point_num
+						// var timestamp = Date.parse(new Date()) / 1000;
+						// if (info.start_time) {
+						// 	let time = parseInt((timestamp - info.start_time) / 60 / 60 / 24)
+						// 	this.time = 150 - time
+						// } else {
+						// 	console.log(info.start_time, info.point_num)
+						// 	if (info.point_num > 0) {
+						// 		let time = parseInt((timestamp - info.start_time) / 60 / 60 / 24)
+						// 		this.time = 150 - time
+						// 	} else {
+						// 		this.time = 0
+						// 	}
+						// }
+					})
+			},
 			fn2() {
 				if (this.isshow2) {
 					Dialog.confirm({
@@ -698,7 +689,6 @@
 					return
 				}
 				if (this.shuju) {
-					console.log(this.Symbol)
 					// return
 					if (this.shuju == 1) {
 						this.show2 = true
@@ -712,6 +702,8 @@
 					})
 				}
 				if (!this.bool2) {
+					this.show5 = false
+					this.show6 = true
 					this.backinfo = {}
 					this.backinfo = {
 						profit_stop_case: 1,
@@ -1054,8 +1046,9 @@
 				if (!bool) {
 					this.start1();
 				}
-				clearInterval(this.time1)
-				this.time1 = null;
+				if (this.websct.onclose) {
+					this.websct.onclose()
+				}
 				this.$axios
 					.post("/index/spotstrategy/get_strategy_list", {
 						symbol: this.symbol,
@@ -1068,31 +1061,46 @@
 						})
 						this.strategy_list = res.data.list;
 						let that = this
-						if (this.strategy_list.length > 0) {
-							this.strategy_list.forEach((item, index) => {
-								this.$axios.get(`/index/rank/get_market?symbol_pair=${item.symbol_deal + item.symbol}`).then(res1 => {
-									let datas = res1.data
-									console.log(datas)
-									item.close1 = datas.data.close
-								})
-								this.$set(this.strategy_list, index, item)
+						let arr = []
+							res.data.list.forEach((item,index) => {
+								arr.push(item.symbol_deal)
 							})
-							this.time1 = setInterval(() => {
-								this.strategy_list.forEach((item, index) => {
-									this.$axios.get(`/index/rank/get_market?symbol_pair=${item.symbol_deal + item.symbol}`).then(res1 => {
-										let datas = res1.data
-										item.close1 = datas.data.close
-										// item.zhangfu =(datas.close -datas.open)/datas.open * 100
-									})
-									this.$set(this.strategy_list, index, item)
+							wss(arr, this.huobiwsurl, (data, wes) => {
+								arr.forEach((item,index) => {
+									if(data.ch.indexOf(item)!=-1 ){
+										let obj = this.strategy_list[index]
+										obj.close1 = data.tick.close
+										this.$set(this.strategy_list, index, obj)
+									}
 								})
-								return
-							}, 9000)
-							this.$once('hook:beforeDestroy',()=>{
-							       clearInterval(this.time1);
-							      this.time1 = null;
-							     })
-						}
+								this.websct = wes
+							})
+												
+						// if (this.strategy_list.length > 0) {
+						// 	this.strategy_list.forEach((item, index) => {
+						// 		this.$axios.get(`/index/rank/get_market?symbol_pair=${item.symbol_deal + item.symbol}`).then(res1 => {
+						// 			let datas = res1.data
+						// 			console.log(datas)
+						// 			item.close1 = datas.data.close
+						// 		})
+						// 		this.$set(this.strategy_list, index, item)
+						// 	})
+						// 	this.time1 = setInterval(() => {
+						// 		this.strategy_list.forEach((item, index) => {
+						// 			this.$axios.get(`/index/rank/get_market?symbol_pair=${item.symbol_deal + item.symbol}`).then(res1 => {
+						// 				let datas = res1.data
+						// 				item.close1 = datas.data.close
+						// 				// item.zhangfu =(datas.close -datas.open)/datas.open * 100
+						// 			})
+						// 			this.$set(this.strategy_list, index, item)
+						// 		})
+						// 		return
+						// 	}, 9000)
+						// 	this.$once('hook:beforeDestroy',()=>{
+						// 	       clearInterval(this.time1);
+						// 	      this.time1 = null;
+						// 	     })
+						// }
 
 
 					});
@@ -1568,30 +1576,7 @@
 		z-index: 2100;
 	}
 
-	.matter {
-		top: 42%;
-		width: 90%;
-		min-height: 50%;
 
-		.top {
-			background: url("../assets/news.png") no-repeat;
-			background-size: 100%;
-			height: 2.33rem;
-			line-height: 2.33rem;
-			color: #fff;
-			font-size: 0.36rem;
-			padding-left: 0.3rem;
-		}
-
-		.bots {
-			padding: 0.3rem;
-
-			p {
-				font-size: 0.22rem;
-				margin-bottom: 0.3rem;
-			}
-		}
-	}
 
 	.runy {
 		display: flex;
@@ -1697,7 +1682,7 @@
 			color: #000000;
 			border: 1px solid rgb(34, 132, 253);
 			box-sizing: border-box;
-			padding: 5px;
+			padding: 5px 0;
 			border-radius: 5px;
 			font-size: 0.24rem;
 			text-align: center;
@@ -1779,37 +1764,6 @@
 				position: absolute;
 				height: 100%;
 				border-radius: 3px;
-			}
-		}
-
-		.tabul {
-			display: flex;
-			justify-content: space-between;
-			padding-top: 0.3rem;
-			flex-flow: wrap;
-			font-size: 0.24rem;
-
-			div {
-				width: 33.3%;
-				margin-bottom: 0.3rem;
-			}
-
-			div:nth-of-type(1) {
-				text-align: left;
-			}
-
-			div p:nth-of-type(1) {
-				color: #bababa;
-			}
-
-			div:nth-of-type(2),
-			div:nth-of-type(5) {
-				text-align: center;
-			}
-
-			div:nth-of-type(3),
-			div:nth-of-type(6) {
-				text-align: right;
 			}
 		}
 	}

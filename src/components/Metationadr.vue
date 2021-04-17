@@ -2,7 +2,7 @@
   <div class="metationadr">
     <div class="tophader" onclick="window.history.go(-1)">
       <van-icon name="arrow-left" />
-      <p>提币地址</p>
+      <p>{{$t('notecase.address')}}</p>
     </div>
     <p class="hr"></p>
     <div class="adrmsgbox">
@@ -27,14 +27,14 @@
               alt
               class="togle bs"
             />
-            <span class="xaneadr">选择该地址</span>
+            <span class="xaneadr">{{$t('notecase.select')}}</span>
           </p>
           <p class="right">
             <span @click="$router.push({path:'addmetationadr',query:{id:item.id}})">
-              <img src="../assets/recod.png" alt="" class="redact">编辑
+              <img src="../assets/recod.png" alt="" class="redact">{{$t('notecase.compile')}}
             </span>
             <span @click="delet(item.id,item.real_name)">
-               <img src="../assets/delet.png" alt="" class="deletet">删除
+               <img src="../assets/delet.png" alt="" class="deletet">{{$t('notecase.deletes')}}
             </span>
           </p>
         </div>
@@ -42,7 +42,7 @@
     </div>
     <!-- :class="info.length<=0?'flexmyhao':''" -->
     <router-link to="/addmetationadr">
-      <button type="button" class="changebton">添加提币地址</button>
+      <button type="button" class="changebton">{{$t('notecase.add')+$t('notecase.address')}}</button>
     </router-link>
   </div>
 </template>
@@ -86,8 +86,8 @@ export default {
     },
     delet(id,msg){
 		  this.$dialog.confirm({
-				title: '删除提醒',
-				message: '确定删除 '+msg+' 这个提币地址？'
+				title: this.$t('notecase.deletes')+this.$t('index.hint'),
+				message:this.$t('user.Confirm')+this.$t('notecase.deletes')+msg+this.$t('notecase.that')+this.$t('notecase.address')+'？'
 			}).then(() => {
 				this.$axios.post("/index/member/delWalletAddress",{
 					id:id
@@ -120,7 +120,7 @@ export default {
   margin-left: -46% !important;
 }
 .foter .xaneadr{
-    width: 2rem;
+    // width: 2rem;
     display: inline-block;
 }
 </style>

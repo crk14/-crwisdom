@@ -21,7 +21,7 @@ module.exports = {
                 }
             },
 			"dev_index":{
-				target: 'http://bookislight.com',	//http://127.0.0.2 http://bookislight.com
+				target: 'http://crzhapp.com',	//http://127.0.0.2 http://bookislight.com
 				/* 允许跨域 */
 				ws: true,
 				changeOrigin: true,
@@ -33,11 +33,11 @@ module.exports = {
     },
     css: {
         // 是否使用css分离插件 ExtractTextPlugin
-        extract: true,
+        // extract: true,
         // 开启 CSS source maps?
-        sourceMap: false,
+        // sourceMap: false,
         // 启用 CSS modules for all css / pre-processor files.
-        modules: false
+        // modules: false
     },
     //img图片压缩
     chainWebpack: config => {

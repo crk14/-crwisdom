@@ -36,6 +36,7 @@
     "eslint": "^5.16.0",
     "eslint-plugin-vue": "^5.0.0",
     "vue-cli-plugin-vant": "^1.0.1",
+    "vue-i18n": "^8.24.2",
     "vue-template-compiler": "^2.6.10"
   }
 }

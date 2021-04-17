@@ -2,7 +2,7 @@
   <div class="more">
     <div class="tophader" onclick="window.history.go(-1)">
       <van-icon name="arrow-left" />
-      <p>{{type == 1 ? '新手指南':'更多公告'}}</p>
+      <p>{{type == 1 ? $t('callcenter.sprog')+$t('callcenter.guide'):$t('index.more')+$t('callcenter.notice')}}</p>
     </div>
     <p class="hr"></p>
     <div class="listfor">
@@ -15,11 +15,10 @@
 		  color: rgb(116, 132, 226);
 		  border: 1px solid;
 		  font-size: 0.2rem;
-		  width: 1rem;
 		  padding: inherit;
 		  line-height: 0.36rem;
 		  text-align: center;
-		  display: inline-block;margin-right: 0.1rem;">{{type==1?'指南':'系统公告'}}</span>
+		  display: inline-block;margin-right: 0.1rem;">{{type==1?$t('callcenter.guide'):$t('callcenter.system')+$t('callcenter.notice')}}</span>
 		          <span style="font-size: 0.24rem;
 		  color: #bababa;">{{item.create_time}}</span>
 		        </p>

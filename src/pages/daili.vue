@@ -2,45 +2,43 @@
 	<div>
 		<div class="tophader">
 			<van-icon name="arrow-left" onclick="window.history.go(-1)" />
-			<p>代理中心</p>
+			<p>{{$t('index.Agent')}}</p>
 			<!-- <span style="position: absolute;right: .15rem;top: 0;color: #909090;font-size: 14px;" @click="$router.push('noticedateil?id=86')">规则说明</span> -->
 		</div>
 		<div class="fuli-body">
 			<img src="../assets/11112.png" class="body-img" />
 		</div>
 		<p class="hr" style="padding: 0;background-color: rgb(230,231,235);"></p>
-		<div class="item2" :class="{'item3':level>=1}">
+		<!-- <div class="item2" :class="{'item3':level>=2}">
 			<div class="item1">
-				<div class="one">社区代理</div>
+				<div class="one">城市代理</div>
 			</div>
 			<div class="two" style="text-indent:44px">
 				一次性充值
-				<span>5000</span>USDT购买<span>35000</span>购物券,并获得社区代理资格,
+				<span>5000</span>USDT购买<span>5000</span>购物券,并获得社区代理资格,
 				享受社区代理相关权益
 			</div>
-			<!-- <p class="two">(CR量化机器人可用于自已使用或者库存,或网体正式用户购买)</p> -->
 			<div class="item1" style="margin-top: 15px;">
 				<div class="three">
 					价格：<span>5000</span>USDT
 				</div>
-				<div class="four" @click="confirm(5000,35000)">立即购买 》</div>
+				<div class="four" @click="confirm(5000,5000)">立即购买 》</div>
 			</div>
-		</div>
+		</div> -->
 		<p class="hr" style="padding: 0;background-color: rgb(230,231,235);"></p>
-		<div class="item2" :class="{'item3':level>=2}">
+		<div class="item2" :class="{'item3':level>=3}">
 			<div class="item1">
-				<div class="one">CR合伙人</div>
+				<div class="one">CR{{$t('index.partnership')}}</div>
 			</div>
 			<div class="two" style="text-indent:44px">
-				一次性充值
-				<span>10000</span>USDT购买<span>70000</span>购物券,
-				并获得CR合伙人资格,享受CR合伙人相关权益
+				{{$t('index.recharges')}}
+				<span>10000</span>USDT{{$t('store.buy')}}<span>10000</span>{{$t('store.Shopping')}},{{$t('index.equity')}}
 				</div>
 			<div class="item1" style="margin-top: 15px;">
 				<div class="three">
-				价格：<span>10000</span>USDT
+				{{$t('store.price')}}：<span>10000</span>USDT
 				</div>
-				<div class="four" @click="confirm(10000,70000)">立即购买 》</div>
+				<div class="four" @click="confirm(10000,10000)">{{$t('index.BuyNow')}} 》</div>
 			</div>
 		</div>
 		<!-- <p class="hr" style="padding: 0;background-color: rgb(230,231,235);"></p> -->
@@ -109,12 +107,12 @@
 			confirm(bool, zsong) {
 				let str = ''
 				if (bool == 5000) {
-					if (this.level > 1) {
+					if (this.level >= 2) {
 						return
 					}
 				}
 				if (bool == 10000) {
-					if (this.level > 2) {
+					if (this.level >= 3) {
 						return
 					}
 				}
@@ -123,8 +121,8 @@
 				this.types = 1;
 				let gift = zsong
 				Dialog.confirm({
-						title: "提示",
-						message: `您是否已经了解清楚代理商规则。如无疑问和异议，点击'确定'即购买成功，一经购买，不支持任何退换`,
+						title: this.$t('index.hint'),
+						message: this.$t('index.supported'),
 					}).then(() => {
 						this.$axios
 							.post("/index/welfarecenter/purchase_agent", {

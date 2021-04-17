@@ -2,33 +2,33 @@
 	<div class="changeloginpass">
 		<div class="tophader" onclick="window.history.go(-1)">
 			<van-icon name="arrow-left" />
-			<p>修改登录密码</p>
+			<p>{{$t('user.alter')+$t('user.loginP')}}</p>
 		</div>
 		<p class="hr"></p>
 		<ul>
 			<li>
-				<p>旧密码</p>
-				<input type="password" v-model="oldpass" placeholder="请输入旧的密码" />
+				<p>{{$t('user.oldP')}}</p>
+				<input type="password" v-model="oldpass" :placeholder="$t('user.pleaseInput')+$t('user.oldP')" />
 				<p class="hr"></p>
 			</li>
 			<li>
-				<p>新登录密码</p>
-				<input type="password" v-model="newpass" placeholder="请输入新的登录密码" />
+				<p>{{$t('user.news')+$t('user.loginP')}}</p>
+				<input type="password" v-model="newpass" :placeholder="$t('user.pleaseInput')+$t('user.news')+$t('user.loginP')" />
 				<p class="hr"></p>
 			</li>
 			<li>
-				<p>确认密码</p>
-				<input type="password" v-model="re_newpass" placeholder="请再次输入新的登录密码" />
+				<p>{{$t('user.confirmP')}}</p>
+				<input type="password" v-model="re_newpass" :placeholder="$t('user.pleaseInputTwo')+$t('user.news')+$t('user.loginP')" />
 				<p class="hr"></p>
 			</li>
 			<li>
-				<p>验证码</p>
-				<input type="text" v-model="code" placeholder="请输入您收到的短信验证码" />
-				<span class="getcode" @click="setcode">发送验证码</span>
+				<p>{{$t('user.authcode')}}</p>
+				<input type="text" v-model="code" :placeholder="$t('user.verification')" />
+				<span class="getcode" @click="setcode">{{$t('user.getcode')}}</span>
 				<p class="hr"></p>
 			</li>
 		</ul>
-		<button type="button" class="changebton" @click="send">确定修改</button>
+		<button type="button" class="changebton" @click="send">{{$t('user.Confirm')+ ''+$t('user.alter')}}</button>
 	</div>
 </template>
 
@@ -73,10 +73,10 @@
 			},
 			send() {
 				if(!this.oldpass||!this.newpass||!this.re_newpass||!this.code){
-					this.$toast.fail({message:'请填写完整',duration:1200});
+					this.$toast.fail({message:this.$t('user.Pleasecomplete'),duration:1200});
 					return;
 				}
-				if(this.newpass!=this.re_newpass) return this.$toast.fail({message:'两次密码不一致',duration:1200});
+				if(this.newpass!=this.re_newpass) return this.$toast.fail({message:this.$t('user.donmatch'),duration:1200});
 				this.$axios
 				.post("/index/member/ChangePassword", {
 					oldpass:this.oldpass,

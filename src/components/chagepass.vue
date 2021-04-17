@@ -2,7 +2,7 @@
   <div class="chagepass">
     <div class="tophader" @click="$router.push('my')">
       <van-icon name="arrow-left" />
-      <p>安全中心</p>
+      <p>{{$t('index.Security')}}</p>
     </div>
     <!-- <p class="hr"></p> -->
     <div class="tabdiv">
@@ -20,7 +20,7 @@
       <router-link to="/changeloginpass">
         <div class="divli">
           <p>
-            <span class="onespan">修改登录密码</span>
+            <span class="onespan">{{$t('user.alter')+$t('user.loginP')}}</span>
           </p>
           <p class="right">
             <van-icon name="arrow" class="lebs" />
@@ -31,7 +31,7 @@
       <router-link to="/changedealpass">
         <div class="divli">
           <p>
-            <span class="onespan">修改交易密码</span>
+            <span class="onespan">{{$t('user.alter')+$t('user.transactionp')}}</span>
           </p>
           <p class="right">
             <van-icon name="arrow" class="lebs" />

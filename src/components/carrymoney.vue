@@ -90,12 +90,12 @@ export default {
   created() {
     this.$axios.post("/index/mywallet/mywalletInfo").then(res => {
       if(res.data.code==0){
-        if (res.data.real==-1) {
-          layer.open({content: res.data.msg,skin: 'msg',time: 2});
-           setTimeout(()=>{
-              this.$router.push("certification")
-            },1200)
-        }else{
+        // if (res.data.real==-1) {
+        //   layer.open({content: res.data.msg,skin: 'msg',time: 2});
+        //    setTimeout(()=>{
+        //       this.$router.push("certification")
+        //     },1200)
+        // }else{
           this.$axios.get("/index/mywallet/addWithdrawList").then(res => {
             if (res.data.code == 0) {
               this.info=res.data.info;
@@ -117,7 +117,7 @@ export default {
               }
             }
           });
-        }
+        // }
       }else{
         this.$toast.fail({message:"请求失败",duration:1200});
       }

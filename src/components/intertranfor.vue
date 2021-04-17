@@ -2,50 +2,51 @@
   <div class="intertranfor">
     <div class="tophader">
       <van-icon name="arrow-left"  onclick="window.history.go(-1)"/>
-      <p>互转中心</p>
+      <p>{{$t('index.Interchange')}}</p>
       <img src="../assets/cbui_asset_img_tibi_dingdanxiangqi@2x.png" alt @click="$router.push('contirecord?type=10')"/>
     </div>
     <p class="hr"></p>
     <ul>
       <li>
-        <p>互转类型</p>
+        <p>{{$t('user.Interchange')+$t('community.type')}}</p>
         <!-- <input type="password" v-model="oldpass" placeholder="请输入旧的交易密码" /> -->
         <select v-model="valss">
-          <option  selected="selected">CRW</option>
-		  <option  selected="selected">购物券</option>
+          <!-- <option  selected="selected">CRW</option> -->
+		  <option  selected="selected">USDT</option>
+		  <option  selected="selected">{{$t('store.Shopping')}}</option>
         </select>
         <p class="hr"></p>
       </li>
       <li>
-        <p>收款账户</p>
-        <input type="text" v-model="accout" placeholder="请输入收款人的账户" />
+        <p>{{$t('user.credited')}}</p>
+        <input type="text" v-model="accout" :placeholder="$t('user.pleaseInput')+$t('user.credited')" />
         <p class="hr"></p>
       </li>
       <li>
-        <p>收款人UID</p>
-        <input type="number" v-model="id" placeholder="请输入收款人的UID" />
+        <p>{{$t('user.chamberlain')}}UID</p>
+        <input type="number" v-model="id" :placeholder="$t('user.pleaseInput')+$t('user.chamberlain')+'UID'" />
         <p class="hr"></p>
       </li>
       <li>
-        <p>转出数量</p>
-        <input type="number" v-model="num" placeholder="请输入您想要转出的数量" />
-        <span class="all" @click="num=valss2">全部</span>
+        <p>{{$t('user.Transfer')}}</p>
+        <input type="number" v-model="num" :placeholder="$t('user.pleaseInput')+$t('user.Transfer')" />
+        <span class="all" @click="num=valss2">{{$t('user.all')}}</span>
         <p class="hr"></p>
-        <div>{{valss}}余额：{{valss2}}</div>
+        <div>{{valss}}{{$t('user.remaining')}}：{{valss2}}</div>
       </li>
       <li>
-        <p>交易密码</p>
-        <input type="password" v-model="trad_password" placeholder="请输入您的交易密码" />
+        <p>{{$t('user.transactionp')}}</p>
+        <input type="password" v-model="trad_password" :placeholder="$t('user.transactionpassword')" />
         <p class="hr"></p>
       </li>
       <li>
-        <p>验证码</p>
-        <input type="text" v-model="code" placeholder="请输入验证码" />
-        <span class="getcode" @click="setcode">获取验证码</span>
+        <p>{{$t('user.authcode')}}</p>
+        <input type="text" v-model="code" :placeholder="$t('user.verification')" />
+        <span class="getcode" @click="setcode">{{$t('user.getcode')}}</span>
         <p class="hr"></p>
       </li>
     </ul>
-    <button type="button" class="changebton" @click="send">确定互转</button>
+    <button type="button" class="changebton" @click="send">{{$t('user.Confirm')+$t('user.Interchange')}}</button>
     <!-- <p class="note">注意：</p>
     <p class="note">只能转USDT和转V1-V6产出的TCC+返还本金</p> -->
   </div>
@@ -60,10 +61,9 @@ export default {
       num: "",
       trad_password: "",
       code: "",
-      optionval: [ { a: "CRW" }],
       accout:'',
       info:{},
-      valss:'CRW',
+      valss:'USDT',
 	  valss2:''
     };
   },
@@ -76,18 +76,18 @@ export default {
 	    }
 	  });
     this.$axios
-      .get("/index/mywallet/mywalletInfo", { page: 1, limit: 1 })
+      .get("/index/mywallet/mywalletInfo")
       .then(res => {
         if(res.data.info){
           this.info = res.data.info;
-		  this.valss2 = this.info.safe_num
+		  this.valss2 = this.info.number
         }
-         if (res.data.real==-1&&res.data.code==0) {
-          layer.open({content: res.data.msg,skin: 'msg',time: 2});
-          setTimeout(()=>{
-              this.$router.push("certification")
-            },1200)
-        }
+        //  if (res.data.real==-1&&res.data.code==0) {
+        //   layer.open({content: res.data.msg,skin: 'msg',time: 2});
+        //   setTimeout(()=>{
+        //       this.$router.push("certification")
+        //     },1200)
+        // }
       });
   },
 
@@ -101,7 +101,7 @@ export default {
 						}
 						else if(oldvalue=='CRW'){
 							that.valss2 = that.info.safe_num
-				}else if(oldvalue=='购物券'){
+				}else if(oldvalue==this.$t('store.Shopping')){
 							that.valss2 = that.info.robot_ticket
 				}
   	  }
@@ -135,7 +135,7 @@ export default {
     },
     send() {
       if (!this.id || !this.num || !this.code || !this.trad_password||!this.accout) {
-        this.$toast.fail({ message: "请填写完整", duration: 1200 });
+        this.$toast.fail({ message: this.$t('user.Pleasecomplete'), duration: 1200 });
         return;
       }
 		let str;
@@ -231,7 +231,7 @@ ul {
       bottom: 0.1rem;
     }
     .getcode {
-      font-size: 0.24rem;
+      font-size: 0.3rem;
       // border: 1px solid #3c8cff;
       color: #3c8cff;
       padding: 0.04rem 0.08rem;

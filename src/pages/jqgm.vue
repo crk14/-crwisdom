@@ -2,21 +2,28 @@
 	<div style="font-size: 14px;background-color: rgb(245,245,250);min-height: 100%;padding-bottom: 20px;">
 		<div class="tophader">
 		  <van-icon name="arrow-left" onclick="window.history.go(-1)"  color="#ffffff"/>
-		  <p style="color: #ffffff;">购买记录</p>
+		  <p style="color: #ffffff;">{{$t('store.buy')+$t('index.record')}}</p>
 		</div>
+		<van-pull-refresh
+		  v-model="isLoading"
+		  success-text="刷新成功"
+		  @refresh="onRefresh"
+		>
 		<div class="item" v-for="(item,index) in list" :key="index">
 			<img src="../assets/sc002.png" />
 			<div >
-				<p style="margin-bottom: 7px;">{{item.robot_type==1?'现货量化机器人(专业设置版)':item.robot_type==2?'合约量化机器人(专业设置版)':item.robot_type==3?'策略跟随机器人(合约/现货)':''}}</p>
-				<p class="p1">数量: 1个</p>
-				<p class="p1" v-if="item.robot_type!=3">有效时长: {{item.enable_time*30}} 天</p>
-				<p class="p1">购买时间: {{item.create_time}}</p>
-				<p class="p1" v-show="item.active_time">{{item.probation==1?'试用':'激活'}}时间: {{item.active_time}}</p>
-				<p class="p1">支付金额: {{item.pay_money}} {{item.money_types==2?'CRW':'购物券'}}</p>
-				<p class="p2">支付完成</p>
+				<p :class="{'active1':value1}" style="margin-bottom: 7px;">{{item.robot_type==1?type1:item.robot_type==2?type4:item.robot_type==3?type2:item.robot_type==4?type3:type5}}</p>
+				<p class="p1">{{$t('callcenter.amount')}}: 1{{$t('callcenter.Entries')}}</p>
+				<p class="p1" v-if="item.robot_type!=3">{{$t('callcenter.duration')}}: {{item.enable_time*30}} {{$t('store.day')}}</p>
+				<p class="p1">{{$t('callcenter.buying')}}: {{item.create_time}}</p>
+				<p class="p1" v-show="item.active_time">{{$t('callcenter.activation')}}: {{item.active_time}}</p>
+				<p class="p1">{{$t('callcenter.payment')}}: {{item.pay_money}} {{item.money_types==1?'USDT':item.money_types==2?'CRW':$t('store.Shopping')}}</p>
+				<p class="p2">{{$t('callcenter.completion')}}</p>
 			</div>
-			<div v-show="!item.probation" :class="{'active':item.active == 1}" class="i-t">{{item.active==0?'未激活':'已激活'}}</div>
+			<div v-show="!item.probation" :class="{'active':item.active == 1}" class="i-t">{{item.active==0?$t('callcenter.inactive'):$t('callcenter.activated')}}</div>
 		</div>
+		<p v-show="!list.length" style="color: #999;text-align: center;line-height: 40px;">{{$t('community.available')}}</p>
+		</van-pull-refresh>
 	</div>
 </template>
 
@@ -24,22 +31,48 @@
 	export default {
 	  data() {
 	    return {
-			list:[]
+			list:[],
+			value:0,
+			isLoading:false,
+		type1:this.$t('store.spot')+this.$t('store.profession') +this.$t('index.quantization')+this.$t('store.robot')+'('+this.$t('store.Term')+')',
+		type2:this.$t('store.Strategy')+ this.$t('store.following')+this.$t('store.robot')+'('+this.$t('store.spot')+'/'+this.$t('store.swap')+')',
+		type3:'现货合约量化机器人(套餐)',
+		type4:this.$t('store.swap')+this.$t('store.profession') +this.$t('index.quantization')+this.$t('store.robot')+'('+this.$t('store.Term')+')',
+		type5:this.$t('store.swap')+this.$t('store.intelligent') +this.$t('index.quantization')+this.$t('store.robot')+'('+this.$t('store.XLMT')+')',
 	    };
 	  },
 	  created() {
-	  	this.$axios
-	  		.post("/index/robot/robot_record")
-	  		.then(res => {
-	  			if(res.data.code == 0){
-	  				this.list = res.data.data
-	  			}else{
-	  				this.$toast.fail({
-	  					message: res.data.data,
-	  					duration: 3200
-	  				});
-	  			}
-	  		})
+		  let value = localStorage.getItem('languageSet')
+		  			if (value) {
+		  				if (value == 'en') {
+		  					this.value1 = 1
+		  				} else if (value == 'hy') {
+		  					this.value1 = 2
+		  				}
+		  			}
+	  	this.start()
+	  },
+	  methods:{
+		  onRefresh(){
+		  		  this.start()
+		  	  setTimeout(() => {
+		  	        this.isLoading = false;
+		  	      }, 1000);
+		  	},
+			start(){
+				this.$axios
+					.post("/index/robot/robot_record")
+					.then(res => {
+						if(res.data.code == 0){
+							this.list = res.data.data
+						}else{
+							this.$toast.fail({
+								message: res.data.data,
+								duration: 3200
+							});
+						}
+					})
+			}
 	  }
 	  
 	};
@@ -81,6 +114,10 @@
 		div{
 			margin-left: 12px;
 			flex: 1;
+			.active1{
+				width: 86%;
+				word-break: break-all;
+			}
 			p{
 				font-size: 14px;
 				line-height: 16px;

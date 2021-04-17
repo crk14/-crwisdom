@@ -371,7 +371,7 @@ beforeDestroy() {
      if (scrollTop + windowHeight >= scrollHeight - 10) {
         if (that.activeName == "b" && this.bool1) {
           if (that.boolnum < that.num) {
-            that.$toast.fail({ message: "暂无更多数据", duration: 1200 });
+            that.$toast.fail({ message: this.$t('community.available'), duration: 1200 });
           }else{
 			  that.num++;
 			  that.getagent(that.num);

@@ -39,19 +39,19 @@
 	  data() {
 	    return {
 			isshow:false,
-			downurl:'',
+			downurl:'http://crzhapp.com/apk/CR-Wisdom-2021.3.5.apk',
 			apkversion:'',
-			updatetime:'',
-			url:location.href
+			updatetime:'2021-3-5',
+			url:'https://crzhapp.com/dist/#/down'
 		};
 	  },
 	  created() {
 		 
-		  this.$axios.get("/index/download/get_info").then(res => {
-		   this.apkversion = res.data.info.apk_version
-		   this.updatetime = res.data.info.update_time
-		   this.downurl = res.data.info.down_url
-		  });
+		  // this.$axios.get("/index/download/get_info").then(res => {
+		  //  this.apkversion = res.data.info.apk_version
+		  //  this.updatetime = res.data.info.update_time
+		  //  this.downurl = res.data.info.down_url
+		  // });
 	  },
 	  methods: {
 		  todown2(){
@@ -65,7 +65,7 @@
 	  	let a =  new this.$QRCode('qrcode', {
 	  	    width: 100,
 	  	    height: 100,
-	  	    text: location.href,
+	  	    text: 'https://crzhapp.com/dist/#/down',
 	  	})
 	  }
 	};

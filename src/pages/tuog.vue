@@ -41,7 +41,7 @@
 			<div style="margin-top: 4px;">今日收益 <span>{{item.profit}}</span> USDT</div>
 		</div>
 	</div>
-	<p v-show="!bool" style="color: #999;text-align: center;line-height: 40px;">暂无更多数据</p>
+	<p v-show="!bool" style="color: #999;text-align: center;line-height: 40px;">{{$t('community.available')}}</p>
   </div>
 </template>
 

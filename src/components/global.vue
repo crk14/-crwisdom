@@ -47,6 +47,7 @@
       <img src="../assets/icon_dingdan@2x.png" alt />
       <p>温馨提示：交易所提供的API Key和Secret Key非常重要，请小心保管，不要通过QQ、微信等软件进行传输，不要保存在云端，确保资金安全！</p>
     </div>
+	<!-- <button v-show="apis" class="changebton" @click="set">清除</button> -->
     <button class="changebton" @click="put">{{apis?'修改':'导入'}}</button>
   </div>
 </template>
@@ -85,6 +86,9 @@ export default {
         });
   },
   methods: {
+	  set(){
+		  
+	  },
     put(){
       var url="/index/strategy/set_api"
       if(this.apis){

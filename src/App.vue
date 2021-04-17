@@ -1,42 +1,52 @@
 <template>
   <div id="app">
+	 <!-- <van-pull-refresh
+	    v-model="isLoading"
+	    success-text="刷新成功"
+	    @refresh="onRefresh"
+	  > -->
+	  <!-- <keep-alive include="index"> -->
       <transition :name="transitionName">
+		  <!-- <keep-alive include="index"> -->
         <router-view class="child-view" :key="$route.fullPath" v-show="isRouterAlive"></router-view>
+	  <!-- </keep-alive> -->
 	  </transition>
+	  <!-- </keep-alive> -->
+	  <!-- </van-pull-refresh> -->
     <ul class="footer" v-if="$route.meta.footShow">
       <li @click="clis(0)">
         <router-link to="/" :class="iscli==0?'curry':''">
           <img v-if="iscli==0" src="./assets/905.png" alt />
           <img v-else src="./assets/903.png" alt />
-          <p>首页</p>
+          <p>{{$t('index.homepage')}}</p>
         </router-link>
       </li>
 	  <li @click="clis(4)">
-	    <router-link to="/shangchen" :class="iscli==4?'curry':''">
+	    <router-link to="/store" :class="iscli==4?'curry':''">
 	      <img v-if="iscli==4" src="./assets/sc1234.png" alt />
 	      <img v-else src="./assets/shangcheng.png" alt />
-	      <p>商城</p>
+	      <p>{{$t('index.store')}}</p>
 	    </router-link>
 	  </li>
       <li @click="clis(1)">
         <router-link to="/notecase" :class="iscli==1?'curry':''">
           <img v-if="iscli==1" src="./assets/904.png" alt />
           <img v-else src="./assets/406.png" alt />
-          <p>量化</p>
+          <p>{{$t('index.quantization')}}</p>
         </router-link>
       </li>
      <li @click="clis(2)">
 		  <router-link to="/find" :class="iscli==2?'curry':''">
           <img v-if="iscli==2" src="./assets/tongji2.png" alt />
           <img v-else src="./assets/tongji.png" alt />
-          <p>发现</p>
+          <p>{{$t('index.find')}}</p>
 		  </router-link>
       </li>
       <li @click="clis(3)">
         <router-link to="/my" :class="iscli==3?'curry':''">
           <img v-if="iscli==3" src="./assets/902.png" alt />
           <img v-else src="./assets/901.png" alt />
-          <p>我的</p>
+          <p>{{$t('index.my')}}</p>
         </router-link>
       </li>
     </ul>
@@ -73,17 +83,20 @@ export default {
         this.isRouterAlive = true;
       });
     },
-    onRefresh() {
-      this.transitionName = "";
-      setTimeout(() => {
-        this.$toast.success({ message: "刷新成功", duration: 1200 });
-        this.isLoading = false;
-        this.reload();
-        setTimeout(() => {
-          this.transitionName = "slide-left";
-        }, 300);
-      }, 500);
-    },
+  //   onRefresh() {
+  //     this.transitionName = "";
+	 //  this.refresh = true
+  //     setTimeout(() => {
+  //       this.$toast.success({ message: "刷新成功", duration: 1200 });
+  //       this.isLoading = false;
+  //       this.reload();
+  //       setTimeout(() => {
+  //         this.transitionName = "slide-left";
+  //       }, 300);
+		// this.refresh = false
+		// console.log(this.refresh)
+  //     }, 500);
+  //   },
     start() {
       if (this.$router.history.current.path == "/") {
         this.iscli = 0;
@@ -93,7 +106,7 @@ export default {
         this.iscli = 3;
       }else if (this.$router.history.current.path == "/find") {
 	    this.iscli = 2;
-	  }else if (this.$router.history.current.path == "/shangchen") {
+	  }else if (this.$router.history.current.path == "/store") {
 	    this.iscli = 4;
 	  }
     }
@@ -121,6 +134,7 @@ export default {
     top: 50%;
     margin-top: -0.24rem;
     left: 0.1rem;
+	z-index: 1000;
   }
   img {
     height: 0.36rem;
@@ -306,5 +320,8 @@ export default {
   display: block;
   margin: auto;
   height: 100% !important;
+}
+.sizeactive{
+	font-size: 12px;
 }
 </style>

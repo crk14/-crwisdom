@@ -3,7 +3,7 @@
 		<div class="tophader yancolor" style="display: flex;z-index: 100;">
 			<van-icon name="arrow-left" @click="$router.back()" />
 			<p v-if="type==0">点卡明细</p>
-			<p v-if="type==1" style="text-align: left;margin-left: .7rem;">交易统计</p>
+			<p v-if="type==1" style="text-align: left;margin-left: .7rem;">交易记录</p>
 			<p v-if="bourse==1" style="font-size: 0.3rem;position: relative;"><img src="../assets/hot.png" alt style="right: 0;left: 0.5rem;" />火币全球站</p>
 			<p v-if="bourse==4" style="font-size: 0.3rem;position: relative;"><img src="../assets/src_resource_icon_user_exchange_okex@2x.png"
 				 alt style="right: 0;left: 0.5rem;" />OKEX</p>
@@ -14,7 +14,7 @@
 		  success-text="刷新成功"
 		  @refresh="onRefresh"
 		>
-		<div style="display: flex;margin-top: 0.21rem;margin-bottom: .2rem;">
+		<div v-if="!types" style="display: flex;margin-top: 0.21rem;margin-bottom: .2rem;">
 			<p class="test">结算单位</p>
 			<div class="seltbox">
 				<P v-show="!heyue">
@@ -38,8 +38,7 @@
 			</div>
 		</div>
 
-		<div class="windbox" v-if="type==1" style="display: flex;margin-top: 0.1rem;margin-bottom: .16rem;">
-			<!-- <p class="toptext" style="padding:0.3rem 0 .2rem 0.3rem" v-if="symbol">{{symbol.toUpperCase()}}收益统计（{{starttime}} 至 {{endtime}}）</p> -->
+		<!-- <div class="windbox" v-if="type==1" style="display: flex;margin-top: 0.1rem;margin-bottom: .16rem;">
 			<div class="toptext" style="margin-right: .2rem;">
 				<span style="margin-right: 0.rem;">
 					<img src="../assets/jietwo.png" alt /> 成交单数
@@ -54,14 +53,30 @@
 					<img src="../assets/jieone.png" alt /> 总收益
 				</span>
 				<p style="margin-top: 0.03rem;">
-
 					{{ profit==0?profit:Number(profit).toFixed(4) }}
-					<!-- <span v-if="symbol">{{symbol.toUpperCase()}}</span> -->
-
-
 				</p>
 			</div>
 
+		</div> -->
+		<div class="windbox" v-if="type==1" style="display: flex;margin-top: 0.1rem;margin-bottom: .16rem;justify-content: space-between;">
+			<div class="toptext" style="width: 42%;margin-left: 3%;">
+				<span style="margin-right: 0.rem;" :class="{'activesize':types}">
+					<img src="../assets/jietwo.png" alt /> 成交单数
+				</span>
+				<p style="margin-left: 0.13rem;">
+					{{count}}
+					<span>单</span>
+				</p>
+			</div>
+			<div class="toptext" style="flex: 1;" :class="{'activesize':types}">
+				<span style="margin-right: 0.1rem;">
+					<img src="../assets/jieone.png" alt /> 总收益
+				</span>
+				<p style="margin-top: 0.03rem;">
+					{{ profit==0?profit:Number(profit).toFixed(2) }}<span> USDT</span> 
+				</p>
+			</div>
+		
 		</div>
 		<p class="hr"></p>
 		<div class="page-item">
@@ -134,12 +149,13 @@
 						<div>数量{{'('+item.symbol1.toUpperCase()+')'}}
 							<span>{{item.cjsl}}</span>
 						</div>
-						<div>成交均价({{symbol.toUpperCase()}}) <span>{{(item.field_cash_amount /item.cjsl).toFixed(4)}}</span></div>
+						<div>成交均价({{symbol.toUpperCase()}}) <span>{{(item.field_cash_amount /item.field_amount).toFixed(4)}}</span></div>
 						<div style="text-align: right;">成交总额({{symbol.toUpperCase()}})<span style="right: 0;">{{item.field_cash_amount}}</span></div>
 					</div>
 					<div class="body" style="margin-top: .15rem;">
-						<div>手续费(点卡) <span>{{ poni?0:item.cjsy>0?(item.cjsy * 0.3*7).toFixed(4):0}}</span></div>
-						<div>利润({{symbol.toUpperCase()}}) <span>{{Number(item.cjsy).toFixed(4) }}</span></div>
+						<div v-if="types">手续费(USDT) <span>{{ item.cjsy>0?(item.cjsy * 0.3).toFixed(4):0}}</span></div>
+						<div v-else>手续费(点卡) <span>{{ poni?0:item.cjsy>0?(item.cjsy * 0.3*7).toFixed(4):0}}</span></div>
+						<div>实现收益({{symbol.toUpperCase()}}) <span>{{Number(item.cjsy).toFixed(4) }}</span></div>
 						<div style="text-align: right;">利润率(%)<span style="right: 0;">{{item.syl}}</span></div>
 					</div>
 				</li>
@@ -218,7 +234,7 @@
 						formatter: '{b}: {d}%',
 						padding: [0, -10]
 					}
-				}
+				},
 
 			}
 			this.chartSettings2 = {
@@ -228,9 +244,10 @@
 				// xAxisType: 'time'
 			}
 			return {
+				types:'',
 				isLoading: false,
 				type: this.$route.query.type,
-				poni:this.$route.query.poni,
+				poni:0,
 				info: {},
 				list: [],
 				list1: [],
@@ -290,6 +307,10 @@
 			if (this.$route.query.heyeu == 1) {
 				this.heyue = true
 			}
+			if(this.$route.query.id){
+				this.types = this.$route.query.id
+			}
+			this.poni = this.$route.query.poni
 			if (this.isshow == 0) {
 				let date = new Date()
 				let Y = date.getFullYear() + '-';
@@ -339,12 +360,12 @@
 		},
 		mounted() {
 
-
 			window.addEventListener("scroll", this.handleScroll, true);
 		},
 		methods: {
 			onRefresh(){
 				this.list = []
+				this.page=1,
 				this.jiesuan()
 				  setTimeout(() => {
 				        this.isLoading = false;
@@ -484,14 +505,18 @@
 				} else {
 					str = 'spotstrategy'
 				}
-				this.$axios.post(`/index/${str}/transaction_list`, {
+				let obj = {
 					symbol: this.symbol,
 					bourse: this.bourse,
 					starttime: this.starttime,
 					endtime: this.endtime,
 					page: this.page,
 					limit: 20
-				}).then(res => {
+				}
+				if(this.types){
+					obj.types = this.types*1
+				}
+				this.$axios.post(`/index/${str}/transaction_list`, obj).then(res => {
 					this.state = true;
 					if (res.data.code == 0) {
 						this.maxcost = res.data.max_cost
@@ -648,9 +673,9 @@
 	.toptext {
 		font-size: 0.28rem;
 		color: #333333;
-		padding: 0.1rem 0.1rem 0.1rem 0.3rem;
+		padding: 0.1rem 0.1rem 0.1rem 0.1rem;
 		display: flex;
-
+		// flex: 1;
 		// justify-content: space-between;
 		img {
 			width: 0.25rem;
@@ -664,7 +689,9 @@
 			}
 		}
 	}
-
+	.activesize{
+		font-size: 0.3rem;
+	}
 	hr {
 		height: 0.2rem;
 		background: #edf0f3;

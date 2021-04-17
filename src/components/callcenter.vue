@@ -2,45 +2,45 @@
   <div class="callcenter">
     <div class="tophader" onclick="window.history.go(-1)">
       <van-icon name="arrow-left" />
-      <p>联系客服</p>
+      <p>{{$t('index.service')}}</p>
     </div>
     <p class="hr"></p>
     <div class="contestdiv">
-      <p class="bigtitle">您的专属微信客服</p>
-      <p class="somot">7x24小时为您提供客服服务</p>
+      <p class="bigtitle">{{$t('callcenter.unique')+$t('callcenter.WeChat')+$t('callcenter.service')}}</p>
+      <p class="somot">7x24{{$t('callcenter.customer')}}</p>
       <div class="borders">
         <div class="flexs">
           <p class="qimg">
             <img src="../assets/icon-wx@2x.png" alt />
           </p>
           <div>
-            <p class="one">您的专属客服</p>
-            <p class="two">7x24小时为您提供客服服务</p>
+            <p class="one">{{$t('callcenter.unique')+$t('callcenter.service')}}</p>
+            <p class="two">7x24{{$t('callcenter.customer')}}</p>
           </div>
         </div>
         <div id="qrcodes">
           <img :src="info.wx" alt />
         </div>
-        <p class="shoms">使用微信识别添加客服</p>
+        <p class="shoms">{{$t('callcenter.employ')+$t('callcenter.WeChat')+$t('callcenter.Identify')}}</p>
       </div>
     </div>
     <div class="contestdiv">
-      <p class="bigtitle">您的专属QQ客服</p>
-      <p class="somot">7x24小时为您提供客服服务</p>
+      <p class="bigtitle">{{$t('callcenter.unique')+ 'QQ'+$t('callcenter.service')}}</p>
+      <p class="somot">7x24{{$t('callcenter.customer')}}</p>
       <div class="borders">
         <div class="flexs">
           <p class="qimg">
             <img src="../assets/icon-qq@2x.png" alt />
           </p>
           <div>
-            <p class="one">您的专属客服</p>
-            <p class="two">7x24小时为您提供客服服务</p>
+            <p class="one">{{$t('callcenter.unique')+$t('callcenter.service')}}</p>
+            <p class="two">7x24{{$t('callcenter.customer')}}</p>
           </div>
         </div>
         <div id="qrcodes">
           <img :src="info.qq_img" alt />
         </div>
-        <p class="shoms">使用QQ识别添加客服</p>
+        <p class="shoms">{{$t('callcenter.employ')+'QQ'+$t('callcenter.Identify')}}</p>
       </div>
     </div>
   </div>

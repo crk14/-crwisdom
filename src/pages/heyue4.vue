@@ -9,6 +9,11 @@
 			 onclick="window.history.go(-1)" />
 			<p>策略跟随机器人(合约版)</p>
 		</div>
+		<van-pull-refresh
+		  v-model="isLoading"
+		  success-text="刷新成功"
+		  @refresh="onRefresh"
+		>
 		<img v-show="!type_status" class="statusimg" src="../assets/auto1.png" />
 		<img v-show="type_status" class="statusimg" src="../assets/crliang.gif" />
 		<div class="topsel" style="position: relative;">
@@ -26,8 +31,8 @@
 			<div>
 				<span>|</span>配置
 			</div>
-			<div style="font-size: .25rem;font-weight: 550;margin-left: 15%;margin-top: .05rem;">CRW余额：{{USDTnum}}</div>
-			<div style="font-size: .25rem;font-weight: 550;margin-left: 5%;margin-top: .05rem;">点卡余额：{{pointnum}}</div>
+			<div style="font-size: .25rem;font-weight: 550;margin-left: 15%;margin-top: .05rem;">USDT余额：{{USDTnum}}</div>
+			<div style="font-size: .25rem;font-weight: 550;margin-left: 5%;margin-top: .05rem;">剩余天数：{{time+$t('store.day')}}</div>
 		</div>
 		<div class="note-t">
 			<div class="div">
@@ -223,7 +228,7 @@
 						</span>
 						<span style="font-size: 13px;margin-left: auto;">账户权益: {{item[0] && item[0].balance}}USDT</span>
 					</p>
-					<div class="pressbox gundong" v-if="item[0] && item[0].status==1 ||  item[1] && item[1].status==1">
+				<!-- 	<div class="pressbox gundong" v-if="item[0] && item[0].status==1 ||  item[1] && item[1].status==1">
 						<p v-if="item[0] && item[0].stop_type == 0 ||item[1] && item[1].stop_type == 0">
 							<span>状态:</span> 正在监控中
 						</p>
@@ -244,7 +249,7 @@
 						<p v-if="item[0] && item[0].stop_type==4 || item[1] && item[1].stop_type==4" class="item1">下单数量异常</p>
 						<p v-if="item[0] && item[0].stop_type==10 || item[1] && item[1].stop_type==10" class="item1">风险率过高</p>
 						<p v-if="item[0] && item[0].stop_type==30018 || item[1] && item[1].stop_type==30018" class="item1">OKEX维护升级中</p>
-					</div>
+					</div> -->
 					<div class="tabul">
 						<div>
 							<p>建仓单数(单)</p>
@@ -284,27 +289,12 @@
 					</div>
 
 					<div class="tabul1">
-
-						<div class="button" style="padding-top: 7px;" v-show="vipshow && item[0].up_down == 1">
-							<button id="green" @click="fn5(item[0] && item[0].id,item[0] && item[0].stop_type)">删除多头策略</button>
-							<button id="green" @click="clearance2(item[0] && item[0].id,true,true)">一键平多清仓</button>
-							<button id="green" @click="fn6(item[0] && item[0])">修改多头策略</button>
-							<button v-if="item[0] && item[0].status==0" id="green" @click="open_strategy(item[0] && item[0].id,'1',item[0] && item[0].up_down)">开启多头交易</button>
-							<button v-else id="green" @click="check=0;close_now3(item[0].id)">停止多头交易</button>
-						</div>
-						<div v-if="vipshow &&item[1] && item[1].up_down == 0" class="button">
-							<button id="red" @click="fn5(item[1] && item[1].id,item[1] && item[1].stop_type)">删除空头策略</button>
-							<button id="red" @click="clearance2(item[1] && item[1].id,false,true)">一键平空清仓</button>
-							<button id="red" @click="fn6(item[1] && item[1])">修改空头策略</button>
-							<!-- <button id="red" @click="open_strategy(item[1] && item[1].id,'1',item[1] && item[1].up_down)">{{item[1] && item[1].stop_type== 0?'开启空头交易':'停止空头交易'}}</button> -->
-							<button v-if="item[1] && item[1].status==0" id="red" @click="open_strategy(item[1] && item[1].id,'1',item[1] && item[1].up_down)">开启空头交易</button>
-							<button v-else id="red" @click="check=0;close_now3(item[1].id)">停止空头交易</button>
-						</div>
+						<div @click="$toast.fail({message:'暂未开放'})"
+						 v-show="vipshow" style="margin-left: 37%;line-height: 22px; background: #4389eb;color: #fff;border-radius: 4px;font-size: 14px;width: 36%;text-align: center;">进入快速交易</div>
 						<div v-if="vipshow &&item[0] && item[0].up_down == 0" class="button">
 							<button id="red" @click="fn5(item[0] && item[0].id,item[0] && item[0].stop_type)">删除空头策略</button>
 							<button id="red" @click="clearance2(item[0] && item[0].id,false,true)">一键平空清仓</button>
 							<button id="red" @click="fn6(item[0] && item[0])">修改空头策略</button>
-							<!-- <button id="red" @click="open_strategy(item[1] && item[1].id,'1',item[1] && item[1].up_down)">{{item[1] && item[1].stop_type== 0?'开启空头交易':'停止空头交易'}}</button> -->
 							<button v-if="item[0] && item[0].status==0" id="red" @click="open_strategy(item[0] && item[0].id,'1',item[0] && item[0].up_down)">开启空头交易</button>
 							<button v-else id="red" @click="check=0;close_now3(item[0].id)">停止空头交易</button>
 						</div>
@@ -312,6 +302,7 @@
 				</li>
 			</ul>
 		</div>
+		</van-pull-refresh>
 		<!-- 左侧弹框 -->
 		<van-popup v-model="show" position="left" @click="changleft" class="poup" :style="{ height: '100%' ,width:'50%'}">
 			<p class="jiay">选择交易所</p>
@@ -443,34 +434,34 @@
 					<span>倍</span>
 				</div>
 
-				<div  class="heyue-body">
+				<div class="heyue-body">
 					<span>最大补仓:</span>
 					<input v-model="ordernum" type="number" />
 					<span>单</span>
 				</div>
-				<div  class="heyue-body">
+				<div class="heyue-body">
 					<span>补仓间隔:</span>
 					<input v-model="interval2" type="number" />
 					<span>%</span>
 				</div>
-				<div  class="heyue-body">
+				<div class="heyue-body">
 					<span>补仓回调:</span>
 					<input v-model="repair_back" type="number" />
 					<span>%</span>
 				</div>
-				<div  class="heyue-body">
+				<div class="heyue-body">
 					<span>止盈比例:</span>
 					<input v-model="profitratio" type="number" />
 					<span>%</span>
 
 				</div>
-				<div  class="heyue-body">
+				<div class="heyue-body">
 					<span>止盈回调:</span>
 					<input v-model="profit_back" type="number" />
 					<span>%</span>
 				</div>
 			</div>
-			<div style="display: flex;padding-top: 8px;" >
+			<div style="display: flex;padding-top: 8px;">
 				<span style="margin-left: 16px;font-size: 14px;">止盈方式：</span>
 				<van-checkbox icon-size="16" shape="square" v-model="checked8" style="font-size: 14px;">尾仓止盈</van-checkbox>
 				<van-checkbox icon-size="16" shape="square" v-model="checked9" style="font-size: 14px;">整体止盈</van-checkbox>
@@ -488,7 +479,7 @@
 				<van-checkbox icon-size="16" shape="square" v-model="checked11" style="font-size: 14px;">整体止损</van-checkbox>
 			</div>
 			<div v-show="loss_stop_switch" style="display: flex;flex-flow:row wrap">
-				<div  class="heyue-body">
+				<div class="heyue-body">
 					<span>止损比例:</span>
 					<input v-model="loss_stop" type="number" />
 					<span>%</span>
@@ -531,7 +522,7 @@
 					<input v-model="interval2" type="number" />
 					<span>%</span>
 				</div>
-				<div  class="heyue-body">
+				<div class="heyue-body">
 					<span>补仓回调:</span>
 					<input v-model="repair_back" type="number" />
 					<span>%</span>
@@ -541,7 +532,7 @@
 					<input v-model="profitratio" type="number" />
 					<span>%</span>
 				</div>
-				<div  class="heyue-body">
+				<div class="heyue-body">
 					<span>止盈回调:</span>
 					<input v-model="profit_back" type="number" />
 					<span>%</span>
@@ -565,7 +556,7 @@
 				<van-checkbox icon-size="16" shape="square" v-model="checked11" style="font-size: 14px;">整体止损</van-checkbox>
 			</div>
 			<div v-show="loss_stop_switch" style="display: flex;flex-flow:row wrap">
-				<div  class="heyue-body">
+				<div class="heyue-body">
 					<span>止损比例:</span>
 					<input v-model="loss_stop" type="number" />
 					<span>%</span>
@@ -601,6 +592,7 @@
 		},
 		data() {
 			return {
+				isLoading:false,
 				uid: '',
 				repair_back: '',
 				profit_back: '',
@@ -645,7 +637,7 @@
 				check: 0,
 				count: 0,
 				profit: 0,
-				bourse: "",
+				bourse: "4",
 				strategy_list: [],
 				types: 6,
 				selsym: [],
@@ -660,7 +652,7 @@
 				selarr: [],
 				noopsycheid: "",
 				checked: true,
-				time1: "",
+				time: "",
 				index1: "",
 				pointnum: "",
 				USDTnum: '',
@@ -679,14 +671,15 @@
 			};
 		},
 		created() {
+			this.time = this.$route.query.time
 			this.$axios
 				.post("/index/robot/robot_systerm", {
-					robot_type: 3,
+					robot_type: 4,
 				})
 				.then((res) => {
 					if (res.data.code == 0) {
 						if (res.data.state != 1) {
-							this.$router.push('/shangchen')
+							this.$router.push('/store')
 						}
 					}
 				});
@@ -703,25 +696,14 @@
 
 			});
 
+			this.mywalletInfo()
+			// if (localStorage.getItem("bourse1")) {
+			// 	this.bourse = localStorage.getItem("bourse1");
+			// } else {
+			// 	this.bourse = 4
+			// }
 
-			if (localStorage.getItem("bourse1")) {
-				this.bourse = localStorage.getItem("bourse1");
-			} else {
-				this.bourse = 4
-			}
-
-			this.$axios
-				.get("/index/mywallet/mywalletInfo", {
-					page: 1,
-					limit: 1
-				})
-				.then((res) => {
-					let info = res.data.info;
-					this.pointnum = (info.follow_point * 1).toFixed(2);
-					this.USDTnum = (info.safe_num * 1).toFixed(2)
-					this.uid = info.uid
-				});
-
+			
 		},
 		watch: {
 			checked5(newValue, oldValue) {
@@ -776,6 +758,27 @@
 
 		},
 		methods: {
+			onRefresh(){
+					  this.start()
+					  this.mywalletInfo()
+				  setTimeout(() => {
+				        this.isLoading = false;
+				      }, 1000);
+				},
+			mywalletInfo(){
+				this.$axios
+					.get("/index/mywallet/mywalletInfo", {
+						page: 1,
+						limit: 1
+					})
+					.then((res) => {
+						let info = res.data.info;
+						this.pointnum = (info.follow_point * 1).toFixed(2);
+						this.USDTnum = (info.number * 1).toFixed(2)
+						this.uid = info.uid
+					});
+				
+			},
 			trader_detail() {
 				this.$axios
 					.post("/index/follow/follow_trader_detail")
@@ -828,7 +831,7 @@
 			},
 
 			fn6(item) {
-				
+
 				this.number2 = item.first_amount;
 				this.number3 = item.first_amount;
 				this.number4 = item.leverage;
@@ -842,39 +845,39 @@
 				if (item.interval) {
 					this.makelist = item.order_num
 					this.profitratio = item.profit
-						this.interval2 = item.interval
-						if (item.profit_case) {
-							this.checked8 = false
-							this.checked9 = true
-						} else {
-							console.log(668)
-							this.checked8 = true
-							this.checked9 = false
-						}
-						if (item.loss_stop_case) {
-							this.checked10 = false
-							this.checked11 = true
-						}
-						if (item.loss_stop_switch) {
-							this.loss_stop_switch = true
-						} else {
-							this.loss_stop_switch = false
-						}
-						if (item.amount_scale == 1) {
-							this.checked5 = false
-							this.checked6 = true
-							this.checked7 = false
-						} else if (item.amount_scale == 2) {
-							this.checked5 = false
-							this.checked6 = false
-							this.checked7 = true
-						} else {
-							this.checked5 = true
-							this.checked6 = false
-							this.checked7 = false
-						}
+					this.interval2 = item.interval
+					if (item.profit_case) {
+						this.checked8 = false
+						this.checked9 = true
+					} else {
+						console.log(668)
+						this.checked8 = true
+						this.checked9 = false
+					}
+					if (item.loss_stop_case) {
+						this.checked10 = false
+						this.checked11 = true
+					}
+					if (item.loss_stop_switch) {
+						this.loss_stop_switch = true
+					} else {
+						this.loss_stop_switch = false
+					}
+					if (item.amount_scale == 1) {
+						this.checked5 = false
+						this.checked6 = true
+						this.checked7 = false
+					} else if (item.amount_scale == 2) {
+						this.checked5 = false
+						this.checked6 = false
+						this.checked7 = true
+					} else {
+						this.checked5 = true
+						this.checked6 = false
+						this.checked7 = false
+					}
 
-					
+
 				}
 
 			},
@@ -983,25 +986,25 @@
 							}
 						}
 					} else {
-							if (this.checked3) {
-								if (!this.number3 || !this.number4) {
-									this.$toast.fail({
-										message: "请填写完整",
-										duration: 2000
-									});
-									done();
-									return;
-								}
-							} else {
-								if (!this.number2 || !this.number4) {
-									this.$toast.fail({
-										message: "请填写完整",
-										duration: 2000
-									});
-									done();
-									return;
-								}
+						if (this.checked3) {
+							if (!this.number3 || !this.number4) {
+								this.$toast.fail({
+									message: "请填写完整",
+									duration: 2000
+								});
+								done();
+								return;
 							}
+						} else {
+							if (!this.number2 || !this.number4) {
+								this.$toast.fail({
+									message: "请填写完整",
+									duration: 2000
+								});
+								done();
+								return;
+							}
+						}
 						obj.down_buy_num = this.number3;
 						obj.up_buy_num = this.number2;
 						obj.type = 6;
@@ -1019,7 +1022,7 @@
 						if (this.checked3 && this.checked2) {
 							obj.up_down = arr.join(",");
 						}
-							obj.order_num = this.ordernum
+						obj.order_num = this.ordernum
 
 						obj.amount = this.monery
 						str = "set_strategy_all";
@@ -1206,7 +1209,7 @@
 			changleft() {
 				this.show = false;
 			},
-			
+
 			bounce(s, i, type) {
 
 				if (s == 0) {
@@ -1237,7 +1240,7 @@
 					this.show = true;
 				} else if (s == 3) {
 					this.matterplay = true;
-				}  
+				}
 			},
 			firmcolse(s) {
 				this.check = s;
@@ -2136,7 +2139,7 @@
 
 	.statusimg {
 		position: absolute;
-		top: 44px;
+		top: -3px;
 		left: 47%;
 		width: 30px;
 		height: 40px;
@@ -2234,7 +2237,7 @@
 
 				.right {
 					width: 40%;
-					
+
 					text-align: left;
 					// width: 32%;
 					// text-align: right;

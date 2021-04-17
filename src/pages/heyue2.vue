@@ -7,9 +7,14 @@
     line-height: .8rem;
     margin-top: -.4rem;"
 			 onclick="window.history.go(-1)" />
-			<p>{{typeid==2?'CR合约量化机器人(专业设置版)':'CR合约量化机器人(趋势版)'}}</p>
-			<p></p>
+			<p v-if="typeid==2">{{idbool?'CR合约专业量化机器人':'CR合约专业量化机器人(期限版)'}}</p>
+			<p v-if="typeid==3">CR合约量化机器人(趋势版)</p>
 		</div>
+		<van-pull-refresh
+		  v-model="isLoading"
+		  success-text="刷新成功"
+		  @refresh="onRefresh"
+		>
 		<img v-show="!type_status" class="statusimg" src="../assets/auto.png" />
 		<img v-show="type_status" class="statusimg" src="../assets/crliang.gif" />
 		<div class="topsel" style="position: relative;">
@@ -30,7 +35,9 @@
 				<span>|</span>配置
 			</div>
 			<div v-show="typeid ==3" style="font-size: .25rem;font-weight: 550;margin-left: 48%;margin-top: .05rem;">点卡余额：{{pointnum}}</div>
-			<div v-show="typeid ==2" style="font-size: .25rem;font-weight: 550;flex: 1;margin-left: 48.5%; margin-top: .05rem;">剩余有效天数：{{time4}}天</div>
+			<div v-show="typeid ==2 && idbool" style="font-size: .25rem;font-weight: 550;margin-left: 15%;margin-top: .05rem;">USDT余额：{{USDTnum}}</div>
+			<div v-show="typeid ==2 && idbool" style="font-size: .25rem;font-weight: 550;flex: 1;margin-left: 3%; margin-top: .05rem;">剩余有效天数：{{time4}}天</div>
+			<div v-show="typeid ==2 && !idbool" style="font-size: .25rem;font-weight: 550;flex: 1;margin-left: 48%; margin-top: .05rem;">剩余有效天数：{{time4}}天</div>
 		</div>
 		<div class="strategy" v-show="typeid!=3">
 			<div class="onep" style="display: flex;margin: 4px 0;">
@@ -50,7 +57,7 @@
 		<p v-show="typeid!=3" style="display: flex;height: 35px;line-height: 35px;border-bottom: 4px solid #f5f6fa;font-size: .26rem;color: rgb(34, 132, 253);">
 			<span @click="bounce(4)" style="flex:1;text-align: center;">添加货币对{{jysymbol>0?'('+jysymbol+')':''}}</span>
 			<span style="color: #D0D0D0;">|</span>
-			<span style="flex:1;text-align: center;" @click="fn2()">一键设置预算</span>
+			<span style="flex:1;text-align: center;" @click="bool2=false,fn2()">一键设置预算</span>
 		</p>
 		<div v-show="typeid==3" class="note-t">
 			<div class="div">
@@ -97,7 +104,6 @@
 		</div>
 		<p class="headtitle">
 			<span>|</span>实时监控
-			<!-- <span v-show="idbool" @click="$router.push('/jyyym')" style="margin-left: 57%;font-size: 15px;">单独入口</span> -->
 			<button v-if="typeid== 3" @click="confim()" style="margin-left: 38%;line-height: 22px; background: #4389eb;color: #fff;border-radius: 4px;font-size: 14px;width: 36%;">一键生成应用</button>
 		</p>
 		<div class="tranumber" v-if="typeid== 2">
@@ -111,7 +117,7 @@
 			<div class="cent">
 				<div class="box">
 					<p style="color: #C0C5CB;">完成利润</p>
-					<p class="box1">{{profit}} {{symbol}}</p>
+					<p class="box1">{{(profit*1).toFixed(2)}} {{symbol}}</p>
 				</div>
 			</div>
 			<div class="cent">
@@ -250,6 +256,8 @@
 				</li>
 			</ul>
 		</div>
+		
+		</van-pull-refresh>
 		<!-- 左侧弹框 -->
 		<van-popup v-model="show" position="left" @click="changleft" class="poup" :style="{ height: '100%' ,width:'50%'}">
 			<p class="jiay">选择交易所</p>
@@ -311,13 +319,8 @@
 
 
 		<!-- 问题弹框 -->
-		<van-popup v-model="matterplay" class="matter">
-			<div class="top">CR智能交易注意事项</div>
-			<div class="bots">
-				<p>1、用户在交易所内生成的API不可绑定IP</p>
-				<p>2、在智能交易开启前，交易所中必须先有本金，系统才能执行交易</p>
-				<p>3、在智能交易开启后，如有出现手动介入的情况，系统将立即 停止交易。</p>
-			</div>
+		<van-popup v-model="matterplay" style="width: 80%;">
+			<matter></matter>
 		</van-popup>
 		<!-- 关闭交易 -->
 		<van-popup v-model="closedeal" class="closedeal">
@@ -424,7 +427,7 @@
 				</p>
 					<div v-show="loss_stop_switch"style="display: flex;padding-top: 8px;">
 						<span style="margin-left: 16px;font-size: 14px;">止损方式：</span>
-						<van-checkbox icon-size="16" shape="square" v-model="checked10" style="font-size: 14px;">尾仓止损</van-checkbox>
+						<van-checkbox icon-size="16" shape="square" v-model="checked10" style="font-size: 14px;">逐仓止损</van-checkbox>
 						<van-checkbox icon-size="16" shape="square" v-model="checked11" style="font-size: 14px;">整体止损</van-checkbox>
 					</div>
 					<div v-show="loss_stop_switch" style="display: flex;flex-flow:row wrap">
@@ -510,7 +513,7 @@
 					</p>
 					<div v-show="loss_stop_switch" style="display: flex;padding-top: 8px;">
 						<span style="margin-left: 16px;font-size: 14px;">止损方式：</span>
-						<van-checkbox icon-size="16" shape="square" v-model="checked10" style="font-size: 14px;">尾仓止损</van-checkbox>
+						<van-checkbox icon-size="16" shape="square" v-model="checked10" style="font-size: 14px;">逐仓止损</van-checkbox>
 						<van-checkbox icon-size="16" shape="square" v-model="checked11" style="font-size: 14px;">整体止损</van-checkbox>
 					</div>
 					<div v-show="loss_stop_switch" style="display: flex;flex-flow:row wrap">
@@ -529,21 +532,18 @@
 
 <script>
 	import Vue from "vue";
+	import matter from '../modu/matter.vue'
 	import {
 		Dialog,
 		Field,
 		Popup,
 		Checkbox,
-		// RadioGroup,
-		// Radio,
 		Picker
 	} from "vant";
 	Vue.use(Field);
 	Vue.use(Dialog);
 	Vue.use(Popup);
 	Vue.use(Checkbox);
-	// Vue.use(RadioGroup);
-	// Vue.use(Radio);
 	Vue.use(Picker);
 	export default {
 		components: {
@@ -551,12 +551,12 @@
 			Field,
 			Popup,
 			Checkbox,
-			// RadioGroup,
-			// Radio,
-			Picker
+			Picker,
+			matter
 		},
 		data() {
 			return {
+				isLoading:false,
 				stop_back: '',
 				stop_ratio: '',
 				cover_back: '',
@@ -633,6 +633,7 @@
 				time1: "",
 				index1: "",
 				pointnum: "",
+				USDTnum:'',
 				ljsyl: "",
 				list3: [],
 				shuju: 5,
@@ -674,14 +675,14 @@
 				.then((res) => {
 					if (res.data.code == 0) {
 						if (res.data.state != 1) {
-							this.$router.push('/shangchen')
+							this.$router.push('/store')
 						}
 					}
 				});
 			this.time4 = this.$route.query.time
-			// if (this.$route.query.id == 1) {
-			// 	this.idbool = true
-			// }
+			if (this.$route.query.bool) {
+				this.idbool = true
+			}
 
 			if (localStorage.getItem("bourse1")) {
 				this.bourse = localStorage.getItem("bourse1");
@@ -694,19 +695,12 @@
 			} else {
 				this.tostring()
 			}
-			this.$axios
-				.get("/index/mywallet/mywalletInfo", {
-					page: 1,
-					limit: 1
-				})
-				.then((res) => {
-					let info = res.data.info;
-					this.pointnum = info.robot_point;
-				});
+			
 			if (this.bourse == 4) {
 				this.selectsymbol[3].a = "OKB";
 			}
 			this.start()
+			this.mywalletInfo()
 			this.$axios
 				.post("/index/swapstrategy/get_sug_symbol", {
 					symbol: this.symbol,
@@ -794,6 +788,25 @@
 			},
 		},
 		methods: {
+			onRefresh(){
+					  this.start()
+					  this.mywalletInfo()
+				  setTimeout(() => {
+				        this.isLoading = false;
+				      }, 1000);
+				},
+			mywalletInfo(){
+				this.$axios
+					.get("/index/mywallet/mywalletInfo", {
+						page: 1,
+						limit: 1
+					})
+					.then((res) => {
+						let info = res.data.info;
+						this.pointnum = info.robot_point;
+						this.USDTnum = (info.number * 1).toFixed(1)
+					});
+			},
 			conwan(i) {
 				this.textsel = i
 				this.tostring()
@@ -825,6 +838,8 @@
 					});
 				}
 				if (!this.bool2) {
+					this.show5 = false
+					this.show6 = true
 					this.backinfo = {};
 					this.backinfo = {
 						profit_stop_case: 1,
@@ -1699,32 +1714,6 @@
 			}
 		}
 	}
-
-	.matter {
-		top: 42%;
-		width: 90%;
-		min-height: 50%;
-
-		.top {
-			background: url("../assets/news.png") no-repeat;
-			background-size: 100%;
-			height: 2.33rem;
-			line-height: 2.33rem;
-			color: #fff;
-			font-size: 0.36rem;
-			padding-left: 0.3rem;
-		}
-
-		.bots {
-			padding: 0.3rem;
-
-			p {
-				font-size: 0.22rem;
-				margin-bottom: 0.3rem;
-			}
-		}
-	}
-
 	.runy {
 		display: flex;
 		justify-content: space-between;
@@ -1844,7 +1833,7 @@
 			color: #000000;
 			border: 1px solid rgb(34, 132, 253);
 			box-sizing: border-box;
-			padding: 5px;
+			padding: 5px 0;
 			border-radius: 5px;
 			font-size: 0.24rem;
 			text-align: center;
@@ -2363,7 +2352,7 @@
 
 	.statusimg {
 		position: absolute;
-		top: 44px;
+		top: 3px;
 		left: 47%;
 		width: 30px;
 		height: 40px;

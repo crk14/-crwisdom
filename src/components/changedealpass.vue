@@ -2,34 +2,34 @@
   <div class="changedealpass">
     <div class="tophader" onclick="window.history.go(-1)">
       <van-icon name="arrow-left" />
-      <p>修改交易密码</p>
+      <p>{{$t('user.alter')+$t('user.transactionp')}}</p>
     </div>
     <p class="hr"></p>
     <ul>
       <li>
-				<p>旧密码</p>
-				<input type="password" v-model="oldpass" placeholder="请输入旧的交易密码" />
+				<p>{{$t('user.oldP')}}</p>
+				<input type="password" v-model="oldpass" :placeholder="$t('user.pleaseInput')+$t('user.oldP')" />
 				<p class="hr"></p>
       </li>
       <li>
-        <p>新交易密码</p>
-        <input type="password" v-model="newpass" placeholder="请输入新的交易密码" />
+        <p>{{$t('user.news')+$t('user.transactionp')}}</p>
+        <input type="password" v-model="newpass" :placeholder="$t('user.pleaseInput')+$t('user.news')+$t('user.transactionp')" />
         <p class="hr"></p>
       </li>
       <li>
-        <p>确认密码</p>
-        <input type="password" v-model="re_newpass" placeholder="请再次输入新的交易密码" />
+        <p>{{$t('user.confirmP')}}</p>
+        <input type="password" v-model="re_newpass" :placeholder="$t('user.pleaseInputTwo')+$t('user.news')+$t('user.transactionp')" />
         <p class="hr"></p>
       </li>
       <li>
-        <p>验证码</p>
-        <input type="text" v-model="code" placeholder="请输入您收到的短信验证码" />
-        <span class="getcode" @click="setcode">获取验证码</span>
+        <p>{{$t('user.authcode')}}</p>
+        <input type="text" v-model="code" :placeholder="$t('user.verification')" />
+        <span class="getcode" @click="setcode">{{$t('user.getcode')}}</span>
         <p class="hr"></p>
       </li>
     </ul>
-	<div class="resgg" @click="$router.push('respass')">忘记密码</div>
-    <button type="button" class="changebton" @click="send" style="margin: .5rem auto;">确定修改</button>
+	<div class="resgg" @click="$router.push('respass')">{{$t('user.forgetP')}}</div>
+    <button type="button" class="changebton" @click="send" style="margin: .5rem auto;">{{$t('user.Confirm')+ ''+$t('user.alter')}}</button>
   </div>
 </template>
 

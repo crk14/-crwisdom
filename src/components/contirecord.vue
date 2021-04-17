@@ -2,18 +2,18 @@
   <div class="contirecord">
     <div class="tophader" @click="$router.back()">
       <van-icon name="arrow-left" />
-      <p v-if="type==1">充币记录</p>
-      <p v-if="type==2">提币记录</p>
-      <p v-if="type==3">购买记录</p>
-	  <p v-if="type==4">购买记录</p>
-      <p v-if="type==10">互转记录</p>
+      <p v-if="type==1">{{$t('index.Recharge')+$t('index.record')}}</p>
+      <p v-if="type==2">{{$t('index.Mention')+$t('index.record')}}</p>
+  <!--    <p v-if="type==3">购买记录</p>
+	  <p v-if="type==4">购买记录</p> -->
+      <p v-if="type==10">{{$t('index.Interchange')+$t('index.record')}}</p>
     </div>
     <p class="hr"></p>
     <div class="fish_head">
       <ul v-show="type==1">
         <li v-for="(item,i) in info" :key="i">
           <p class="oldernum">
-            <span>充币</span>
+            <span>{{$t('user.Recharge')}}</span>
             <span style="color:#A62B31">+{{item.num}}</span>
           </p>
           <div class="botdiv">
@@ -74,7 +74,7 @@
           <div class="botdiv">
             <p>{{item.create_time}}</p>
             <p>
-              <span>{{item.money_types==1?'USDT':item.money_types==2?'CRW':item.money_types==8?'购物券':'点卡'}}</span>
+              <span>{{item.money_types==1?'USDT':item.money_types==2?'CRW':item.money_types==8?$('store.Shopping'):'点卡'}}</span>
             </p>
           </div>
         </li>
@@ -124,12 +124,12 @@ export default {
             }
             if (res.data.info.data.length < 10) {
               this.state = false;
-              this.pullnew = "已加载完所有数据";
+              this.pullnew = this.$t('community.loaded');
             } else {
-              this.pullnew = "下拉加载";
+              this.pullnew = "this.$t('community.load')";
             }
             if (this.page == 1 && res.data.info.data.length < 1) {
-              this.pullnew = "暂无数据";
+              this.pullnew = this.$t('community.available');
             }
           }
         });

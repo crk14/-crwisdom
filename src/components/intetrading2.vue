@@ -7,155 +7,124 @@
     line-height: .8rem;
     margin-top: -.4rem;"
 			 onclick="window.history.go(-1)" />
-			<p>CR现货量化机器人(专业设置版)
+			<p :class="{'active':value1==1}">CR{{$t('store.spot')+$t('store.profession') +$t('index.quantization')+$t('store.robot')}}{{idbool?'':'('+$t('store.Term')+')'}}
 			</p>
 		</div>
-		<img v-show="!type_status" class="statusimg"  src="../assets/auto.png"/>
-		<img v-show="type_status" class="statusimg"  src="../assets/crliang.gif"/>
-		<div class="topsel" style="position: relative;">
-			<p class="left" @click="bounce(1)">
-				<img v-if="bourse==1" src="../assets/src_resource_image_page_huobi_logo@2x.png" alt />
-				<img v-else-if="bourse==4" src="../assets/src_resource_icon_user_exchange_okex@2x.png" alt />
-				<img v-else src="../assets/selt.png" alt />
-				<span>{{bourse==1?'火币全球站':bourse==4?'OKEX':'选择交易所'}}</span>
+		<van-pull-refresh v-model="isLoading" :success-text="$t('spot.success')" @refresh="onRefresh">
+			<img v-show="!type_status" class="statusimg" src="../assets/auto.png" />
+			<img v-show="type_status" class="statusimg" src="../assets/crliang.gif" />
+			<div class="topsel" style="position: relative;">
+				<p class="left" @click="bounce(1)">
+					<img v-if="bourse==1" src="../assets/src_resource_image_page_huobi_logo@2x.png" alt />
+					<img v-else-if="bourse==4" src="../assets/src_resource_icon_user_exchange_okex@2x.png" alt />
+					<img v-else src="../assets/selt.png" alt />
+					<span>{{bourse==1?$t('community.Huobi')+$t('spot.Station'):bourse==4?'OKEX':'选择交易所'}}</span>
+				</p>
+				<div class="right" style="position: absolute;right: .4rem;top: .73rem;display: flex;">
+					<img src="../assets/问好@2x.png" alt @click="bounce(3)" style="margin-top: .02rem;" />
+					<div style="font-size: .26rem;" @click="tocaozuo">{{$t('spot.instructions')}}</div>
+				</div>
+			</div>
+			<p class="hr"></p>
+			<div class="headtitle title-two" >
+				<div>
+					<span>|</span>{{$t('spot.configure')}}
+				</div>
+				<div class="usdt">USDT{{$t('user.remaining')}}:{{USDTnum}}</div>
+				<div class="usdt">{{$t('community.remaining')}}:{{time}}{{$t('store.day')}}</div>
+			</div>
+			<div class="strategy">
+				<div class="one_p" style="display: flex;">
+					<span class="dfirst" style="color: #999999;font-size: .24rem;">{{$t('spot.monitoring')}}</span>
+					<div style="font-size: .28rem;width: 2.9rem;text-align: center;">{{parseInt(Number(principals)*1000)/1000||0}}{{symbol}}</div>
+
+				</div>
+				<p style="margin-top:.2rem;margin-right: .7rem;">
+					<span>{{$t('spot.Valuation')}}</span>
+					<span :class="{'active6':symbol=='USDT'}" style="width: 40px;text-align: center;" @click="symbol='USDT'">USDT</span>
+					<span :class="{'active6':symbol=='BTC'}" style="width: 40px;text-align: center;" @click="symbol='BTC'">BTC</span>
+					<span :class="{'active6':symbol=='ETH'}" style="width: 40px;text-align: center;" @click="symbol='ETH'">ETH</span>
+					<span v-if="bourse==1" :class="{'active6':symbol=='HT'}" style="width: 40px;text-align: center;" @click="symbol='HT'">HT</span>
+					<span v-else-if="bourse==4" :class="{'active6':symbol=='OKB'}" style="width: 40px;text-align: center;" @click="symbol='OKB'">OKB</span>
+				</p>
+			</div>
+			<p style="display: flex;height: 35px;line-height: 35px;border-bottom: 4px solid #f5f6fa;font-size: .26rem;color: rgb(34, 132, 253);">
+				<span @click="bounce(4)" style="flex:1;text-align: center;">{{$t('spot.pair')}}{{jysymbol>0?'('+jysymbol+')':''}}</span>
+				<span style="color: #D0D0D0;">|</span>
+				<span style="flex:1;text-align: center;" @click="bool2=false;fn2()">{{$t('spot.setup')}}</span>
 			</p>
-			<div class="right" style="position: absolute;right: .4rem;top: .73rem;display: flex;">
-				<img src="../assets/问好@2x.png" alt @click="bounce(3)" style="margin-top: .02rem;" />
-				<div style="font-size: .26rem;" @click="tocaozuo">操作指南</div>
-			</div>
-		</div>
-		<p class="hr"></p>
-		<div class="headtitle" style="display: flex;padding: .1rem 0 .1rem .3rem;">
-			<div>
-				<span>|</span>配置
-			</div>
-			<!-- <div style="font-size: .25rem;font-weight: 550;margin-left: .6rem;margin-top: .05rem;">点卡余额：{{pointnum}}</div> -->
-			<div style="font-size: .25rem;font-weight: 550;margin-left: 48.5%;margin-top: .05rem;">剩余有效天数：{{time}}天</div>
-
-		</div>
-		<div class="strategy">
-			<div class="one_p" style="display: flex;">
-				<span class="dfirst" style="color: #999999;font-size: .24rem;">仓位监测</span>
-				<div style="font-size: .28rem;width: 2.9rem;text-align: center;">{{parseInt(Number(principals)*1000)/1000||0}}{{symbol}}</div>
-				
-			</div>
-			<p style="margin-top:.2rem;margin-right: .7rem;">
-				<span>计价币</span>
-				<span :class="{'active6':symbol=='USDT'}" style="width: 40px;text-align: center;" @click="symbol='USDT'">USDT</span>
-				<span :class="{'active6':symbol=='BTC'}" style="width: 40px;text-align: center;" @click="symbol='BTC'">BTC</span>
-				<span :class="{'active6':symbol=='ETH'}" style="width: 40px;text-align: center;" @click="symbol='ETH'">ETH</span>
-				<span v-if="bourse==1" :class="{'active6':symbol=='HT'}" style="width: 40px;text-align: center;" @click="symbol='HT'">HT</span>
-				<span v-else-if="bourse==4" :class="{'active6':symbol=='OKB'}" style="width: 40px;text-align: center;" @click="symbol='OKB'">OKB</span>
-			</p>
-		</div>
-		<p style="display: flex;height: 35px;line-height: 35px;border-bottom: 4px solid #f5f6fa;font-size: .26rem;color: rgb(34, 132, 253);">
-			<span @click="bounce(4)" style="flex:1;text-align: center;">添加货币对{{jysymbol>0?'('+jysymbol+')':''}}</span>
-			<span style="color: #D0D0D0;">|</span>
-			<span style="flex:1;text-align: center;" @click="fn2()">一键设置应用</span>
-		</p>
-		<p class="headtitle">
-			<span>|</span>实时监控
-		</p>
-		<div class="tranumber">
-			<div class="cent">
-				<div class="box">
-					<p style="color: #bababa;">成交单数</p>
-
-					<p class="box1">{{count}}单</p>
-				</div>
-
-			</div>
-			<div class="cent">
-				<div class="box">
-					<p style="color: #bababa;">完成利润</p>
-					<p class="box1">{{profit}} {{symbol}}</p>
-				</div>
-			</div>
-			<div class="cent">
-				<div class="box">
-					<p style="color: #bababa;">收益率</p>
-					<p class="box1">{{ljsyl?ljsyl:0}}%</p>
-				</div>
-			</div>
-		</div>
-		<div class="runy">
 			<p class="headtitle">
-				<span>|</span>运行结果
+				<span>|</span>{{$t('spot.monitoringtwo')}}
 			</p>
-			<p class="headtitle" @click="toshowdetail()"><span>|</span>成交记录</p>
-			<p></p>
+			<div class="tranumber">
+				<div class="cent">
+					<div class="box">
+						<p style="color: #bababa;">{{$t('spot.deals')}}</p>
 
-		</div>
-		<div class="comereult">
-			<ul>
-				<li v-for="(item,i) in strategy_list" :key="i" style="position: relative;">
-					<p class="cometop">
-						<span style="font-size: .26rem;line-height: 20px;">
-							<!-- <img v-show="item.symbol1" src="../assets/ht.png" alt style="width: 16px;height: 16px;position: absolute;left: 0;top: -2px;"/> -->
-							{{item.bidui}}
-						</span>
-						<span style="font-size: .22rem;margin-left: 17px;"><span class="item-span" :class="{'item-span1':item.zhangfu>0}"
-							 style="font-size: .24rem;"> {{item.close1?item.close1:''}}</span> </span>
-						<span style="position: absolute;right: 25px;">
-							<button style="background:rgb(97,161,240);margin-left: 0;" v-show="item.types==1" @click="fn5(item.id,item.stop_type)">删除策略</button>
-							<button style="background:rgb(97,161,240);" v-show="item.types==1" @click="fn6(item)">设置策略</button>
-							<button class="button1" :class="{'button3':item.stop_type != 0}" v-if="item.status==0" @click="open_strategy(item.id,)">{{item.stop_type== 0?'开启交易':'恢复交易'}}</button>
-							<button style="background:#BD1616" @click="bounce(0,item.id,item.stop_type)" v-else>{{item.stop_type!== 2?'停止交易':'恢复交易'}}</button>
-						</span>
-					</p>
-					<div class="pressbox gundong" v-if="item.status==1">
-
-						<p v-if="item.status==1 && item.stop_type == 0"><span>状态: </span> 正在监控中</p>
-						<p v-if="item.status==1 && item.stop_type == 2"><span>状态: </span> 止盈后停止</p>
+						<p class="box1">{{count+$t('spot.odd')}}</p>
 					</div>
-					<div class="pressbox" style="background:#BFBFBF;" v-else>
-						<p v-if="item.status==0"><span>状态: </span> {{item.stop_type== 0?'未开启':item.stop_type== 3?'清仓停止':item.stop_type== 2?'止盈停止':'临时停止'}}</p>
-						<p v-if="item.stop_type==5" class="item1">API KEY 错误</p>
-						<p v-if="item.stop_type==7" class="item1">仓位错误</p>
-						<p v-if="item.stop_type==8" class="item1">点卡不足</p>
-						<p v-if="item.stop_type==9" class="item1">仓位错误</p>
-						<p v-if="item.stop_type==6" class="item1">本金不足</p>
+
+				</div>
+				<div class="cent" :class="{'active':value1==1}">
+					<div class="box">
+						<p style="color: #bababa;">{{$t('spot.profits')}}</p>
+						<p class="box1">{{profit}} {{symbol}}</p>
 					</div>
-					<div class="tabul">
-						<div>
-							<p>建仓单数(单)</p>
-
-							<p>{{item.buy_count}}</p>
-						</div>
-						<div>
-							<p>持仓数量({{item.bidui.split('/')[0]}})</p>
-							<p>{{item.buy_count_amount}}</p>
-						</div>
-						<div>
-							<p>持仓均价({{item.bidui.split('/')[1]}})</p>
-							<p>{{item.buy_count_average}}</p>
-
-							<!-- <p>{{item.profit_lv}}%</p> -->
-						</div>
-						<div>
-							<p>尾仓均价({{item.bidui.split('/')[1]}})</p>
-
-							<p>{{item.lastprice}}</p>
-						</div>
-						<div>
-							<p>平仓单数(单)</p>
-							<p>{{item.sell_count}}</p>
-						</div>
-						<div>
-							<p>实现利润({{item.bidui.split('/')[1]}})</p>
-
-							<p>{{item.profit}}</p>
-						</div>
+				</div>
+				<div class="cent">
+					<div class="box">
+						<p style="color: #bababa;">{{$t('notecase.income')+$t('community.rate')}}</p>
+						<p class="box1">{{ljsyl?ljsyl:0}}%</p>
 					</div>
-				</li>
+				</div>
+			</div>
+			<div class="runy">
+				<p class="headtitle">
+					<span>|</span>{{$t('spot.result')}}
+				</p>
+				<p class="headtitle" @click="toshowdetail()"><span>|</span>{{$t('spot.Record')}}</p>
+				<p></p>
 
-			</ul>
-		</div>
+			</div>
+			<div class="comereult">
+				<ul>
+					<li v-for="(item,i) in strategy_list" :key="i" style="position: relative;">
+						<p class="cometop">
+							<span style="font-size: .26rem;line-height: 20px;">
+								{{item.bidui}}
+							</span>
+							<span style="font-size: .22rem;margin-left: 17px;"><span class="item-span" :class="{'item-span1':item.zhangfu>0}"
+								 style="font-size: .24rem;"> {{item.close1?item.close1:''}}</span> </span>
+							<span style="position: absolute;right: 15px;">
+								<button style="background:rgb(97,161,240);margin-left: 0;"  @click="fn5(item.id,item.stop_type)">{{$t('spot.Delete')}}</button>
+								<button style="background:rgb(97,161,240);"  @click="fn6(item)">{{$t('spot.set')}}</button>
+								<button class="button1" :class="{'button3':item.stop_type != 0}" v-if="item.status==0" @click="open_strategy(item.id,)">{{item.stop_type== 0?$t('spot.open'):$t('spot.renew')}}</button>
+								<button style="background:#BD1616" @click="bounce(0,item.id,item.stop_type)" v-else>{{item.stop_type!== 2?$t('spot.stop'):$t('spot.renew')}}</button>
+							</span>
+						</p>
+						<div class="pressbox gundong" v-if="item.status==1">
+
+							<p v-if="item.status==1 && item.stop_type == 0"><span>{{$t('spot.status')}}: </span> {{$t('spot.Under')}}</p>
+							<p v-if="item.status==1 && item.stop_type == 2"><span>{{$t('spot.status')}}: </span> {{$t('spot.Check')}}</p>
+						</div>
+						<div class="pressbox" style="background:#BFBFBF;" v-else>
+							<p v-if="item.status==0"><span>{{$t('spot.status')}}: </span> {{item.stop_type== 0?$t('spot.noopen'):item.stop_type== 3?'清仓停止':item.stop_type== 2?'止盈停止':'临时停止'}}</p>
+							<p v-if="item.stop_type==5" class="item1">API KEY {{$t('spot.error')}}</p>
+							<p v-if="item.stop_type==7" class="item1">{{$t('spot.Positioning')+$t('spot.error')}}</p>
+							<p v-if="item.stop_type==8" class="item1">USDT手续费不足</p>
+							<p v-if="item.stop_type==9" class="item1">{{$t('spot.Positioning')+$t('spot.error')}}</p>
+							<p v-if="item.stop_type==6" class="item1">{{$t('spot.capital')}}</p>
+						</div>
+						<tables :item="item"></tables>
+					</li>
+
+				</ul>
+			</div>
+		</van-pull-refresh>
 		<!-- 左侧弹框 -->
 		<van-popup v-model="show" position="left" @click="changleft" class="poup" :style="{ height: '100%' ,width:'50%'}">
 			<p class="jiay">选择交易所</p>
 			<p class="yopen">已开通智能交易</p>
-			<!-- @click="selecli(index)" -->
 			<p class="hmoney" @click="clileft('火币全球站',1)">
 				<img src="../assets/src_resource_image_page_huobi_logo@2x.png" alt />火币全球站
 			</p>
@@ -201,15 +170,14 @@
 				<span @click="changright" style="position: fixed;right: 18px;top: 0px;color: rgb(34, 132, 253);font-size: 17px;">完成</span>
 			</div>
 			<div class="poup-title">
-				<div >搜索</div>
-				<input v-model="sym_val"  placeholder="输入币" style="width: 50px;padding: 1px 0; font-size: 14px; border: 1px solid #eee;margin-left: 6px;"/>
+				<div>搜索</div>
+				<input v-model="sym_val" placeholder="输入币" style="width: 50px;padding: 1px 0; font-size: 14px; border: 1px solid #eee;margin-left: 6px;" />
 				<div class="item" @click="getxingqing()" :class="{'xiahuaxian':huobi}">官方推荐</div>
 				<div class="item" @click="getzhuliu()" :class="{'xiahuaxian':!huobi}">所有货币对</div>
 				<div class="about"></div>
 			</div>
 			<div class="poup-body">
 				<span>货币对</span>
-				<!-- <span>行情</span> -->
 				<span style="margin-left: 20%;">操作</span>
 			</div>
 			<ul>
@@ -217,7 +185,6 @@
 				<li class="li-item" v-for="(item,i) in list3" :key="i">
 					<div style="padding-left: .7rem;font-size: 14px;width: 86px;">{{item.symbol1.toUpperCase()}}/<span style="color: #CCCCCC;">{{item.symbol.toUpperCase()}}</span>
 					</div>
-					<!-- <div style="padding-left: 1rem;width: 32px;" class="active" :class="{'active1':item.up_or_down==1}">{{item.close.toFixed(2)}}</div> -->
 					<div style="padding-left: 1rem;color: #2284fd;text-align: center" v-show="!item.bool" @click="selecli_symbolcli(item.symbol1.toUpperCase()+ '/' + item.symbol.toUpperCase(),i)">添加</div>
 					<div style="padding-left: 1.62rem;color: #C0C5CB;text-align: center" v-show="item.bool">已添加</div>
 				</li>
@@ -245,27 +212,10 @@
 		</van-popup>
 
 		<!-- 问题弹框 -->
-		<van-popup v-model="matterplay" class="matter">
-			<div class="top">CR智能交易注意事项</div>
-			<div class="bots">
-				<p>1、用户在交易所内生成的API不可绑定IP</p>
-				<p>2、在智能交易开启前，交易所中必须先有本金，系统才能执行交易</p>
-				<p>3、在智能交易开启后，如有出现手动介入的情况，系统将立即 停止交易。</p>
-			</div>
+		<van-popup v-model="matterplay" style="width: 80%;">
+			<matter></matter>
 		</van-popup>
 
-		<!-- 智能交易弹框 -->
-		<div class="warpbox" v-show="trandshow" @click="trandplay(1)">
-			<div class="pouprt trandup">
-				<van-icon name="play" class="trandicon" />
-				<ul>
-					<li v-for="(item,i) in list" :key="i" @click="selecli(i)" :ref="'selt'+i">{{item.a}}</li>
-
-					<!-- <li>智能多空交易</li>
-          <li>自定多空交易</li>-->
-				</ul>
-			</div>
-		</div>
 
 		<!-- 关闭交易 -->
 		<van-popup v-model="closedeal" class="closedeal">
@@ -277,21 +227,13 @@
 					<img v-if="check==0" src="../assets/landian.png" alt />
 					<img v-else src="../assets/nocomr.png" alt />
 				</li>
-				<!-- <li @click="firmcolse(1)">
-          止盈后停止
-          <img v-if="check==1" src="../assets/landian.png" alt />
-          <img v-else src="../assets/nocomr.png" alt />
-        </li> -->
+				
 				<li @click="firmcolse(2)">
 					清仓停止
 					<img v-if="check==2" src="../assets/landian.png" alt />
 					<img v-else src="../assets/nocomr.png" alt />
 				</li>
-				<li @click="firmcolse(3)">
-					强制暂停
-					<img v-if="check==3" src="../assets/landian.png" alt />
-					<img v-else src="../assets/nocomr.png" alt />
-				</li>
+				
 			</ul>
 			<button class="changebton" @click="close_now()" style="background-color: rgb(34, 132, 253);">确定</button>
 		</van-popup>
@@ -311,87 +253,87 @@
 		</van-dialog>
 		<van-dialog v-model="show3" title="设置预算" show-cancel-button :before-close="beforeClose">
 			<p style="height: 15px;"></p>
-			
+
 			<div style="display: flex;flex-flow:row wrap">
-				<div  class="heyue-body" >
+				<div class="heyue-body">
 					<span>首单金额:</span>
-					<input v-model="backinfo.first_amount" type="number"/>
+					<input v-model="backinfo.first_amount" type="number" />
 					<span>$</span>
 				</div>
-				<div  class="heyue-body" >
+				<div class="heyue-body">
 					<span>补仓倍率:</span>
-					<input v-model="backinfo.repair_scale" type="number"/>
+					<input v-model="backinfo.repair_scale" type="number" />
 					<span>倍</span>
 				</div>
-				<div  class="heyue-body" >
+				<div class="heyue-body">
 					<span>做单数量:</span>
-					<input v-model="backinfo.order_num" type="number"/>
+					<input v-model="backinfo.order_num" type="number" />
 					<span>单</span>
 				</div>
-				<div  class="heyue-body" >
+				<div class="heyue-body">
 					<span>买入涨幅:</span>
-					<input v-model="backinfo.rise" type="number"/>
+					<input v-model="backinfo.rise" type="number" />
 					<span>%</span>
 				</div>
-				<div  class="heyue-body heyue-body1" >
+				<div class="heyue-body heyue-body1">
 					<span>买入跌幅:</span>
-					<input v-model="backinfo.fall" type="number"/>
+					<input v-model="backinfo.fall" type="number" />
 					<span>%</span>
 				</div>
-				<div  class="heyue-body heyue-body1" >
+				<div class="heyue-body heyue-body1">
 					<span>跌幅回调:</span>
-					<input v-model="backinfo.fall_back" type="number"/>
+					<input v-model="backinfo.fall_back" type="number" />
 					<span>%</span>
 				</div>
-				<div  class="heyue-body heyue-body1" >
+				<div class="heyue-body heyue-body1">
 					<span>补仓跌幅:</span>
-					<input v-model="backinfo.repair_fall" type="number"/>
+					<input v-model="backinfo.repair_fall" type="number" />
 					<span>%</span>
 				</div>
-				<div  class="heyue-body heyue-body1" >
+				<div class="heyue-body heyue-body1">
 					<span>补仓回调:</span>
-					<input v-model="backinfo.repair_fall_back" type="number"/>
+					<input v-model="backinfo.repair_fall_back" type="number" />
 					<span>%</span>
 				</div>
-				<div  class="heyue-body heyue-body1" >
+				<div class="heyue-body heyue-body1">
 					<span>止盈比例:</span>
-					<input v-model="backinfo.profit_stop" type="number"/>
+					<input v-model="backinfo.profit_stop" type="number" />
 					<span>%</span>
 				</div>
-				<div  class="heyue-body heyue-body1" >
+				<div class="heyue-body heyue-body1">
 					<span>止盈回调:</span>
-					<input v-model="backinfo.profit_stop_back" type="number"/>
+					<input v-model="backinfo.profit_stop_back" type="number" />
 					<span>%</span>
 				</div>
-				
-				</div>
-				<p class="imgge1">止损设置
-					<span style="font-weight: 500; font-size: 12px;margin-right: 0.2rem;display: flex;">
-						<div style="margin-right: 4px;line-height: 34px;height: 34px;">关</div>
-						<van-switch v-model="show5" size=".26rem" />
-						<div :class="{'active2':show5}" style="margin-left: 4px;line-height: 34px;height: 34px;">开</div>
+
+			</div>
+			<p class="imgge1">止损设置
+				<span style="font-weight: 500; font-size: 12px;margin-right: 0.2rem;display: flex;">
+					<div style="margin-right: 4px;line-height: 34px;height: 34px;">关</div>
+					<van-switch v-model="show5" size=".26rem" />
+					<div :class="{'active2':show5}" style="margin-left: 4px;line-height: 34px;height: 34px;">开</div>
+				</span>
+			</p>
+			<p class="imgge1" style="background-color: #FFFFFF;font-weight: 500;" v-show="show5">止损类型
+				<span class="item" :class="{'active':show6}">
+					<span @click="show6 = true"><span v-show="show6"></span></span>
+					逐单止损
+				</span>
+				<span class="item" :class="{'active':!show6}" style="margin-right: 10%">
+					<span @click="show6 = false"> <span v-show="!show6"></span></span>
+					整体止损
+				</span>
+			</p>
+			<div class="divli" v-show="show5">
+				<p>
+					<span class="onespan">止损比例</span>
+				</p>
+				<p class="right">
+					<span>
+						<input type="text" v-model="backinfo.loss_stop" class="inputclass" placeholder="请输入" /> %
 					</span>
 				</p>
-				<p class="imgge1" style="background-color: #FFFFFF;font-weight: 500;" v-show="show5">止损类型
-					<span class="item" :class="{'active':show6}">
-						<span @click="show6 = true"><span v-show="show6"></span></span>
-						逐单止损
-					</span>
-					<span class="item" :class="{'active':!show6}" style="margin-right: 10%">
-						<span @click="show6 = false"> <span v-show="!show6"></span></span>
-						整体止损
-					</span>
-				</p>
-				<div class="divli" v-show="show5">
-					<p>
-						<span class="onespan">止损比例</span>
-					</p>
-					<p class="right">
-						<span>
-							<input type="text" v-model="backinfo.loss_stop" class="inputclass" placeholder="请输入" /> %
-						</span>
-					</p>
-				</div>
+			</div>
 			<p style="height: 15px;"></p>
 		</van-dialog>
 
@@ -400,6 +342,11 @@
 
 <script>
 	import Vue from 'vue';
+	import tables from '../modu/table.vue'
+	import matter from '../modu/matter.vue'
+	import {
+		wss
+	} from '../api/ws.js'
 	import {
 		Dialog,
 		Field,
@@ -412,11 +359,14 @@
 		components: {
 			Dialog,
 			Field,
-			Popup
+			Popup,
+			tables,
+			matter
 		},
 		data() {
 			return {
-				sym_val:'',
+				isLoading: false,
+				sym_val: '',
 				value: '',
 				number: '',
 				number2: '',
@@ -475,6 +425,7 @@
 				index1: '',
 				time: '',
 				pointnum: '',
+				USDTnum:'',
 				ljsyl: '',
 				list3: [],
 				show3: false,
@@ -488,38 +439,47 @@
 				bool2: false,
 				bool3: false,
 				huobi: true,
-				type_status:false,
-				list4:[],
+				type_status: false,
+				list4: [],
+				websct: {},
+				idbool:false,
+				value1:0
 			};
 		},
 		created() {
 			this.time = this.$route.query.time
+			let value = localStorage.getItem('languageSet')
+			if (value) {
+				if (value == 'en') {
+					this.value1 = 1
+				} else if (value == 'hy') {
+					this.value1 = 2
+				}
+			}
+			let id=1
+			if(this.$route.query.bool){
+				this.idbool = this.$route.query.bool
+				this.types = 6
+				id=4
+			}
 			this.$axios
 				.post("/index/robot/robot_systerm", {
-					robot_type:1,
+					robot_type: id,
 				})
 				.then((res) => {
 					if (res.data.code == 0) {
-						if(res.data.state != 1){
+						if (res.data.state != 1) {
 							console.log(66)
-							this.$router.push('/shangchen')
+							this.$router.push('/store')
 						}
-					} 
+					}
 				});
 			if (localStorage.getItem("bourse") == 1) {
 				this.bourse = localStorage.getItem("bourse");
 			}
-			this.$axios
-				.get("/index/mywallet/mywalletInfo", {
-					page: 1,
-					limit: 1
-				})
-				.then(res => {
-					let info = res.data.info;
-					this.pointnum = info.point_num
-					
-				})
+
 			this.start();
+			this.mywalletInfo()
 			if (this.bourse == 4) {
 				this.selectsymbol[3].a = "OKB";
 			}
@@ -527,8 +487,9 @@
 		watch: {
 			symbol(newValue, oldValue) {
 				this.strategy_list = []
-				clearInterval(this.time1)
-				this.timer = null;
+				if(this.websct.onclose){
+					this.websct.onclose()
+				}
 				this.start(newValue)
 				this.start1(true)
 			},
@@ -546,7 +507,7 @@
 					this.backinfo.loss_stop_switch = 0
 				}
 			},
-			
+
 			bool3(newValue, oldValue) {
 				if (newValue) {
 					this.selsym = []
@@ -554,32 +515,53 @@
 			},
 			sym_val(newValue, oldValue) {
 				if (newValue) {
-						let str = this.sym_val.toLowerCase()
-						this.list3=[]
-							this.list4.forEach(item=>{
-								if(	item.symbol1.indexOf(str) !=-1){
-									this.list3.push(item)
-								}
-							})
-				}else{
-					
+					let str = this.sym_val.toLowerCase()
+					this.list3 = []
+					this.list4.forEach(item => {
+						if (item.symbol1.indexOf(str) != -1) {
+							this.list3.push(item)
+						}
+					})
+				} else {
+
 					this.list3 = this.list4
 				}
 			},
 		},
 		beforeDestroy() {
-			clearInterval(this.time1)
-			this.time1 = null;
+			if(this.websct.onclose){
+				this.websct.onclose()
+			}
 		},
 		methods: {
+			onRefresh() {
+				this.start()
+				this.mywalletInfo()
+				setTimeout(() => {
+					this.isLoading = false;
+				}, 1000);
+			},
+			mywalletInfo() {
+				this.$axios
+					.get("/index/mywallet/mywalletInfo", {
+						page: 1,
+						limit: 1
+					})
+					.then(res => {
+						let info = res.data.info;
+						this.pointnum = info.point_num
+						this.USDTnum = (info.number * 1).toFixed(1)
+
+					})
+			},
 			beforeClose: function(action, done) {
-					  	if (action === "confirm") {
-							this.fn4(true)
-							done()
-						} else if (action === "cancel") {
-								// 取消
-								done(); // 关闭提示框
-							}
+				if (action === "confirm") {
+					this.fn4(true)
+					done()
+				} else if (action === "cancel") {
+					// 取消
+					done(); // 关闭提示框
+				}
 			},
 			fn2() {
 				if (this.selsym.length == 0) {
@@ -589,8 +571,10 @@
 					})
 					return
 				}
-						this.show3 = true
+				this.show3 = true
 				if (!this.bool2) {
+					this.show5 = false
+					this.show6 = true
 					this.backinfo = {}
 					this.backinfo = {
 						profit_stop_case: 1,
@@ -652,7 +636,7 @@
 							loss_stop: this.backinfo.loss_stop,
 							symbol: this.backinfo.symbol,
 							bourse: this.backinfo.bourse,
-							types: 1,
+							types: this.types,
 							symbol_deal: this.backinfo.symbol_deal,
 							id: this.backinfo.id
 						}
@@ -661,7 +645,7 @@
 					} else {
 						this.backinfo.symbol = this.symbol
 						this.backinfo.bourse = this.bourse
-						this.backinfo.types = 1
+						this.backinfo.types = this.types
 						this.backinfo.symbol_deal = this.selsym.join(",")
 						console.log(this.backinfo)
 						str = 'set_strategy_all'
@@ -706,9 +690,15 @@
 					})
 					return
 				}
+				let str;
+				if(this.idbool){
+					str = '请确认当前是否有持仓,如系统还有持仓时,删除策略将扣除持仓金额2%的手续费,是否删除策略?'
+				}else{
+					str = '是否删除策略？'
+				}
 				Dialog.confirm({
 					title: '提醒',
-					message: '是否删除策略？',
+					message: str,
 				}).then(() => {
 					this.$axios
 						.post("/index/spot/delete_strategy", {
@@ -788,9 +778,14 @@
 					})
 					return
 				}
-				clearInterval(this.time1)
-				this.time1 = null;
-				this.$router.push('showdetail?bourse=' + this.bourse + '&type=1&poni=1')
+				if(this.websct.onclose){
+					this.websct.onclose()
+				}
+				if(this.idbool){
+					this.$router.push('showdetail?bourse=' + this.bourse + '&type=1&poni=1&id=6')
+				}else{
+					this.$router.push('showdetail?bourse=' + this.bourse + '&type=1&poni=1')
+				}
 			},
 			clileft(s, num) {
 				this.bourse = num;
@@ -823,11 +818,6 @@
 						message: "请选择交易所",
 						duration: 1200
 					});
-				if (this.types == 1)
-					return this.$toast.fail({
-						message: "请点击去设置",
-						duration: 1200
-					});
 				if (this.jysymbol == 0)
 					return this.$toast.fail({
 						message: "请选择交易币对",
@@ -839,7 +829,6 @@
 				obj.bourse = this.bourse;
 				obj.symbol = this.symbol;
 				obj.symbol1 = this.selsym.join(",");
-				if (this.types == 1) {
 					if (obj.gridswitch) {
 						obj.gridswitch = "open";
 					} else {
@@ -850,9 +839,7 @@
 					} else {
 						obj.lossswitch = "close";
 					}
-				} else {
-					obj.noopsycheid = this.noopsycheid;
-				}
+				
 
 				this.istxt = 100;
 				this.$axios.post("/index/strategy/set_strategy_all", obj).then(res => {
@@ -930,8 +917,10 @@
 				if (!bool) {
 					this.start1();
 				}
-				clearInterval(this.time1)
-				this.time1 = null;
+				if (this.websct.onclose) {
+					this.websct.onclose()
+				}
+				
 				this.$axios
 					.post("/index/spotstrategy/get_strategy_list", {
 						symbol: this.symbol,
@@ -941,53 +930,25 @@
 					.then(res => {
 						this.strategy_list = res.data.list;
 						let that = this
-						if (this.strategy_list.length > 0) {
-							this.strategy_list.forEach((item, index) => {
-								item.close1 = ''
-								if(item.status == 1){
-									that.type_status = true
-								}
-								this.$axios.get(`/index/rank/get_market?symbol_pair=${item.symbol_deal + item.symbol}`).then(res1 => {
-									let datas = res1.data
-									item.close1 = datas.data.close
-								})
-								this.$set(this.strategy_list, index, item)
+						let arr = []
+							res.data.list.forEach((item,index) => {
+								arr.push(item.symbol_deal)
+									if(item.status == 1){
+										that.type_status = true
+									}
 							})
-							this.time1 = setInterval(() => {
-								this.strategy_list.forEach((item, index) => {
-									this.$axios.get(`/index/rank/get_market?symbol_pair=${item.symbol_deal + item.symbol}`).then(res1 => {
-										let datas = res1.data
-										item.close1 = datas.data.close
-										// item.zhangfu =(datas.close -datas.open)/datas.open * 100
-									})
-									this.$set(this.strategy_list, index, item)
+							wss(arr, this.huobiwsurl, (data, wes) => {
+								arr.forEach((item,index) => {
+									if(data.ch.indexOf(item)!=-1 ){
+										let obj = this.strategy_list[index]
+										obj.close1 = data.tick.close
+										this.$set(this.strategy_list, index, obj)
+									}
 								})
-								return
-							}, 9000)
-							this.$once('hook:beforeDestroy',()=>{
-							       clearInterval(this.time1);
-							      this.time1 = null;
-							     })
-						}
-
-
+								this.websct = wes
+							})
 					});
 			},
-			selecli(i) {
-				this.index = i;
-				this.types = Number(i) + 1;
-				localStorage.setItem("index", i);
-				var str = "this.$refs.selt" + i;
-				var dom = eval(str);
-				var strf = dom[0].innerHTML;
-
-				this.seletext = strf.substring(0, 2) + strf.substring(4, 6);
-				// this.types = i + 1;
-				this.start();
-
-				this.seletext = strf;
-			},
-
 			selecli_symbol1(i) {
 				this.selectsymbol = [{
 						a: "USDT"
@@ -1159,13 +1120,6 @@
 			firmcolse(s) {
 				this.check = s;
 			},
-			trandplay(s) {
-				if (s == 0) {
-					this.trandshow = true;
-				} else {
-					this.trandshow = false;
-				}
-			},
 			open_strategy(s, i) {
 				this.$axios.post("/index/spot/start_strategy", {
 					id: s
@@ -1201,22 +1155,7 @@
 									duration: 2000
 								});
 
-								this.$axios
-									.post("/index/spotstrategy/get_strategy_list", {
-										symbol: this.symbol,
-										bourse: this.bourse,
-										types: this.types
-									})
-									.then(res => {
-										// this.strategy_list = res.data.list;
-										res.data.list.forEach((item, index) => {
-
-											this.$set(this.strategy_list, index, item)
-											if(item.status == 1){
-												this.type_status = true
-											}
-										})
-									});
+							this.start()
 
 								this.closedeal = false;
 							} else {
@@ -1304,6 +1243,9 @@
 			position: unset;
 			font-size: 0.3rem;
 			transform: rotate(90deg);
+		}
+		.active{
+			font-size: .26rem;
 		}
 	}
 
@@ -1444,32 +1386,6 @@
 		color: #fff;
 		z-index: 2100;
 	}
-
-	.matter {
-		top: 42%;
-		width: 90%;
-		min-height: 50%;
-
-		.top {
-			background: url("../assets/news.png") no-repeat;
-			background-size: 100%;
-			height: 2.33rem;
-			line-height: 2.33rem;
-			color: #fff;
-			font-size: 0.36rem;
-			padding-left: 0.3rem;
-		}
-
-		.bots {
-			padding: 0.3rem;
-
-			p {
-				font-size: 0.22rem;
-				margin-bottom: 0.3rem;
-			}
-		}
-	}
-
 	.runy {
 		display: flex;
 		justify-content: space-between;
@@ -1574,7 +1490,7 @@
 			color: #000000;
 			border: 1px solid rgb(34, 132, 253);
 			box-sizing: border-box;
-			padding: 5px;
+			padding: 5px 0;
 			border-radius: 5px;
 			font-size: 0.24rem;
 			text-align: center;
@@ -1594,6 +1510,9 @@
 			p {
 				line-height: 0.4rem;
 			}
+		}
+		.active{
+			width: 35%;
 		}
 	}
 
@@ -1656,37 +1575,6 @@
 				position: absolute;
 				height: 100%;
 				border-radius: 3px;
-			}
-		}
-
-		.tabul {
-			display: flex;
-			justify-content: space-between;
-			padding-top: 0.3rem;
-			flex-flow: wrap;
-			font-size: 0.24rem;
-
-			div {
-				width: 33.3%;
-				margin-bottom: 0.3rem;
-			}
-
-			div:nth-of-type(1) {
-				text-align: left;
-			}
-
-			div p:nth-of-type(1) {
-				color: #bababa;
-			}
-
-			div:nth-of-type(2),
-			div:nth-of-type(5) {
-				text-align: center;
-			}
-
-			div:nth-of-type(3),
-			div:nth-of-type(6) {
-				text-align: right;
 			}
 		}
 	}
@@ -1857,17 +1745,19 @@
 			color: rgb(69, 196, 58);
 		}
 	}
+
 	.divli1 {
 		border-bottom: 1px solid #f5f6fa;
 		color: rgb(153, 153, 153);
-	
+
 		font-size: 13px;
-	
+
 		.item {
 			padding: 0 .2rem;
 			margin: 5px 0;
 		}
 	}
+
 	.divli {
 		font-size: 14px;
 		display: flex;
@@ -1879,7 +1769,8 @@
 		font-size: .3rem;
 		background: #fff;
 		border-bottom: 1px solid #eee;
-				color: #646566;
+		color: #646566;
+
 		.right {
 			color: #000;
 
@@ -1893,15 +1784,14 @@
 		height: 34px;
 		margin-top: 10px;
 		line-height: 34px;
-		// font-weight: 550;
 		font-size: 15px;
 		background-color: rgb(240, 240, 240);
 		padding-left: .2rem;
 		display: flex;
 		justify-content: space-between;
 		color: #646566;
+
 		.item {
-			// margin-left: 4%;
 			display: flex;
 			font-size: 14px;
 
@@ -1982,7 +1872,8 @@
 			color: #2284fd;
 		}
 	}
-	.heyue-body{
+
+	.heyue-body {
 		width: 42%;
 		display: flex;
 		margin-left: 16px;
@@ -1993,19 +1884,28 @@
 		background-color: #fff;
 		border-bottom: 1px solid #ebedf0;
 		line-height: 35px;
-		input{
+
+		input {
 			width: 37%;
 			text-align: center;
 		}
 	}
-	.heyue-body1{
+
+	.heyue-body1 {
 		border-bottom: 1.5px solid #ebedf0;
+	}
+
+	.statusimg {
+		position: absolute;
+		top: 3px;
+		left: 47%;
+		width: 30px;
+		height: 40px;
+	}
+	.title-two{
+		justify-content: space-between;
+		.usdt{
+			font-size: .25rem;font-weight: 550;;margin-top: .05rem;
 		}
-		.statusimg{
-			position: absolute;
-			top: 44px;
-			left: 47%;
-			width: 30px;
-			height: 40px;
-		}
+	}
 </style>

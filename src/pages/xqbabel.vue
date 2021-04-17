@@ -2,10 +2,10 @@
 	<div style="font-size: 14px;min-height: 100%;padding-bottom: 20px;">
 		<van-icon name="down" color="rgb(20,44,56)" @click="$router.back()" size="20px" />
 		<div class="title">
-			<div class="a" v-show="id == 1">CR现货量化机器人(专业设置版)</div>
-			<div class="a" v-show="id == 2">CR合约量化机器人(专业设置版)</div>
-			<div class="a" v-show="id == 3">CR合约量化机器人(智能趋势版)</div>
-			<div class="a" v-show="id == 4">CR现货量化机器人(智能趋势版)</div>
+			<div class="a" v-show="id == 1">CR现货量化机器人(专业版)</div>
+			<div class="a" v-show="id == 2">CR合约量化机器人(专业版)</div>
+			<div class="a" v-show="id == 3">CR合约量化机器人(智能版)</div>
+			<div class="a" v-show="id == 4">CR现货量化机器人(智能版)</div>
 			<div class="a" v-show="id == 5">CR策略跟随机器人(现货/合约)</div>
 			<div>
 				<img src="../assets/1120.png" style="margin-top: -4px;" />
@@ -15,24 +15,25 @@
 		<img class="img" v-show="id == 1" src="../assets/bananjq.png" />
 		<img class="img" v-show="id == 2" src="../assets/bananjq2.png" />
 		<img class="img" v-show="id == 3" src="../assets/bananjq3.png" />
+		<img class="img" v-show="id == 4" src="../assets/bananjq4.png" />
 		<img class="img" v-show="id == 5" src="../assets/1-7.png" />
-		<p v-show="id == 4" style="line-height: 40px;text-align: center;">敬请期待</p>
+		<!-- <p v-show="id == 4" style="line-height: 40px;text-align: center;">敬请期待</p> -->
 		<!-- <p v-show="id == 5" style="line-height: 40px;text-align: center;">敬请期待</p> -->
 		<van-tabs line-height="2px" v-model="active" color="rgb(11,120,241)" title-active-color="rgb(11,120,241)">
 			<van-tab title-style="font-weight:bold" title="系统介绍">
 				<div class="item">
 					<p>系统介绍</p>
 					<div v-show="id==1">
-						CR现货量化机器人(专业设置版)是一款为专业的数字货币爱好者定制的现货量化交易系统，兼容火币全球站与OKEx交易所。它具有高度专业化、灵活性的参数设置功能，用户可以根据个人的数字货币专业认知水平、判断分析能力进行参数设置，不同的行情均可以设置不同的策略相匹配，并且可以随时临时停止修改策略即时执行，从而实现在不同行情中获取稳定的收益。CR现货量化机器人(专业设置版)是数字货币交易爱好者的量化利器。
+						CR现货量化机器人(专业版)是一款为专业的数字货币爱好者定制的现货量化交易系统，兼容火币全球站与OKEx交易所。它具有高度专业化、灵活性的参数设置功能，用户可以根据个人的数字货币专业认知水平、判断分析能力进行参数设置，不同的行情均可以设置不同的策略相匹配，并且可以随时临时停止修改策略即时执行，从而实现在不同行情中获取稳定的收益。CR现货量化机器人(专业版)是数字货币交易爱好者的量化利器。
 					</div>
 					<div v-show="id==2">
-						CR合约量化机器人(专业设置版)是一款为数字货币合约交易爱好者打造的量化交易系统，同样兼容火币全球站与OKEx交易所。预算设置简单而灵活，用户可自由选择多空双开或者任意一个方向，根据仓位大小设置开张张数、杠杆倍数与最大做单数。开启策略的操作便捷性提高了合约量化机器人的高效性。合约量化机器人(专业设置版)拥有智能的监控功能，它会根据行情变化智能调整。用户可以根据个人主观想法，分析判断实时行情，任意时间均可以临时停止修改策略参数，灵活性是它最大的优势。CR合约量化机器人(专业设置版)是合约交易爱好者的不二之选。
+						CR合约量化机器人(专业版)是一款为数字货币合约交易爱好者打造的量化交易系统，同样兼容火币全球站与OKEx交易所。预算设置简单而灵活，用户可自由选择多空双开或者任意一个方向，根据仓位大小设置开张张数、杠杆倍数与最大做单数。开启策略的操作便捷性提高了合约量化机器人的高效性。合约量化机器人(专业版)拥有智能的监控功能，它会根据行情变化智能调整。用户可以根据个人主观想法，分析判断实时行情，任意时间均可以临时停止修改策略参数，灵活性是它最大的优势。CR合约量化机器人(专业版)是合约交易爱好者的不二之选。
 					</div>
 					<div v-show="id==3">
-						CR合约量化机器人(智能趋势版)是一款全智能的趋势分析判断合约量化交易系统。用户只需根据仓位大小设置开张张数与杠杆倍数，一键应用即可启动交易。合约量化机器人(智能趋势版)通过识别实时行情技术指标、资讯等，智能分析判断未来趋势。系统没有固定的止盈比例，它是在深度分析计算出的止盈条件自动止盈获利。其属于中低频的交易策略，交易次数少，但因其追踪趋势的功能，一旦止盈收获斐然、效益更直观。CR合约量化机器人(智能趋势版)因趋势而显著，更适合懂趋势策略的用户。
+						CR合约量化机器人(智能版)是一款全智能的趋势分析判断合约量化交易系统。用户只需根据仓位大小设置开张张数与杠杆倍数，一键应用即可启动交易。合约量化机器人(智能版)通过识别实时行情技术指标、资讯等，智能分析判断未来趋势。系统没有固定的止盈比例，它是在深度分析计算出的止盈条件自动止盈获利。其属于中低频的交易策略，交易次数少，但因其追踪趋势的功能，一旦止盈收获斐然、效益更直观。CR合约量化机器人(智能版)因趋势而显著，更适合懂趋势策略的用户。
 					</div>
 					<div v-show="id==4">
-						CR现货量化机器人(智能趋势版)是一款全智能的趋势分析判断合约量化交易系统。用户只需根据仓位大小设置开张张数与杠杆倍数，一键应用即可启动交易。现货量化机器人(智能趋势版)通过识别实时行情技术指标、资讯等，智能分析判断未来趋势。系统没有固定的止盈比例，它是在深度分析计算出的止盈条件自动止盈获利。其属于中低频的交易策略，交易次数少，但因其追踪趋势的功能，一旦止盈收获斐然、效益更直观。CR现货量化机器人(智能趋势版)因趋势而显著，更适合懂趋势策略的用户。
+						CR现货量化机器人(智能版)是一款全智能的趋势分析判断现货量化交易系统。用户只需最大交易本金，一键应用即可启动交易。现货量化机器人(智能版)通过识别实时行情技术指标、大数据分析等，智能判断未来价格走势。系统没有固定的止盈比例，它是在深度分析计算出的止盈条件自动止盈获利。其属于中低频的交易策略，交易次数少，但因其追踪趋势的功能，一旦止盈收获斐然、效益更直观。CR现货量化机器人(智能版)因趋势而显著。
 					</div>
 					<div v-show="id==5">
 						CR策略跟随机器人是为数字货币投资爱好者打造的
@@ -49,7 +50,7 @@
 						<div></div> 激活机器人
 					</div>
 					<div>
-						成功购买机器人后，点击进入【量化】主页，点击【量化机器人】，进入我的机器人页面，选择{{id==1?'CR现货量化交易(专业设置版)机器人':id==2?'合约量化机器人(专业设置版)':'策略跟随机器人(现货/合约)'}}，点击【激活】。
+						成功购买机器人后，点击进入【量化】主页，点击【量化机器人】，进入我的机器人页面，选择{{id==1?'CR现货量化交易(专业版)机器人':id==2?'合约量化机器人(专业版)':id==5?'策略跟随机器人(现货/合约)':'现货量化机器人(智能版)'}}，点击【激活】。
 					</div>
 					<div class="p1">
 						<div></div> 绑定API
@@ -62,14 +63,14 @@
 					</div>
 					<div v-show="id!=5">
 						<div>
-							返回【量化】主页，点击【量化机器人】进入我的机器人页面，选择CR{{id==1?'现货':'合约'}}现货量化交易(专业设置版)机器人，点击【进入系统】。
+							返回【量化】主页，点击【量化机器人】进入我的机器人页面，选择CR{{id==1 || id== 4?'现货':'合约'}}量化交易({{id== 4?'智能':'专业'}}版)机器人，点击【进入系统】。
 						</div>
-						<div>进入CR{{id==1?'现货':'合约'}}量化机器人(专业设置版)界面后：</div>
+						<div>进入CR{{id==1|| id== 4?'现货':'合约'}}量化机器人({{id== 4?'智能':'专业'}}版)界面后：</div>
 						<div>
-							①点击【选择交易所】，选择{{id==1?'火币全球站':'OKEx'}}；
+							①点击【选择交易所】，选择{{id==1|| id== 4?'火币全球站':'OKEx'}}；
 						</div>
 						<div>
-							②仓位监测：{{id==1?'机器人自动识别仓位；计价币：选择任意一种作为计价':' 选择仓位币对金额；  计价方式：默认选择USDT保证金合约。'}}
+							②仓位监测：{{id==1 || id== 4?'机器人自动识别仓位；计价币：选择任意一种作为计价':' 选择仓位币对金额；  计价方式：默认选择USDT保证金合约。'}}
 						</div>
 						<div>
 							③添加货币对：点击进入选择货币对（可多项选择）
@@ -165,7 +166,7 @@
 				<div class="item">
 					<p>用户须知</p>
 					<div>
-						1.CR{{id==1?'现货量化系统是一个创新型数字资产投资理财辅助工具。绝大多数交易点都由智能交易系统依据数据模型分析判断计算得出，部分行情下与人为的理性判断可能会有较大出入。':id==2?'合约量化机器人是一个创新型数字资产投资交易辅助工具。交易买卖策略都由机器人依据用户设定的参数数据模型自动循环执行，有效解决人工盯盘和情绪的影响，从而在数字资产交易中获得稳定的收益':'策略跟随机器人是一个为广大数字资产投资爱好者提供的交易便捷辅助工具。机器人会对正在交易的策略老师交易策略进行筛选排名，用户可自行选择排名的交易策略一键跟随同步执行交易，无需设置各项参数数据、人工盯盘和情绪影响，从而在数字资产交易中获得稳定的收益。'}}
+						1.CR{{id==1 || id== 4?'现货量化系统是一个创新型数字资产投资理财辅助工具。绝大多数交易点都由智能交易系统依据数据模型分析判断计算得出，部分行情下与人为的理性判断可能会有较大出入。':id==2?'合约量化机器人是一个创新型数字资产投资交易辅助工具。交易买卖策略都由机器人依据用户设定的参数数据模型自动循环执行，有效解决人工盯盘和情绪的影响，从而在数字资产交易中获得稳定的收益':'策略跟随机器人是一个为广大数字资产投资爱好者提供的交易便捷辅助工具。机器人会对正在交易的策略老师交易策略进行筛选排名，用户可自行选择排名的交易策略一键跟随同步执行交易，无需设置各项参数数据、人工盯盘和情绪影响，从而在数字资产交易中获得稳定的收益。'}}
 					</div>
 					<div>
 						2.考虑到数字资产投资交易市场存在巨大风险，建议您在使用本服务前充分了解相关法律条规及咨询专业意见，根据个人的财务状况、投资经验、风险偏好等相关因素，{{id==5?'慎重选择适合您的量化策略跟随':'慎重选择适合和设定您的量化策略'}}。
@@ -192,27 +193,15 @@
 		</div>
 		<van-dialog v-model="show" title="选择购买时长" show-cancel-button :before-close="beforeClose">
 			<div class="bel-dia">
-				<div v-if="id!=5" style="display: flex;margin: 2px 0;"> <span style="flex: 1;text-align: left;">时长: 90天</span>
-					<span style="flex: 1;text-align: left">价格: 5600CRW</span>
-					<van-checkbox shape="square" v-model="checked1" style="font-size: 13px;margin-left: 10px;" icon-size="14"></van-checkbox>
-				</div>
-				<div v-if="id!=5" style="display: flex;margin: 2px 0;"> <span style="flex: 1;text-align: left;">时长: 180天</span>
-					<span style="flex: 1;text-align: left">价格: 9600CRW</span>
-					<van-checkbox shape="square" v-model="checked2" style="font-size: 13px;margin-left: 10px;" icon-size="14"></van-checkbox>
-				</div>
-				<div v-if="id!=5" style="display: flex;margin: 2px 0;"> <span style="flex: 1;text-align: left;">时长: 360天</span>
-					<span style="flex: 1;text-align: left">价格: 16800CRW</span>
-					<van-checkbox shape="square" v-model="checked3" style="font-size: 13px;margin-left: 10px;" icon-size="14"></van-checkbox>
-				</div>
-				<div v-if="id==5" style="display: flex;margin: 2px 0;"> <span style="flex: 1;text-align: left;">点卡: 2000</span>
-					<span style="flex: 1;text-align: left">价格: 2000CRW</span>
+				<div  style="display: flex;margin: 2px 0;"> <span style="flex: 1;text-align: left;">时长: 360天</span>
+					<span style="flex: 1;text-align: left">价格: 200USDT</span>
 					<van-checkbox shape="square" v-model="checked1" style="font-size: 13px;margin-left: 10px;" icon-size="14"></van-checkbox>
 				</div>
 			</div>
 			<div class="bel-dia" style="display: flex;justify-content: space-between;">
 				<span>支付方式: </span>
 				<div style="display: flex;">
-					CRW支付 <van-checkbox icon-size="16" shape="square" v-model="checked4" style="font-size: 14px;"></van-checkbox>
+					USDT支付 <van-checkbox icon-size="16" shape="square" v-model="checked4" style="font-size: 14px;"></van-checkbox>
 				</div>
 				<div style="display: flex;">
 					购物券支付 <van-checkbox icon-size="16" shape="square" v-model="checked5" style="font-size: 14px;"></van-checkbox>
@@ -241,35 +230,39 @@
 				id: '',
 				active: 0,
 				checked1: true,
-				checked2: false,
-				checked3: false,
+				// checked2: false,
+				checked3: true,
 				checked4: true,
 				checked5: false,
-				show: false
+				show: false,
+				bool:false,
 			};
 		},
 		created() {
 			this.id = this.$route.query.id
+			if(this.$route.query.bool){
+				this.bool = this.$route.query.bool
+			}
 		},
 		watch: {
-			checked1(newValue, oldValue) {
-				if (newValue == true) {
-					this.checked2 = false
-					this.checked3 = false
-				}
-			},
-			checked2(newValue, oldValue) {
-				if (newValue == true) {
-					this.checked1 = false
-					this.checked3 = false
-				}
-			},
-			checked3(newValue, oldValue) {
-				if (newValue == true) {
-					this.checked2 = false
-					this.checked1 = false
-				}
-			},
+			// checked1(newValue, oldValue) {
+			// 	if (newValue == true) {
+			// 		this.checked2 = false
+			// 		this.checked3 = false
+			// 	}
+			// },
+			// checked2(newValue, oldValue) {
+			// 	if (newValue == true) {
+			// 		this.checked1 = false
+			// 		this.checked3 = false
+			// 	}
+			// },
+			// checked3(newValue, oldValue) {
+			// 	if (newValue == true) {
+			// 		this.checked2 = false
+			// 		this.checked1 = false
+			// 	}
+			// },
 			checked4(newValue, oldValue) {
 				if (newValue == true) {
 					this.checked5 = false
@@ -283,66 +276,32 @@
 		},
 		methods: {
 			fn() {
-				// if(this.id==4 || this.id==5){
-				//  this.$toast.fail({
-				//  	message: `暂未开放`,
-				//  	duration: 1200
-				//  });
-				//  return
-				// }
 				this.show = true
-				// Dialog.confirm({
-				//   title: "提示",
-				//   message:
-				//     `您是否了解清楚CR量化产品功能和用户须知?如无疑问和异议,点击'确定'即购买成功,一经购买,不支持任何退换。
-				//  `,
-				// })
-				//   .then(() => {
-				// this.show = true
-				//     // on confirm
-
-				//   })
-				//   .catch(() => {
-				//     // on cancel
-				//   });
+				
 			},
 			beforeClose: function(action, done) {
 				if (action === "confirm") {
-					let num;
-					let month;
 					let type;
-					let id;
-					if (this.id != 5) {
-						id = this.id
-						if (this.checked1) {
-							num = 5600
-							month = 3
-						}
-						if (this.checked2) {
-							num = 9600
-							month = 6
-						}
-						if (this.checked3) {
-							num = 16800
-							month = 12
-						}
-
-					} else {
-						id = 3
-						num = 2000
+					if(this.bool){
+						this.$toast.fail({
+							message: `暂未开放`,
+							duration: 1200
+						});
+						done();
+						return
 					}
 					if (this.checked4) {
-						type = 2
+						type = 1
 					} else {
 						type = 8
 					}
 
 					this.$axios
 						.post("/index/robot/purchase_robot", {
-							num,
+							num:200,
 							type,
-							month,
-							robot_type: id,
+							month:12,
+							robot_type: 4,
 						})
 						.then((res) => {
 							if (res.data.code == 0) {

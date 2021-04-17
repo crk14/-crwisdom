@@ -12,7 +12,8 @@ import {
     Tabs,
     Switch,
     NoticeBar,
-    DatetimePicker
+    DatetimePicker,
+	 DropdownMenu, DropdownItem
  } from 'vant'
 
 
@@ -29,3 +30,5 @@ Vue.use(Tabs)
 Vue.use(Switch)
 Vue.use(NoticeBar)
 Vue.use(DatetimePicker)
+Vue.use(DropdownMenu)
+Vue.use(DropdownItem)

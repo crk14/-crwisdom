@@ -9,6 +9,11 @@
 			 onclick="window.history.go(-1)" />
 			<p>合约量化交易</p>
 		</div>
+		<van-pull-refresh
+		  v-model="isLoading"
+		  success-text="刷新成功"
+		  @refresh="onRefresh"
+		>
 		<div class="topsel" style="position: relative;">
 			<p class="left" @click="bounce(1)">
 				<img v-if="bourse==1" src="../assets/src_resource_image_page_huobi_logo@2x.png" alt />
@@ -78,7 +83,7 @@
 			<div class="cent">
 				<div class="box">
 					<p style="color: #C0C5CB;">完成利润</p>
-					<p class="box1">{{profit}} {{symbol}}</p>
+					<p class="box1">{{(profit*1).toFixed(2)}} {{symbol}}</p>
 				</div>
 			</div>
 			<div class="cent">
@@ -250,6 +255,7 @@
 				</li>
 			</ul>
 		</div>
+		</van-pull-refresh>
 		<!-- 左侧弹框 -->
 		<van-popup v-model="show" position="left" @click="changleft" class="poup" :style="{ height: '100%' ,width:'50%'}">
 			<p class="jiay">选择交易所</p>
@@ -322,13 +328,8 @@
 		<!-- 结算币对弹窗 -->
 
 		<!-- 问题弹框 -->
-		<van-popup v-model="matterplay" class="matter">
-			<div class="top">CR智能交易注意事项</div>
-			<div class="bots">
-				<p>1、用户在交易所内生成的API不可绑定IP</p>
-				<p>2、在智能交易开启前，交易所中必须先有本金，系统才能执行交易</p>
-				<p>3、在智能交易开启后，如有出现手动介入的情况，系统将立即 停止交易。</p>
-			</div>
+		<van-popup v-model="matterplay" style="width: 80%;">
+			<matter></matter>
 		</van-popup>
 
 		<!-- 智能交易弹框 -->
@@ -415,6 +416,7 @@
 
 <script>
 	import Vue from "vue";
+	import matter from '../modu/matter.vue'
 	import {
 		Dialog,
 		Field,
@@ -439,10 +441,12 @@
 			Checkbox,
 			RadioGroup,
 			Radio,
-			Picker
+			Picker,
+			matter
 		},
 		data() {
 			return {
+				isLoading:false,
 				checked2: true,
 				checked3: true,
 				checked4: false,
@@ -455,8 +459,6 @@
 				number3: "",
 				number4: "",
 				number5: "",
-				// number6: "",
-				// number7: "",
 				number8: '',
 				makelist: '',
 				interval: '',
@@ -556,28 +558,7 @@
 				this.bourse = localStorage.getItem("bourse1");
 			}
 			this.start()
-			this.$axios
-				.get("/index/mywallet/mywalletInfo", {
-					page: 1,
-					limit: 1
-				})
-				.then((res) => {
-					let info = res.data.info;
-					this.pointnum = info.point_num;
-					var timestamp = Date.parse(new Date()) / 1000;
-					if (info.start_time) {
-						let time = parseInt((timestamp - info.start_time) / 60 / 60 / 24);
-						this.time = 150 - time;
-					} else {
-						console.log(info.start_time, info.point_num);
-						if (info.point_num > 0) {
-							let time = parseInt((timestamp - info.start_time) / 60 / 60 / 24);
-							this.time = 150 - time;
-						} else {
-							this.time = 0;
-						}
-					}
-				});
+			this.mywalletInfo()
 			if (this.bourse == 4) {
 				this.selectsymbol[3].a = "OKB";
 			}
@@ -644,6 +625,24 @@
 			},
 		},
 		methods: {
+			onRefresh(){
+					  this.start()
+					  this.mywalletInfo()
+				  setTimeout(() => {
+				        this.isLoading = false;
+				      }, 1000);
+				},
+			mywalletInfo(){
+				this.$axios
+					.get("/index/mywallet/mywalletInfo", {
+						page: 1,
+						limit: 1
+					})
+					.then((res) => {
+						let info = res.data.info;
+						this.pointnum = info.point_num;
+					});
+			},
 			conwan(i) {
 				this.textsel = i
 				this.tostring()
@@ -666,14 +665,7 @@
 					return;
 				}
 				if (this.shuju) {
-
 					this.show2 = true
-					// return
-					// if (this.shuju == 1) {
-					//   this.show2 = true;
-					// } else {
-					//   this.show3 = true;
-					// }
 				} else {
 					Dialog.confirm({
 						title: "提醒",
@@ -1057,8 +1049,6 @@
 					obj.bool = true;
 				}
 				this.$set(this.list3, index, obj);
-				// this.bidui = false;
-				// this.selsym = [];
 				this.selsym.push(this.list3[index].symbol_deal);
 				this.selsym = [...new Set(this.selsym)]
 				console.log(this.selsym, this.list3);
@@ -1228,11 +1218,9 @@
 				    `是否要一键${str}？`,
 				})
 				  .then(() => {
-				    // on confirm
 					this.close_now(id)
 				  })
 				  .catch(() => {
-				    // on cancel
 				  });
 			},
 			close_now(id) {
@@ -1257,7 +1245,6 @@
 										type: this.types,
 									})
 									.then((res) => {
-										// this.strategy_list = res.data.list;
 										res.data.list.forEach((item, index) => {
 											this.$set(this.strategy_list, index, item);
 										});
@@ -1473,32 +1460,6 @@
 		color: #fff;
 		z-index: 2100;
 	}
-
-	.matter {
-		top: 42%;
-		width: 90%;
-		min-height: 50%;
-
-		.top {
-			background: url("../assets/news.png") no-repeat;
-			background-size: 100%;
-			height: 2.33rem;
-			line-height: 2.33rem;
-			color: #fff;
-			font-size: 0.36rem;
-			padding-left: 0.3rem;
-		}
-
-		.bots {
-			padding: 0.3rem;
-
-			p {
-				font-size: 0.22rem;
-				margin-bottom: 0.3rem;
-			}
-		}
-	}
-
 	.runy {
 		display: flex;
 		justify-content: space-between;
@@ -1519,15 +1480,12 @@
 			padding: 0;
 			border: none;
 			display: flex;
-
-			// line-height: 28px;
 			span {
 				display: block;
 				margin-top: -1px;
 				color: #2185ff;
 				margin-right: 0.1rem;
 				line-height: 19px;
-				// margin-top: -0.2rem;
 			}
 		}
 	}
@@ -1603,7 +1561,7 @@
 			color: #000000;
 			border: 1px solid rgb(34, 132, 253);
 			box-sizing: border-box;
-			padding: 5px;
+			padding: 5px 0;
 			border-radius: 5px;
 			font-size: 0.24rem;
 			text-align: center;

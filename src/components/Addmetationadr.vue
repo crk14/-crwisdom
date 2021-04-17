@@ -2,23 +2,23 @@
 	<div class="addmetationadr">
 		<div class="tophader" onclick="window.history.go(-1)">
 			<van-icon name="arrow-left" />
-			<p>添加提币地址</p>
+			<p>{{$t('notecase.add')+$t('notecase.address')}}</p>
 		</div>
 		<p class="hr"></p>
 		<ul>
 			<li>
-				<p>币种</p>
+				<p>{{$t('notecase.currency')}}</p>
 				<input type="text" class="metain" id="" value="USDT" disabled="disabled"/>
 				<p class="hr"></p>
 			</li>
 			<li>
-				<p>姓名</p>
-				<input type="text" v-model="real_name" placeholder="请输入您的姓名" />
+				<p>{{$t('notecase.name')}}</p>
+				<input type="text" v-model="real_name" :placeholder="$t('user.pleaseInput')+$t('notecase.your')+$t('notecase.name')" />
 				<p class="hr"></p>
 			</li>
 			<li>
-				<p>钱包地址</p>
-				<input type="text" v-model="address" placeholder="请输入您的钱包地址" />
+				<p>{{$t('notecase.wallet')}}</p>
+				<input type="text" v-model="address" :placeholder="$t('user.pleaseInput')+$t('notecase.your')+$t('notecase.wallet')" />
 				<p class="hr"></p>
 			</li>
 		</ul>
@@ -26,15 +26,15 @@
 			<input type="file" @change="upImg" accept="image/*">
 			<img v-if="img" class="fleimg" :src="img" alt="">
 			<img v-if="!img" src="../assets/icon_zhengjian@2x.png" alt="">
-			<p v-if="!img">请上传提币二维码</p>
+			<p v-if="!img">{{$t('notecase.withdrawal')}}</p>
 		</div>
 		<p @click="djxz" class="morenp">
 			<img v-if="status==0" src="../assets/icon_weixuanze@2x.png" alt class="togle" />
 			<img v-else src="../assets/icon_xuanze@2x.png" alt class="togle" />
-			默认
+			{{$t('notecase.defaults')}}
 		</p>
-		<button type="button" class="changebton" v-if="id" @click="send">修改</button>
-		<button type="button" class="changebton" v-else @click="send">确定</button>
+		<button type="button" class="changebton" v-if="id" @click="send">{{$t('user.alter')}}</button>
+		<button type="button" class="changebton" v-else @click="send">{{$t('user.Confirm')}}</button>
 	</div>
 </template>
 
@@ -72,7 +72,7 @@ export default {
 			var ts = this;
 			var file = e.target.files[0];
 			if(!file) return;
-			this.$toast.loading({message:'正在上传',duration:0,loadingType: 'spinner '});
+			this.$toast.loading({message:this.$t('notecase.uploading'),duration:0,loadingType: 'spinner '});
 			let fd = new FormData();
 			fd.append("file", file);
 			this.$axios.post("/index/Upload/uploadImg",fd)
@@ -80,14 +80,14 @@ export default {
 				if(res.data.code==0){
 					this.img=res.data.data;
 				}
-				this.$toast.success({message:'上传成功',duration:800});
+				this.$toast.success({message:this.$t('notecase.uploadings'),duration:800});
 			})
 			.catch(err=>{
-				this.$toast.fail({message:'上传失败',duration:1200});
+				this.$toast.fail({message:this.$t('notecase.uploadingload'),duration:1200});
 			})
 		},
 		send(){
-			if(!this.img||!this.real_name||!this.address) return this.$toast.fail({message:'请填写完整',duration:1200});
+			if(!this.img||!this.real_name||!this.address) return this.$toast.fail({message:this.$t('user.Pleasecomplete'),duration:1200});
 			var url="/index/member/addWalletAddress";
 			if(this.id){
 				url="/index/member/editWalletAddress";
@@ -115,7 +115,7 @@ export default {
 		address(s){
 			if(s){
 				if(/[\u4E00-\u9FA5]|[\uFE30-\uFFA0]/g.test(s)){
-					this.$toast.fail({message:'不能输入中文',duration:1200});
+					this.$toast.fail({message:this.$t('notecase.Chinese'),duration:1200});
 				}
 				this.address=s.replace(/[\u4E00-\u9FA5]|[\uFE30-\uFFA0]/g,'');
 			}

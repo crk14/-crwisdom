@@ -9,190 +9,167 @@
 			 onclick="window.history.go(-1)" />
 			<p>策略跟随机器人(现货版)</p>
 		</div>
-		<img v-show="!type_status" class="statusimg" src="../assets/auto1.png" />
-		<img v-show="type_status" class="statusimg" src="../assets/crliang.gif" />
-		<div class="topsel" style="position: relative;">
-			<p class="left" @click="bounce(1)">
-				<img src="../assets/src_resource_icon_user_exchange_okex@2x.png" alt />
-				<span>OKEX</span>
+		<van-pull-refresh v-model="isLoading" success-text="刷新成功" @refresh="onRefresh">
+			<img v-show="!type_status" class="statusimg" src="../assets/auto1.png" />
+			<img v-show="type_status" class="statusimg" src="../assets/crliang.gif" />
+			<div class="topsel" style="position: relative;">
+				<p class="left" @click="bounce(1)">
+					<img v-if="bourse==1" src="../assets/src_resource_image_page_huobi_logo@2x.png" alt />
+					<img v-else-if="bourse==4" src="../assets/src_resource_icon_user_exchange_okex@2x.png" alt />
+					<img v-else src="../assets/selt.png" alt />
+					<span>{{bourse==1?'火币全球站':bourse==4?'OKEX':'选择交易所'}}</span>
+				</p>
+				<div class="right" style="position: absolute;right: .4rem;top: .53rem;display: flex;">
+					<img src="../assets/问好@2x.png" alt @click="bounce(3)" style="margin-top: .02rem;" />
+					<div style="font-size: .26rem;" @click="fn8(vipshow)">{{vipshow?'我是交易员':'申请交易员'}}</div>
+				</div>
+			</div>
+			<p class="hr"></p>
+			<div class="headtitle" style="display: flex;padding: .1rem 0 .1rem .3rem;">
+				<div>
+					<span>|</span>配置
+				</div>
+				<div style="font-size: .25rem;font-weight: 550;margin-left: 15%;margin-top: .05rem;">USDT余额：{{USDTnum}}</div>
+				<div style="font-size: .25rem;font-weight: 550;margin-left: 5%;margin-top: .05rem;">剩余天数：{{time+$t('store.day')}}</div>
+			</div>
+			<div class="strategy" style="display: flex;justify-content: space-between;">
+				<p style="padding: 0;">
+					<span style="margin-right: 15px;">计价币 </span>
+					<span :class="{'active6':symbol=='USDT'}" style="width: 40px;text-align: center;" @click="symbol='USDT'"> USDT</span>
+					<!-- <span :class="{'active6':symbol=='BTC'}" style="width: 40px;text-align: center;" @click="symbol='BTC'">BTC</span>
+				<span :class="{'active6':symbol=='ETH'}" style="width: 40px;text-align: center;" @click="symbol='ETH'">ETH</span>
+				<span :class="{'active6':symbol=='HT'}" style="width: 40px;text-align: center;" @click="symbol='HT'">HT</span> -->
+				</p>
+				<div class="one_p" style="display: flex;">
+					<span class="dfirst" style="color: #999999;font-size: .24rem;">仓位监测</span>
+					<div style="font-size: .28rem;width: 2.9rem;text-align: center;">{{parseInt(Number(principals)*1000)/1000||0}}
+						{{symbol}}</div>
+				</div>
+
+			</div>
+			<p v-show="vipshow" style="display: flex;height: 35px;line-height: 35px;border-bottom: 4px solid #f5f6fa;font-size: .26rem;color: rgb(34, 132, 253);">
+				<span @click="bounce(4)" style="flex:1;text-align: center;">添加货币对{{jysymbol>0?'('+jysymbol+')':''}}</span>
+				<span style="color: #D0D0D0;">|</span>
+				<span v-show="vipshow" style="flex:1;text-align: center;" @click="fn2()">一键生成策略</span>
 			</p>
-			<div class="right" style="position: absolute;right: .4rem;top: .53rem;display: flex;">
-				<img src="../assets/问好@2x.png" alt @click="bounce(3)" style="margin-top: .02rem;" />
-				<div style="font-size: .26rem;" @click="fn8(vipshow)" >{{vipshow?'我是交易员':'申请交易员'}}</div>
-			</div>
-		</div>
-		<p class="hr"></p>
-		<div class="headtitle" style="display: flex;padding: .1rem 0 .1rem .3rem;">
-			<div>
-				<span>|</span>配置
-			</div>
-			<div style="font-size: .25rem;font-weight: 550;margin-left: 15%;margin-top: .05rem;">USDT余额：{{USDTnum}}</div>
-			<div style="font-size: .25rem;font-weight: 550;margin-left: 5%;margin-top: .05rem;">点卡余额：{{pointnum}}</div>
-		</div>
-		<div class="note-t">
-			<div class="div">
-				计 价 方 式
-				<div></div>
-			</div>
-			<div class="div2">
-				<div class="avtive" style="width: 45%;margin-left: -7px;background: #fff;color: #000;">USDT保证金合约</div>
-			</div>
-		</div>
-		<div class="note-t" v-show="vipshow">
-			<div class="div">
-				选择交易对
-				<div></div>
-			</div>
-			<div class="div2">
-				<div :class="{'avtive':symbol3== 'BTC'}" @click="symbol3='BTC'"><span>BTC</span>/USDT</div>
-				<div :class="{'avtive':symbol3=='ETH'}" @click="symbol3='ETH'"><span>ETH</span>/USDT</div>
-			</div>
-		</div>
-		<div class="note-t" v-show="vipshow">
-			<div class="div">
-				选 择 仓 位
-				<div></div>
-			</div>
-			<div class="div2 ">
-				<div :class="{'avtive':monery==5000}" @click="monery=5000">5000 USDT</div>
-				<div :class="{'avtive':monery==10000}" @click="$toast.fail({message: '暂未开放',duration: 2000})">10000 USDT</div>
-			</div>
 
-		</div>
-		
-		<p class="headtitle">
-			<span>|</span>{{vipshow?'实时监控':'跟随详情'}}
-			<button v-show="vipshow" @click="fn2()" style="margin-left: 38%;line-height: 22px; background: #4389eb;color: #fff;border-radius: 4px;font-size: 14px;width: 36%;">一键生成策略</button>
-			<button v-show="!vipshow " @click="fn2(true)" style="margin-left: 38%;line-height: 22px; background: #4389eb;color: #fff;border-radius: 4px;font-size: 14px;width: 36%;">选择跟随策略</button>
-		</p>
-		<p class="headtitle" style="justify-content: center;">
-			<span v-show="!vipshow && strategy_list.length" style="line-height: 22px; border-radius: 4px;font-size: 14px;width: 36%;text-align: center;padding: 3px 6px;border: 1px solid #4389eb;">已跟随"{{tradert.nick_name}}"</span>
-		</p>
-		<div v-show="!vipshow &&  strategy_list.length " style="display: flex;font-size: 13px;padding: 0 .3rem;line-height: 35px;">
-			<div style="flex:1;text-align: left;">
-				<div style="border-bottom: 2.5px solid #f5f6fa;display: flex;justify-content: space-between;">
-					<p>交 易 货 币
-						<div style="width: 2px;height: 16px;background: #E5E5E5;margin-top: 8px;"></div>
-						{{tradert.symbol_deal}}/USDT</p>
-					<div style="width: 2px;height: 16px;background: #E5E5E5;margin-top: 8px;"></div>
-				</div>
-				<div class="right" style="border-bottom: 2.5px solid #f5f6fa;display: flex; justify-content: space-between;">
-					<p>仓 位 资 金
-						<div style="width: 2px;height: 16px;background: #E5E5E5;margin-top: 8px;"></div>
-						{{tradert.equity}} USDT</p>
-					<div style="width: 2px;height: 16px;background: #E5E5E5;margin-top: 8px;"></div>
-				</div>
-			</div>
-			<div style="flex:1;text-align: left;">
-				<div style="border-bottom: 2.5px solid #f5f6fa;padding-left: 15%;display: flex;justify-content: space-between">
-					<p>首 仓 张 数
-						<div style="width: 2px;height: 16px;background: #E5E5E5;margin-top: 8px;"></div>
-						多 {{tradert.up_num}} 空 {{tradert.down_num}}</p>
-				</div>
-				<div style="border-bottom: 2.5px solid #f5f6fa;padding-left: 15%;display: flex;justify-content: space-between">
-					<p> 杠 杆 倍 率
-						<div style="width: 2px;height: 16px;background: #E5E5E5;margin-top: 8px;"></div>
-						{{tradert.leverage}}倍 </p>
-				</div>
-			</div>
-		</div>
 
-		<div class="headtitle" style="justify-content: space-between;font-size: 13px;">
-
-			<p>总交易笔数: {{count}}笔</p>
-			<p>总结算收益$: {{profit}}</p>
-		</div>
-		<div class="runy">
 			<p class="headtitle">
-				<span>|</span>运行状态
+				<span>|</span>{{vipshow?'实时监控':'跟随详情'}}
+				<button v-show="!vipshow " @click="fn2(true)" style="margin-left: 37%;line-height: 22px; background: #4389eb;color: #fff;border-radius: 4px;font-size: 14px;width: 36%;">选择跟随策略</button>
 			</p>
-			<p class="headtitle" @click="toshowdetail(true)">
-				<span>|</span>持仓详情 <img src="../assets/1008.png" />
+			<p v-show="!vipshow && strategy_list.length" v-for="(item,index) in tradert" :key="index" class="headtitle" style="justify-content: center;border: 0;">
+				<span style="line-height: 22px; border-radius: 4px;font-size: 14px;text-align: center;padding: 3px 6px;border: 1px solid #4389eb;min-width: 60%;">已跟随"{{item.nick_name}}"
+					<span style="display: inline-block;" v-for="(item1,index1) in item.symbol_list" :key="index1">{{item1?item1.toUpperCase():''}}
+					</span> </span>
 			</p>
-			<p class="headtitle" @click="toshowdetail()">
-				<span>|</span>交易记录 <img src="../assets/1008.png" />
-			</p>
-		</div>
 
-		<div class="comereult">
-			<ul>
-				<li v-for="(item,i) in strategy_list" :key="i" style="position: relative;">
-					<p class="cometop">
-						<span style="font-size: .26rem;line-height: 20px;">
-							<!-- <img v-show="item.symbol1" src="../assets/ht.png" alt style="width: 16px;height: 16px;position: absolute;left: 0;top: -2px;"/> -->
-							{{item.bidui}}
-						</span>
-						<span style="font-size: .22rem;margin-left: 17px;"><span class="item-span" :class="{'item-span1':item.zhangfu>0}"
-							 style="font-size: .24rem;"> {{item.close1?item.close1:''}}</span> </span>
-						<span style="position: absolute;right: 25px;">
-							<button style="background:rgb(97,161,240);margin-left: 0;" v-show="item.types==1" @click="fn5(item.id,item.stop_type)">删除策略</button>
-							<button style="background:rgb(97,161,240);" v-show="item.types==1" @click="fn6(item)">设置策略</button>
-							<button class="button1" :class="{'button3':item.stop_type != 0}" v-if="item.status==0" @click="open_strategy(item.id,)">{{item.stop_type== 0?'开启交易':'恢复交易'}}</button>
-							<button style="background:#BD1616" @click="bounce(0,item.id,item.stop_type)" v-else>{{item.stop_type!== 2?'停止交易':'恢复交易'}}</button>
-						</span>
-					</p>
-					<div class="pressbox gundong" v-if="item.status==1">
-				
-						<p v-if="item.status==1 && item.stop_type == 0"><span>状态: </span> 正在监控中</p>
-						<p v-if="item.status==1 && item.stop_type == 2"><span>状态: </span> 止盈后停止</p>
-					</div>
-					<div class="pressbox" style="background:#BFBFBF;" v-else>
-						<p v-if="item.status==0"><span>状态: </span> {{item.stop_type== 0?'未开启':item.stop_type== 3?'清仓停止':item.stop_type== 2?'止盈停止':'临时停止'}}</p>
-						<p v-if="item.stop_type==5" class="item1">API KEY 错误</p>
-						<p v-if="item.stop_type==7" class="item1">仓位错误</p>
-						<p v-if="item.stop_type==8" class="item1">点卡不足</p>
-						<p v-if="item.stop_type==9" class="item1">仓位错误</p>
-						<p v-if="item.stop_type==6" class="item1">本金不足</p>
-					</div>
-					<div class="tabul">
-						<div>
-							<p>建仓单数(单)</p>
-				
-							<p>{{item.buy_count}}</p>
+
+			<div class="headtitle" style="justify-content: space-between;font-size: 13px;">
+
+				<p>总交易笔数: {{count}}笔</p>
+				<p>总结算收益$: {{profit}}</p>
+			</div>
+			<div class="runy">
+				<p v-if="!vipshow" class="headtitle" @click="toshowdetail(true)">
+					<span>|</span>运行结果
+				</p>
+				<p v-show="vipshow" class="headtitle">
+					<span>|</span> <button style="color: #fff;border-radius: 15px;font-size: 13px;"  class="button1"
+					 :class="{'button-active':stop_types}" @click="start_follow(true)">{{stop_types?'关闭带单':'开启带单'}}</button>
+				</p>
+				<p v-if="vipshow" class="headtitle" @click="toshowdetail(true)">
+					<span>|</span>带单详情 <img src="../assets/1008.png" />
+				</p>
+				<p class="headtitle" @click="toshowdetail()">
+					<span>|</span>交易记录 <img src="../assets/1008.png" />
+				</p>
+			</div>
+
+
+			<div class="comereult">
+				<ul>
+					<li v-for="(item,i) in strategy_list" :key="i" style="position: relative;">
+						<p class="cometop">
+							<span style="font-size: .26rem;line-height: 20px;">
+								<!-- <img v-show="item.symbol1" src="../assets/ht.png" alt style="width: 16px;height: 16px;position: absolute;left: 0;top: -2px;"/> -->
+								{{item.bidui}}
+							</span>
+							<span style="font-size: .22rem;margin-left: 17px;"><span class="item-span" :class="{'item-span1':item.zhangfu>0}"
+								 style="font-size: .24rem;"> {{item.close1?item.close1:''}}</span> </span>
+							<span style="position: absolute;right: 25px;">
+								<button style="background:rgb(97,161,240);margin-left: 0;" @click="fn5(item.id,item.stop_type)">删除策略</button>
+								<button v-show="!vipshow" style="background:rgb(97,161,240);" @click="fn6(item)">设置金额 </button>
+
+								<button v-show="!vipshow" class="button1" :class="{'button3':item.stop_type != 0}" v-if="item.status==0" @click="open_strategy(item.id,item.first_amount)">{{item.stop_type== 0?'开启交易':'恢复交易'}}</button>
+								<button v-show="!vipshow" style="background:#BD1616" @click="bounce(0,item.id,item.stop_type)" v-else>{{item.stop_type!== 2?'停止交易':'恢复交易'}}</button>
+							</span>
+						</p>
+						<div v-show="!vipshow" class="pressbox gundong" v-if="item.status==1">
+
+							<p v-if="item.status==1 && item.stop_type == 0"><span>状态: </span> 正在监控中</p>
+							<p v-if="item.status==1 && item.stop_type == 2"><span>状态: </span> 止盈后停止</p>
 						</div>
-						<div>
-							<p>持仓数量({{item.bidui.split('/')[0]}})</p>
-							<p>{{item.buy_count_amount}}</p>
+						<div v-show="!vipshow" class="pressbox" style="background:#BFBFBF;" v-else>
+							<p v-if="item.status==0"><span>状态: </span> {{item.stop_type== 0?'未开启':item.stop_type== 3?'清仓停止':item.stop_type== 2?'止盈停止':'临时停止'}}</p>
+							<p v-if="item.stop_type==5" class="item1">API KEY 错误</p>
+							<p v-if="item.stop_type==7" class="item1">仓位错误</p>
+							<p v-if="item.stop_type==8" class="item1">点卡不足</p>
+							<p v-if="item.stop_type==9" class="item1">仓位错误</p>
+							<p v-if="item.stop_type==6" class="item1">本金不足</p>
 						</div>
-						<div>
-							<p>持仓均价({{item.bidui.split('/')[1]}})</p>
-							<p>{{item.buy_count_average}}</p>
-				
-							<!-- <p>{{item.profit_lv}}%</p> -->
+						<div class="tabul">
+							<div>
+								<p>做单数量(单)</p>
+
+								<p>{{item.buy_count}}</p>
+							</div>
+							<div>
+								<p>持仓数量({{item.bidui.split('/')[0]}})</p>
+								<p>{{item.buy_count_amount}}</p>
+							</div>
+							<div>
+								<p>持仓均价({{item.bidui.split('/')[1]}})</p>
+								<p>{{item.buy_count_average}}</p>
+
+								<!-- <p>{{item.profit_lv}}%</p> -->
+							</div>
+
 						</div>
-						
-					</div>
-					<div class="tabul" style="padding-top: 0;margin-bottom: 10px;">
-						<div>
-							<p>尾仓均价({{item.bidui.split('/')[1]}})</p>
-										
-							<p>{{item.lastprice}}</p>
+						<div class="tabul" style="padding-top: 0;margin-bottom: 10px;">
+							<div>
+								<p>尾仓均价({{item.bidui.split('/')[1]}})</p>
+
+								<p>{{item.lastprice}}</p>
+							</div>
+							<div>
+								<p>平仓单数(单)</p>
+								<p>{{item.sell_count}}</p>
+							</div>
+							<div>
+								<p>实现利润({{item.bidui.split('/')[1]}})</p>
+
+								<p>{{item.profit}}</p>
+							</div>
 						</div>
-						<div>
-							<p>平仓单数(单)</p>
-							<p>{{item.sell_count}}</p>
-						</div>
-						<div>
-							<p>实现利润({{item.bidui.split('/')[1]}})</p>
-										
-							<p>{{item.profit}}</p>
-						</div>
-					</div>
-				</li>
-			</ul>
-		</div>
+						<div @click="stop_types?$router.push(`/jyyym2?symboldeal=${item.symbol_deal}&symbol=${item.symbol}&id=${item.id}`):''" v-show="vipshow"
+						 class="getbon" :class="{'getbonactive':!stop_types}">进入快速交易</div>
+					</li>
+				</ul>
+			</div>
+		</van-pull-refresh>
 		<!-- 左侧弹框 -->
 		<van-popup v-model="show" position="left" @click="changleft" class="poup" :style="{ height: '100%' ,width:'50%'}">
 			<p class="jiay">选择交易所</p>
 			<p class="yopen">已开通智能交易</p>
-			<p class="hmoney" @click="clileft('OKEX',4)">
-				<img style="width:0.34rem" src="../assets/src_resource_icon_user_exchange_okex@2x.png" alt />OKEX
-			</p>
 
+			<p class="hmoney" @click="clileft('OKEX',1)">
+				<img src="../assets/src_resource_image_page_huobi_logo@2x.png" alt />火币全球站
+			</p>
 			<p class="yopen">待开通智能交易</p>
 			<ul>
 				<p class="hmoney">
-					<img src="../assets/src_resource_image_page_huobi_logo@2x.png" alt />火币全球站
+					<img style="width:0.34rem" src="../assets/src_resource_icon_user_exchange_okex@2x.png" alt />OKEX
 				</p>
 				<li>
 					<img src="../assets/src_resource_icon_user_exchange_zb@2x.png" alt />ZB
@@ -224,11 +201,11 @@
 			<p class="title">关闭交易</p>
 			<p class="plesway">请选择关闭交易方式</p>
 			<ul>
-				<li @click="firmcolse(0)">
+				<!-- <li @click="firmcolse(0)">
 					临时停止
 					<img v-if="check==0" src="../assets/landian.png" alt />
 					<img v-else src="../assets/nocomr.png" alt />
-				</li>
+				</li> -->
 				<li @click="firmcolse(2)">
 					清仓停止
 					<img v-if="check==2" src="../assets/landian.png" alt />
@@ -236,6 +213,38 @@
 				</li>
 			</ul>
 			<button class="changebton" @click="close_now()" style="background-color: rgb(34, 132, 253);">确定</button>
+		</van-popup>
+
+		<!-- 交易币对弹窗 -->
+		<van-popup v-model="bidui" position="right" class="poup" :style="{ height: '100%' ,width:'100%'}">
+			<div class="tophader">
+				<van-icon name="arrow-left" @click="changright" />
+				<p>添加货币</p>
+				<span @click="changright" style="position: fixed;right: 18px;top: 0px;color: rgb(34, 132, 253);font-size: 17px;">完成</span>
+			</div>
+			<div class="poup-title">
+				<div>搜索</div>
+				<input v-model="sym_val" placeholder="输入币" style="width: 50px;padding: 1px 0; font-size: 14px; border: 1px solid #eee;margin-left: 6px;" />
+				<div class="item" @click="getxingqing()" :class="{'xiahuaxian':huobi}">官方推荐</div>
+				<div class="item" @click="getzhuliu()" :class="{'xiahuaxian':!huobi}">所有货币对</div>
+				<div class="about"></div>
+			</div>
+			<div class="poup-body">
+				<span>货币对</span>
+				<!-- <span>行情</span> -->
+				<span style="margin-left: 20%;">操作</span>
+			</div>
+			<ul>
+
+				<li class="li-item" v-for="(item,i) in list3" :key="i">
+					<div style="padding-left: .7rem;font-size: 14px;width: 86px;">{{item.symbol1.toUpperCase()}}/<span style="color: #CCCCCC;">{{item.symbol.toUpperCase()}}</span>
+					</div>
+					<!-- <div style="padding-left: 1rem;width: 32px;" class="active" :class="{'active1':item.up_or_down==1}">{{item.close.toFixed(2)}}</div> -->
+					<div style="padding-left: 1rem;color: #2284fd;text-align: center" v-show="!item.bool" @click="selecli_symbolcli(item.symbol1.toUpperCase()+ '/' + item.symbol.toUpperCase(),i)">添加</div>
+					<div style="padding-left: 1.62rem;color: #C0C5CB;text-align: center" v-show="item.bool">已添加</div>
+				</li>
+
+			</ul>
 		</van-popup>
 		<!-- 跟随列表 -->
 		<van-popup v-model="follow" class="follow">
@@ -282,209 +291,50 @@
         :istxt==6?'本金不足':istxt==7?'仓位错误':istxt==0?'系统正在获取数据定制策略':istxt==-10?'获取成功':''}}
 			</p>
 		</div>
-		<van-dialog v-model="show2" title="预算设置" show-cancel-button :before-close="beforeClose">
+
+		<van-dialog v-model="bool2" title="设置金额" show-cancel-button :before-close="beforeClose">
 			<p style="height: 15px;"></p>
 			<div style="display: flex;flex-flow:row wrap">
-				<div  class="heyue-body" >
-					<span>首单金额:</span>
-					<input v-model="backinfo.first_amount" type="number"/>
-					<span>$</span>
+				<div class="heyue-body" style="margin-left: 37%;">
+					<span>金额($):</span>
+					<input v-model="backinfo.first_amount" type="number" />
+					<!-- <span>$</span> -->
 				</div>
-				<div  class="heyue-body" >
-					<span>补仓倍率:</span>
-					<input v-model="backinfo.repair_scale" type="number"/>
-					<span>倍</span>
-				</div>
-				<div  class="heyue-body" >
-					<span>做单数量:</span>
-					<input v-model="backinfo.order_num" type="number"/>
-					<span>单</span>
-				</div>
-				<div  class="heyue-body" >
-					<span>买入涨幅:</span>
-					<input v-model="backinfo.rise" type="number"/>
-					<span>%</span>
-				</div>
-				<div  class="heyue-body heyue-body1" >
-					<span>买入跌幅:</span>
-					<input v-model="backinfo.fall" type="number"/>
-					<span>%</span>
-				</div>
-				<div  class="heyue-body heyue-body1" >
-					<span>跌幅回调:</span>
-					<input v-model="backinfo.fall_back" type="number"/>
-					<span>%</span>
-				</div>
-				<div  class="heyue-body heyue-body1" >
-					<span>补仓跌幅:</span>
-					<input v-model="backinfo.repair_fall" type="number"/>
-					<span>%</span>
-				</div>
-				<div  class="heyue-body heyue-body1" >
-					<span>补仓回调:</span>
-					<input v-model="backinfo.repair_fall_back" type="number"/>
-					<span>%</span>
-				</div>
-				<div  class="heyue-body heyue-body1" >
-					<span>止盈比例:</span>
-					<input v-model="backinfo.profit_stop" type="number"/>
-					<span>%</span>
-				</div>
-				<div  class="heyue-body heyue-body1" >
-					<span>止盈回调:</span>
-					<input v-model="backinfo.profit_stop_back" type="number"/>
-					<span>%</span>
-				</div>
-				
-				</div>
-			<p class="imgge1">止损设置
-				<span style="font-weight: 500; font-size: 12px;margin-right: 0.2rem;display: flex;">
-					<div style="margin-right: 4px;line-height: 34px;height: 34px;">关</div>
-					<van-switch v-model="show5" size=".26rem" />
-					<div :class="{'active2':show5}" style="margin-left: 4px;line-height: 34px;height: 34px;">开</div>
-				</span>
-			</p>
-			<p class="imgge1" style="background-color: #FFFFFF;font-weight: 500;" v-show="show5">止损类型
-				<span class="item" :class="{'active':show6}">
-					<span @click="show6 = true"><span v-show="show6"></span></span>
-					逐单止损
-				</span>
-				<span class="item" :class="{'active':!show6}" style="margin-right: 10%">
-					<span @click="show6 = false"> <span v-show="!show6"></span></span>
-					整体止损
-				</span>
-			</p>
-			<div class="divli" v-show="show5">
-				<p>
-					<span class="onespan">止损比例</span>
-				</p>
-				<p class="right">
-					<span>
-						<input type="text" v-model="backinfo.loss_stop" class="inputclass" placeholder="请输入" /> %
-					</span>
-				</p>
+
+
 			</div>
-			<p style="height: 15px;"></p>
-		</van-dialog>
-		<van-dialog v-model="show3" title="设置预算" show-cancel-button :before-close="beforeClose">
-			<p style="height: 15px;"></p>
-			<div style="display: flex;flex-flow:row wrap">
-				<div  class="heyue-body" >
-					<span>首单金额:</span>
-					<input v-model="backinfo.first_amount" type="number"/>
-					<span>$</span>
-				</div>
-				<div  class="heyue-body" >
-					<span>补仓倍率:</span>
-					<input v-model="backinfo.repair_scale" type="number"/>
-					<span>倍</span>
-				</div>
-				<div  class="heyue-body" >
-					<span>做单数量:</span>
-					<input v-model="backinfo.order_num" type="number"/>
-					<span>单</span>
-				</div>
-				<div  class="heyue-body" >
-					<span>买入涨幅:</span>
-					<input v-model="backinfo.rise" type="number"/>
-					<span>%</span>
-				</div>
-				<div  class="heyue-body heyue-body1" >
-					<span>买入跌幅:</span>
-					<input v-model="backinfo.fall" type="number"/>
-					<span>%</span>
-				</div>
-				<div  class="heyue-body heyue-body1" >
-					<span>跌幅回调:</span>
-					<input v-model="backinfo.fall_back" type="number"/>
-					<span>%</span>
-				</div>
-				<div  class="heyue-body heyue-body1" >
-					<span>补仓跌幅:</span>
-					<input v-model="backinfo.repair_fall" type="number"/>
-					<span>%</span>
-				</div>
-				<div  class="heyue-body heyue-body1" >
-					<span>补仓回调:</span>
-					<input v-model="backinfo.repair_fall_back" type="number"/>
-					<span>%</span>
-				</div>
-				<div  class="heyue-body heyue-body1" >
-					<span>止盈比例:</span>
-					<input v-model="backinfo.profit_stop" type="number"/>
-					<span>%</span>
-				</div>
-				<div  class="heyue-body heyue-body1" >
-					<span>止盈回调:</span>
-					<input v-model="backinfo.profit_stop_back" type="number"/>
-					<span>%</span>
-				</div>
-				
-				</div>
-				<p class="imgge1">止损设置
-					<span style="font-weight: 500; font-size: 12px;margin-right: 0.2rem;display: flex;">
-						<div style="margin-right: 4px;line-height: 34px;height: 34px;">关</div>
-						<van-switch v-model="show5" size=".26rem" />
-						<div :class="{'active2':show5}" style="margin-left: 4px;line-height: 34px;height: 34px;">开</div>
-					</span>
-				</p>
-				<p class="imgge1" style="background-color: #FFFFFF;font-weight: 500;" v-show="show5">止损类型
-					<span class="item" :class="{'active':show6}">
-						<span @click="show6 = true"><span v-show="show6"></span></span>
-						逐单止损
-					</span>
-					<span class="item" :class="{'active':!show6}" style="margin-right: 10%">
-						<span @click="show6 = false"> <span v-show="!show6"></span></span>
-						整体止损
-					</span>
-				</p>
-				<div class="divli" v-show="show5">
-					<p>
-						<span class="onespan">止损比例</span>
-					</p>
-					<p class="right">
-						<span>
-							<input type="text" v-model="backinfo.loss_stop" class="inputclass" placeholder="请输入" /> %
-						</span>
-					</p>
-				</div>
-			<p style="height: 15px;"></p>
+
 		</van-dialog>
 		<van-popup v-model="follow" class="follow">
 			<div class="tophader">
-		
+
 				<van-icon name="arrow-left" @click="follow=false" />
-				<div style="text-align: center;">交易员列表</div>
+				<div style="text-align: center;">策略列表</div>
 			</div>
 			<div class="banan">
-				<div class="item" v-for="item in trader_list" :key="item.id">
+				<div class="item" v-for="(item,index1) in trader_list" :key="item.id" v-show="item.symbol_list">
 					<div class="one">
 						<img :src="item.avatar" class="img1" />
 						<div class="center">
 							{{item.nick_name}}
-							<p>人数有限，只带粉丝</p>
+							<p>huobi 火币现货</p>
 						</div>
-						<!-- <img class="img2" src="../assets/13033.png" /> -->
-						<button class="right" @click="follow_trader(item.id,item.symbol_deal)">跟随</button>
+						<button class="right" @click="follow_trader(item.id,item.symbol_deal,index1)">跟随</button>
 					</div>
-					<div class="two">
+					<div style="font-size: 13px;">
 						<div class="left">
-							<p>交易货币对: {{item.symbol_deal}}/USDT</p>
+							<div style="display: flex;flex-wrap:wrap;margin-top: 10px;">交易货币对:
+								<van-checkbox-group v-model="result" style="display: flex;flex-wrap:wrap;width: 76%;">
+									<van-checkbox style="width: 41%;" v-for="(value,index) in item.symbol_list" :key="index" :name="value.symbol_deal.toUpperCase()+index1">
+										{{value.symbol_deal.toUpperCase()}}/{{value.symbol.toUpperCase()}}
+									</van-checkbox>
+								</van-checkbox-group>
+							</div>
 						</div>
-						<div class="right">
-							<p>开仓张数:</p>
-						</div>
-					</div>
-					<div class="two">
-						<div class="left">
-							<p>仓位资金(USDT): {{item.equity}}</p>
-						</div>
-						<div class="right">
-							<p>杠杆倍率: {{item.leverage}} </p>
-						</div>
+
 					</div>
 				</div>
-		
+
 			</div>
 		</van-popup>
 	</div>
@@ -493,21 +343,34 @@
 <script>
 	import Vue from 'vue';
 	import {
+		wss
+	} from '../api/ws.js'
+	import {
 		Dialog,
 		Field,
-		Popup
+		Popup,
+		Checkbox,
+		CheckboxGroup
 	} from 'vant';
 	Vue.use(Field);
 	Vue.use(Dialog);
 	Vue.use(Popup);
+	Vue.use(Checkbox);
+	Vue.use(CheckboxGroup);
 	export default {
 		components: {
 			Dialog,
 			Field,
-			Popup
+			Popup,
+			Checkbox,
+			CheckboxGroup
 		},
 		data() {
 			return {
+				stop_types: true,
+				isLoading: false,
+				result: [],
+				sym_val: '',
 				vipshow: false,
 				value: '',
 				number: '',
@@ -516,7 +379,6 @@
 				isshow: false,
 				isshow2: false,
 				show: false,
-				showrt: false,
 				matterplay: false,
 				bidui: false,
 				jsbidui: false,
@@ -545,13 +407,13 @@
 					a: "自定做多交易"
 				}],
 				index: 0,
-				check: 0,
+				check: 2,
 				count: 0,
 				profit: 0,
-				bourse: "",
+				bourse: "1",
 				strategy_list: [],
 				symbol_list: [],
-				types: 1,
+				types: 3,
 				selsym: [],
 				symbol: "USDT",
 				jysymbol: 0,
@@ -580,58 +442,50 @@
 				bool2: false,
 				bool3: false,
 				huobi: true,
-				type_status:false,
-				monery:5000,
-				symbol3: 'ETH',
+				type_status: false,
+				monery: 5000,
 				USDTnum: '',
 				tradert: {},
 				loss_stop: '',
 				trader_list: [],
-				follow:false
+				follow: false,
+				list4: [],
+				websct:{}
 			};
 		},
 		created() {
-			this.$axios.post("/index/follow/is_trader").then(res => {
+			this.$axios
+				.post("/index/robot/robot_systerm", {
+					robot_type: 4,
+				})
+				.then((res) => {
+					if (res.data.code == 0) {
+						if (res.data.state != 1) {
+							console.log(66)
+							this.$router.push('/store')
+						}
+					}
+				});
+			this.$axios.post("/index/spotfollow/is_trader").then(res => {
 				if (res.data.code == 0) {
 					if (res.data.is_trader == 1) {
 						this.vipshow = true
 					}
 				}
 				this.start()
-				if(!this.vipshow){
-					// this.trader_detail()
+				if (!this.vipshow) {
+					this.trader_detail()
 				}
-				
+
 			});
-			// this.$axios
-			// 	.post("/index/robot/robot_systerm", {
-			// 		robot_type:1,
-			// 	})
-			// 	.then((res) => {
-			// 		if (res.data.code == 0) {
-			// 			if(res.data.state != 1){
-			// 				console.log(66)
-			// 				this.$router.push('/shangchen')
-			// 			}
-			// 		} 
-			// 	});
-			if (localStorage.getItem("bourse") == 1) {
-				this.bourse = localStorage.getItem("bourse");
-			}
-			this.$axios
-				.get("/index/mywallet/mywalletInfo", {
-					page: 1,
-					limit: 1
-				})
-				.then(res => {
-					let info = res.data.info;
-					this.pointnum = (info.follow_point*1).toFixed(2)
-					
-				})
-			// this.start();
+			this.time = this.$route.query.time
+
+			this.start_follow(false)
+			this.mywalletInfo()
 			if (this.bourse == 4) {
 				this.selectsymbol[3].a = "OKB";
 			}
+
 		},
 		watch: {
 			symbol(newValue, oldValue) {
@@ -640,6 +494,9 @@
 				this.timer = null;
 				this.start(newValue)
 				this.start1(true)
+			},
+			result(newValue, oldValue) {
+				console.log(newValue)
 			},
 			show6(newValue, oldValue) {
 				if (newValue) {
@@ -655,122 +512,168 @@
 					this.backinfo.loss_stop_switch = 0
 				}
 			},
-			
+
 			bool3(newValue, oldValue) {
 				if (newValue) {
 					this.selsym = []
 				}
 			},
+			sym_val(newValue, oldValue) {
+				if (newValue) {
+					let str = this.sym_val.toLowerCase()
+					this.list3 = []
+					this.list4.forEach(item => {
+						if (item.symbol1.indexOf(str) != -1) {
+							this.list3.push(item)
+						}
+					})
+				} else {
+
+					this.list3 = this.list4
+				}
+			},
 		},
 		beforeDestroy() {
-			clearInterval(this.time1)
-			this.time1 = null;
+			if (this.websct.onclose) {
+				this.websct.onclose()
+			}
 		},
 		methods: {
-			beforeClose: function(action, done) {
-					  	if (action === "confirm") {
-							this.fn4(true)
-							done()
-						} else if (action === "cancel") {
-								// 取消
-								done(); // 关闭提示框
+			start_follow(bool) {
+				let state;
+				let obj = {};
+				if (bool) {
+					if (this.stop_types) {
+						obj.start = 2
+					} else {
+						obj.start = 1
+					}
+
+				}
+				this.$axios
+					.post('/index/spotfollow/start_follow', obj)
+					.then(res => {
+						if (res.data.code == 0) {
+							if (res.data.state == 0) {
+								this.stop_types = false
+							} else {
+								this.stop_types = true
 							}
+						} else {
+							this.$.toast.fixed({
+								message: res.data.msg
+							})
+						}
+
+						// this.stop_types
+					})
+			},
+			onRefresh() {
+				this.start()
+				this.mywalletInfo()
+				setTimeout(() => {
+					this.isLoading = false;
+				}, 1000);
+			},
+			mywalletInfo() {
+				this.$axios
+					.get("/index/mywallet/mywalletInfo", {
+						page: 1,
+						limit: 1
+					})
+					.then(res => {
+						let info = res.data.info;
+						this.pointnum = (info.follow_point * 1).toFixed(1)
+						this.USDTnum = (info.number * 1).toFixed(1)
+					})
+			},
+			trader_detail() {
+				this.$axios
+					.post("/index/spotfollow/follow_trader_detail")
+					.then((res) => {
+						if (res.data.code == 0) {
+							this.tradert = res.data.info
+						}
+					});
+			},
+			follow_trader(id, symbol_deal, index) {
+				let arr = []
+				this.result.forEach(item => {
+					var num = item.replace(/[^0-9]/ig, "")
+					if (num == index) {
+						let str1 = item.replace(/[^a-zA-Z]/g, "")
+						arr.push(str1)
+					}
+				})
+				let str = arr.join(',')
+				if (!str) {
+					this.$toast.fail({
+						message: '请勾选交易币对'
+					})
+					return
+				}
+				console.log(str)
+				this.$axios
+					.post("/index/spotfollow/follow_trader", {
+						id,
+						bourse: "1",
+						symbol_deal: str,
+						symbol: 'USDT'
+					})
+					.then((res) => {
+						if (res.data.code == 0) {
+							this.$toast.success({
+								message: res.data.msg
+							})
+							this.follow = false
+							this.start()
+							this.trader_detail()
+						} else {
+							this.$toast.fail({
+								message: res.data.msg
+							})
+						}
+
+					});
+			},
+			beforeClose: function(action, done) {
+				if (action === "confirm") {
+					this.fn4(true)
+					done()
+				} else if (action === "cancel") {
+					// 取消
+					done(); // 关闭提示框
+				}
 			},
 			fn2(bool) {
 				if (bool) {
-				this.follow = true
+					this.follow = true
+					this.result = []
 					this.$axios
-						.post("/index/follow/trader_list")
+						.post("/index/spotfollow/trader_list")
 						.then((res) => {
 							if (res.data.code == 0) {
 								this.trader_list = res.data.info
 							}
 						});
-				
-				} else {
-					this.show2 = true
-				}
-				if (!this.bool2) {
-					this.backinfo = {}
-					this.backinfo = {
-						profit_stop_case: 1,
-						loss_stop_case: 1,
-						loss_stop_switch: 0
-					}
-				}
-			},
-			fn4(bool = false) {
-				if (bool) {
-					if (
-						!this.backinfo.first_amount ||
-						!this.backinfo.order_num ||
-						!this.backinfo.rise ||
-						!this.backinfo.fall ||
-						!this.backinfo.fall_back ||
-						!this.backinfo.repair_fall ||
-						!this.backinfo.repair_fall_back ||
-						!this.backinfo.repair_scale ||
-						!this.backinfo.profit_stop ||
-						!this.backinfo.profit_stop_back
-					) {
-						return this.$toast.fail({
-							message: "请填写完整",
-							duration: 1200
-						});
-					}
-					if (!this.backinfo.loss_stop_switch == 0 && !this.backinfo.loss_stop) {
 
-						return this.$toast.fail({
-							message: "请填写完整",
-							duration: 1200
-						});
+				} else {
+					if (this.selsym.length == 0) {
+						Dialog.confirm({
+							title: '提醒',
+							message: '请选择交易对',
+						})
+						return
 					}
-					if (this.show5 && this.backinfo.loss_stop == 0) {
-						return this.$toast.fail({
-							message: "止损比例不能设置为零",
-							duration: 3200
-						});
+					let obj = {
+						symbol: this.symbol,
+						bourse: this.bourse,
+						types: this.types,
+						symbol_deal: this.selsym.join(','),
 					}
-					let str;
 					this.istxt = 100;
-					console.log(this.bool2)
-					if (this.bool2) {
-						let obj = {
-							first_amount: this.backinfo.first_amount,
-							order_num: this.backinfo.order_num,
-							rise: this.backinfo.rise,
-							fall: this.backinfo.fall,
-							fall_back: this.backinfo.fall_back,
-							repair_fall: this.backinfo.repair_fall,
-							repair_fall_back: this.backinfo.repair_fall_back,
-							repair_scale: this.backinfo.repair_scale,
-							profit_stop: this.backinfo.profit_stop,
-							profit_stop_back: this.backinfo.profit_stop_back,
-							profit_stop_case: this.backinfo.profit_stop_case,
-							loss_stop_case: this.backinfo.loss_stop_case,
-							loss_stop_switch: this.backinfo.loss_stop_switch,
-							loss_stop: this.backinfo.loss_stop,
-							symbol: this.backinfo.symbol,
-							bourse: this.backinfo.bourse,
-							types: 1,
-							symbol_deal: this.backinfo.symbol_deal,
-							id: this.backinfo.id
-						}
-						this.backinfo = obj
-						str = 'set_strategy'
-					} else {
-						this.backinfo.symbol = this.symbol
-						this.backinfo.bourse = this.bourse
-						this.backinfo.types = 1
-						this.backinfo.symbol_deal = this.symbol3
-						console.log(this.backinfo)
-						this.backinfo.amount = this.monery
-						str = 'set_strategy_all'
-						this.jysymbol = 0
-					}
-					this.bool3 = true
 					this.$axios
-						.post(`/index/spotstrategy/${str}`, this.backinfo)
+						.post(`/index/spotfollow/set_strategy_all`, obj)
 						.then(res => {
 							if (res.data.code == 1) {
 								this.istxt = -1;
@@ -793,6 +696,56 @@
 								}, 5000);
 							}
 						})
+				}
+
+			},
+			fn4(bool = false) {
+				if (bool) {
+
+					let str;
+					this.istxt = 100;
+					console.log(this.bool2)
+					if (this.bool2) {
+						let obj = {
+							first_amount: this.backinfo.first_amount,
+							symbol: this.backinfo.symbol,
+							bourse: this.backinfo.bourse,
+							types: this.backinfo.types,
+							symbol_deal: this.backinfo.symbol_deal,
+							id: this.backinfo.id
+						}
+						this.backinfo = obj
+						str = 'spotfollow/set_strategy'
+					}
+					this.bool3 = true
+					this.$axios
+						.post(`/index/${str}`, this.backinfo)
+						.then(res => {
+							if (res.data.code == 1) {
+								this.istxt = -1;
+								this.$toast.fail({
+									message: res.data.msg,
+									duration: 2000
+								})
+							} else {
+								// setTimeout(() => {
+								// 	this.istxt = res.data.err_code;
+								// }, 1000);
+								if (this.istxt == 0) {
+									setTimeout(() => {
+										this.istxt = -10;
+									}, 4000);
+								}
+								setTimeout(() => {
+									this.istxt = -1;
+									this.$toast.success({
+										message: res.data.msg,
+										duration: 2000
+									})
+									this.start();
+								}, 5000);
+							}
+						})
 
 				}
 				this.show3 = false
@@ -807,9 +760,15 @@
 					})
 					return
 				}
+				let str;
+				if(this.vipshow){
+					str = '是否删除策略?'
+				}else{
+					str = `请确认当前是否有持仓,如系统还有持仓时,删除策略将扣除持仓金额2%的手续费,是否删除策略?`
+				}
 				Dialog.confirm({
 					title: '提醒',
-					message: '是否删除策略？',
+					message: str,
 				}).then(() => {
 					this.$axios
 						.post("/index/spot/delete_strategy", {
@@ -833,28 +792,8 @@
 
 			},
 			fn6(item) {
-				if (item.stop_type == 2) {
-					this.$toast.fail({
-						message: "止盈停止后才可设置",
-						duration: 2000
-					})
-					return
-				}
 				this.bool2 = true
 				this.backinfo = item
-
-				if (this.backinfo.loss_stop_case == 0) {
-					this.show6 = true
-				} else {
-					this.show6 = false
-				}
-
-				if (this.backinfo.loss_stop_switch == 1) {
-					this.show5 = true
-				} else {
-					this.show5 = false
-				}
-				this.show3 = true
 			},
 			tocaozuo() {
 				this.$axios
@@ -881,7 +820,7 @@
 				}
 
 			},
-			toshowdetail() {
+			toshowdetail(bool) {
 				if (!this.bourse) {
 					this.$toast.fail({
 						message: "请选择交易所",
@@ -889,9 +828,15 @@
 					})
 					return
 				}
-				clearInterval(this.time1)
-				this.time1 = null;
-				this.$router.push('showdetail?bourse=' + this.bourse + '&type=1&poni=1')
+				if (bool) {
+					// this.$toast.fail({
+					// 	message: "暂未开放",
+					// 	duration: 2000
+					// })
+					this.$router.push('/unit')
+				} else {
+					this.$router.push('showdetail2?bourse=' + this.bourse + '&&type=bibi')
+				}
 			},
 			clileft(s, num) {
 				this.bourse = num;
@@ -924,7 +869,7 @@
 						message: "请选择交易所",
 						duration: 1200
 					});
-				if (this.types == 1)
+				if (this.types == 3)
 					return this.$toast.fail({
 						message: "请点击去设置",
 						duration: 1200
@@ -940,7 +885,7 @@
 				obj.bourse = this.bourse;
 				obj.symbol = this.symbol;
 				obj.symbol1 = this.selsym.join(",");
-				if (this.types == 1) {
+				if (this.types == 3) {
 					if (obj.gridswitch) {
 						obj.gridswitch = "open";
 					} else {
@@ -991,7 +936,7 @@
 				}
 				//取利润
 				this.$axios
-					.post("/index/spotstrategy/get_monitoring_total", {
+					.post("/index/spotfollow/get_monitoring_total", {
 						symbol: this.symbol,
 						bourse: this.bourse,
 						types: this.types
@@ -1006,23 +951,23 @@
 						}
 					});
 				if (this.bourse) {
-					// this.$axios
-					// 	.post("/index/spotstrategy/get_balance", {
-					// 		symbol: this.symbol,
-					// 		bourse: this.bourse
-					// 	})
-					// 	.then(res => {
-					// 		if (res.data.code == 0 && res.data.principal) {
-					// 			this.principal = res.data.principal;
-					// 			this.principals = res.data.principal;
-					// 		} else {
-					// 			layer.open({
-					// 				content: res.data.msg,
-					// 				skin: "msg",
-					// 				time: 2
-					// 			});
-					// 		}
-					// 	});
+					this.$axios
+						.post("/index/spotstrategy/get_balance", {
+							symbol: this.symbol,
+							bourse: this.bourse
+						})
+						.then(res => {
+							if (res.data.code == 0 && res.data.principal) {
+								this.principal = res.data.principal;
+								this.principals = res.data.principal;
+							} else {
+								layer.open({
+									content: res.data.msg,
+									skin: "msg",
+									time: 2
+								});
+							}
+						});
 				}
 
 
@@ -1031,10 +976,11 @@
 				if (!bool) {
 					this.start1();
 				}
-				clearInterval(this.time1)
-				this.time1 = null;
+				if (this.websct.onclose) {
+					this.websct.onclose()
+				}
 				this.$axios
-					.post("/index/spotstrategy/get_strategy_list", {
+					.post("/index/spotfollow/get_follow_strategy_list", {
 						symbol: this.symbol,
 						bourse: this.bourse,
 						types: this.types
@@ -1042,33 +988,39 @@
 					.then(res => {
 						this.strategy_list = res.data.list;
 						let that = this
+						let arr =[]
 						if (this.strategy_list.length > 0) {
 							this.strategy_list.forEach((item, index) => {
 								item.close1 = ''
-								if(item.status == 1){
+								if (item.status == 1) {
 									that.type_status = true
 								}
-								this.$axios.get(`/index/rank/get_market?symbol_pair=${item.symbol_deal + item.symbol}`).then(res1 => {
-									let datas = res1.data
-									item.close1 = datas.data.close
-								})
-								this.$set(this.strategy_list, index, item)
-							})
-							this.time1 = setInterval(() => {
-								this.strategy_list.forEach((item, index) => {
-									this.$axios.get(`/index/rank/get_market?symbol_pair=${item.symbol_deal + item.symbol}`).then(res1 => {
-										let datas = res1.data
-										item.close1 = datas.data.close
-										// item.zhangfu =(datas.close -datas.open)/datas.open * 100
+									arr.push(item.symbol_deal)
+									wss(arr, this.huobiwsurl, (data, wes) => {
+										arr.forEach((item, index) => {
+											if (data.ch.indexOf(item) != -1) {
+												let obj = this.strategy_list[index]
+												obj.close1 = data.tick.close
+												this.$set(this.strategy_list, index, obj)
+											}
+										})
+										this.websct = wes
 									})
-									this.$set(this.strategy_list, index, item)
-								})
-								return
-							}, 9000)
+								
+							})
+							
 						}
 
 
 					});
+			},
+			fn8(bool) {
+				if (!bool) {
+					this.$toast.fail({
+						message: '请与客服联系',
+						duration: 2000
+					})
+				}
 			},
 			selecli(i) {
 				this.index = i;
@@ -1168,9 +1120,7 @@
 					this.closeid = i;
 				} else if (s == 1) {
 					this.show = true;
-				} else if (s == 2) {
-					this.showrt = true;
-				} else if (s == 3) {
+				} else if (s == 2) {} else if (s == 3) {
 					this.matterplay = true;
 				} else if (s == 4) {
 					if (!this.bourse)
@@ -1217,6 +1167,7 @@
 						} else {
 							this.list3 = res.data.sug_list
 						};
+						this.list4 = this.list3
 					})
 			},
 			getzhuliu() {
@@ -1249,6 +1200,7 @@
 						} else {
 							this.list3 = res.data.symbol
 						};
+						this.list4 = this.list3
 					})
 			},
 			firmcolse(s) {
@@ -1262,6 +1214,15 @@
 				}
 			},
 			open_strategy(s, i) {
+				if (!i) {
+					this.$toast.fail({
+						message: `请先设置单笔交易金额,若不设置默认跟随交易员下单金额`,
+						duration: 2000
+					})
+					return
+				}
+
+
 				this.$axios.post("/index/spot/start_strategy", {
 					id: s
 				}).then(res => {
@@ -1282,8 +1243,7 @@
 			},
 			close_now() {
 				if (this.check == 0) {
-					clearInterval(this.time1)
-					this.time1 = null;
+
 					// var id = s;
 					this.$axios
 						.post("/index/spot/pause_strategy", {
@@ -1296,22 +1256,7 @@
 									duration: 2000
 								});
 
-								this.$axios
-									.post("/index/spotstrategy/get_strategy_list", {
-										symbol: this.symbol,
-										bourse: this.bourse,
-										types: this.types
-									})
-									.then(res => {
-										// this.strategy_list = res.data.list;
-										res.data.list.forEach((item, index) => {
-
-											this.$set(this.strategy_list, index, item)
-											if(item.status == 1){
-												this.type_status = true
-											}
-										})
-									});
+								this.start()
 
 								this.closedeal = false;
 							} else {
@@ -1323,6 +1268,7 @@
 							}
 						});
 				} else if (this.check == 1) {
+					this.closeid = id
 					this.$axios
 						.post("/index/spot/profit_stop", {
 							id: this.closeid
@@ -1882,8 +1828,8 @@
 	}
 
 	.item-span {
-		color: #ffffff;
-		background-color: #d74e5a;
+		color: #d74e5a;
+		// background-color: #d74e5a;
 		margin-top: 1px;
 	}
 
@@ -2096,7 +2042,7 @@
 
 	.statusimg {
 		position: absolute;
-		top: 44px;
+		top: 3px;
 		left: 47%;
 		width: 30px;
 		height: 40px;
@@ -2109,101 +2055,7 @@
 		// padding:  20px 30px;
 	}
 
-	.banan {
-		padding: 0 .28rem;
 
-		.item {
-			margin-top: .2rem;
-			padding: .14rem;
-			min-height: 2.13rem;
-			background-color: #FFFFFF;
-
-			.one {
-				display: flex;
-				background-color: rgb(247, 251, 254);
-				padding: .2rem 0 .15rem .15rem;
-				justify-content: space-between;
-				border-radius: 8px;
-
-				.img1 {
-					width: 40px;
-					height: 40px;
-					border-radius: 50%;
-					margin-right: 11px;
-				}
-
-				.img2 {
-					width: 47px;
-					height: 36px;
-					margin-top: -.2rem;
-				}
-
-				.center {
-					font-size: 15px;
-					font-weight: 550;
-					flex: 1;
-
-					p {
-						margin-top: 5px;
-						font-size: 12px;
-						font-weight: 500;
-						color: rgb(169, 173, 182);
-						white-space: nowrap;
-						overflow: hidden;
-						text-overflow: ellipsis;
-						// width: 193px;
-						width: 100%;
-					}
-				}
-
-				.right {
-					background-color: rgb(30, 105, 250);
-					color: #FFFFFF;
-					line-height: 22px;
-					width: 55px;
-					border-radius: 9px;
-					margin-top: 3%;
-					margin-right: 3%;
-					font-size: 13px;
-					height: 22px;
-				}
-			}
-
-			.two {
-				display: flex;
-				justify-content: space-between;
-				margin-top: 6px;
-
-				div {
-					color: #000000;
-					font-size: 18px;
-					// flex: 1;
-					text-align: center;
-				}
-
-				p {
-					margin-top: 1px;
-					// color: rgb(169, 173, 182);
-					font-size: 13px;
-				}
-
-				.left {
-					// width: 25%;
-					text-align: left;
-				}
-
-				.right {
-					// width: 32%;
-					text-align: right;
-				}
-
-				.center {
-					flex: 1;
-				}
-
-			}
-		}
-	}
 
 	.imgge1 {
 		height: 34px;
@@ -2216,7 +2068,8 @@
 		display: flex;
 		justify-content: space-between;
 		color: #646566;
-	.item {
+
+		.item {
 			// margin-left: 4%;
 			display: flex;
 			font-size: 14px;
@@ -2231,9 +2084,10 @@
 				margin-right: 3.5px;
 			}
 		}
+
 		.active {
 			color: #000000;
-		
+
 			span {
 				border: 1px solid rgb(33, 103, 255);
 				padding: 1px;
@@ -2241,7 +2095,7 @@
 				height: 8px;
 				background-color: #FFFFFF;
 				position: relative;
-		
+
 				span {
 					width: 4px;
 					height: 4px;
@@ -2251,56 +2105,57 @@
 				}
 			}
 		}
-		
+
 		.active2 {
 			color: #2167ff;
 		}
+
 		.van-switch {
 			margin-top: 0.15rem;
 		}
 	}
-	
+
 	.follow {
 		width: 100%;
 		height: 100%;
 		background-color: #f5f9fc;
 		// padding:  20px 30px;
 	}
-	
+
 	.banan {
 		padding: 0 .28rem;
-	
+
 		.item {
 			margin-top: .2rem;
 			padding: .14rem;
-			min-height: 2.13rem;
+			min-height: 1.8rem;
 			background-color: #FFFFFF;
-	
+
 			.one {
 				display: flex;
 				background-color: rgb(247, 251, 254);
 				padding: .2rem 0 .15rem .15rem;
 				justify-content: space-between;
 				border-radius: 8px;
-	
+
 				.img1 {
 					width: 40px;
 					height: 40px;
 					border-radius: 50%;
 					margin-right: 11px;
 				}
-	
+
 				.img2 {
 					width: 47px;
 					height: 36px;
 					margin-top: -.2rem;
 				}
-	
+
 				.center {
 					font-size: 15px;
 					font-weight: 550;
 					flex: 1;
-	
+
 					p {
 						margin-top: 5px;
 						font-size: 12px;
@@ -2313,7 +2168,7 @@
 						width: 100%;
 					}
 				}
-	
+
 				.right {
 					background-color: rgb(30, 105, 250);
 					color: #FFFFFF;
@@ -2326,42 +2181,38 @@
 					height: 22px;
 				}
 			}
-	
+
 			.two {
 				display: flex;
 				justify-content: space-between;
 				margin-top: 6px;
-	
+
 				div {
 					color: #000000;
-					font-size: 18px;
-					// flex: 1;
+					font-size: 13px;
 					text-align: center;
 				}
-	
-				p {
-					margin-top: 1px;
-					// color: rgb(169, 173, 182);
-					font-size: 13px;
-				}
-	
+
+
+
 				.left {
 					// width: 25%;
 					text-align: left;
 				}
-	
+
 				.right {
 					// width: 32%;
 					text-align: right;
 				}
-	
+
 				.center {
 					flex: 1;
 				}
-	
+
 			}
 		}
 	}
+
 	.divli {
 		font-size: 14px;
 		display: flex;
@@ -2373,14 +2224,38 @@
 		font-size: .3rem;
 		background: #fff;
 		border-bottom: 1px solid #eee;
-				color: #646566;
+		color: #646566;
+
 		.right {
 			color: #000;
-	
+
 			.inputclass {
 				text-align: right;
 			}
 		}
 	}
-	
+
+	.button-active {
+		background: #bd1616;
+	}
+
+	.getbon {
+		// margin-left: 37%;
+		line-height: 22px;
+		background: #4389eb;
+		color: #fff;
+		border-radius: 4px;
+		font-size: 14px;
+		width: 36%;
+		margin: 0 32%;
+		text-align: center;
+	}
+
+	.getbonactive {
+		background: #eee;
+	}
+
+	/deep/.van-checkbox {
+		flex: auto;
+	}
 </style>
